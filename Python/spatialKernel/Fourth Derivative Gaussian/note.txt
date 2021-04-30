@@ -1,0 +1,4 @@
+# to reproduce wavelet figure
+dist = 40
+a = 10000/3*2
+c = 10
