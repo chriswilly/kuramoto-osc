@@ -1,0 +1,1 @@
+these plots just to test scale given input a&c params to compare to wavelet scale
