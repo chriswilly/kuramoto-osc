@@ -16,16 +16,16 @@ def derivative(fn,n,var):
     while i<n:
         fn = diff(fn,var)
         i+=1
-    return fn, i
+    return fn
 
 
 
-def main():
+def main(n: int = 4):
     x,a,b,c = symbols('x,a,b,c')
 
-    test, i = derivative(gaussian(x,a,b,c),0,x)
-    print(test, i)
-
+    fn = derivative(gaussian(x,a,b,c),n,x)
+    print(n,'th derivative',test)
+    return fn
 
 if __name__ == '__main__':
     main()
