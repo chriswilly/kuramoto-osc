@@ -11,17 +11,24 @@ from sympy import (symbols,
                    lambdify
                    )
 # from pathlib import Path
-# custom
-from symbolic_calcs import main as derivative
-from lib.plotformat import setup
+if __name__ == '__main__':
+    from lib.plotformat import setup
+    from symbolic_calcs import main as derivative
 
-# if __name__ == "__main__" and __package__ is None:
-#     __package__ = "expected.package.name"
+else:
+    from .lib.plotformat import setup
+    from .symbolic_calcs import main as derivative
+
+# if __name__ == '__main__' and __package__ is None:
+#     __package__ = 'expected.package.name'
 
 # switch this nonsense to pathlib.Path
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-def gaussian(x: np.ndarray,
+
+# class kernel(object):
+def gaussian(#self,
+             x: np.ndarray,
              a: float = 1,
              b: float = 0,
              c: float = 1,
@@ -30,13 +37,15 @@ def gaussian(x: np.ndarray,
     """generalized gaussian function"""
     return a*np.exp(-(x-b)**2/2/c**2)
 
-def spatial_wavelet_old(x: np.ndarray,
+
+def spatial_wavelet_old(#self,
+                        x: np.ndarray,
                         a: float,
                         b: float,
                         c: float,
                         d: int = None,
                         ) -> np.ndarray:
-    """fourth derivative of the gaussian calculated thru sympy symbolic_calcs"""
+    """fourth derivative of the gaussian calculated thru sympy symbolic_calcs manually pasted"""
     return (
             3*a*np.exp(-(-b + x)**2/(2*c**2))/c**4
             - a*(-8*b + 8*x)*(-2*b + 2*x)*np.exp(-(-b + x)**2/(2*c**2))/(8*c**6)
@@ -46,19 +55,21 @@ def spatial_wavelet_old(x: np.ndarray,
 
 
 
-def spatial_wavelet(x: np.ndarray,
+def spatial_wavelet(#self,
+                    x: np.ndarray,
                     a: float,
                     b: float,
                     c: float,
                     d: int = 4,  # 4th derivative
                     ) -> np.ndarray:
-    """attempt at arbitrary derivation of the gaussian to nth order and substitute params """
+    """arbitrary derivation of the gaussian to nth order and substitute params """
     wavelet = derivative(d)
     fn = lambdify(['x','a','b','c'], wavelet, 'numpy')
     return fn(x,a,b,c)
 
 
-def plot_wavelet(X: np.ndarray,
+def plot_wavelet(#self,
+                 X: np.ndarray,
                  plot_title:str = 'placeholder',
                  y_axis:str = 'y',
                  x_axis:str = 'x',
@@ -81,7 +92,8 @@ def plot_wavelet(X: np.ndarray,
     fig.savefig(fmt.plot_name(plot_title,'png'))
 
 
-def kernel(fn,
+def kernel(#self,
+           fn,
            x: np.ndarray,
            a: float = 10000/3*2,
            b: float = 0,  # mean

@@ -9,11 +9,11 @@ class setup:
                  output:str = 'plot_output'):
         self.title = output
         self.params()
-        self.file_path(output.replace(r'\\','').replace(r'$','').strip(),2)  # self.directory
+        self.file_path(output.strip(),2)  # self.directory
 
 
     def plot_name(self,
-                  txt:str='placeholder',
+                  txt:str='',
                   extension:str = 'png'):
         print(self.directory,self.title)
         timestamp = datetime.now().strftime("%y%m%d_%H%M%S%f")
