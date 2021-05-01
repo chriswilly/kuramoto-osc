@@ -7,9 +7,9 @@ from pathlib import Path
 class setup:
     def __init__(self,
                  output:str = 'plot_output'):
-        self.title = output #.replace(r'plot_output/','')
+        self.title = output
         self.params()
-        self.file_path(output.strip(),3)  # self.directory
+        self.file_path(output.replace(r'\\','').replace(r'$','').strip(),3)  # self.directory
 
 
     def plot_name(self,
@@ -46,6 +46,8 @@ class setup:
         mpl.rcParams['axes.titlesize'] = 34
         mpl.rcParams['xtick.labelsize'] = 24
         mpl.rcParams['ytick.labelsize'] = 24
+        mpl.rcParams['axes.xmargin'] = 0
+        mpl.rcParams['axes.ymargin'] = 0
         mpl.rcParams['lines.linewidth'] = 2.8
         mpl.rcParams['lines.markersize'] = 18
         mpl.rcParams['lines.markeredgewidth'] = 3

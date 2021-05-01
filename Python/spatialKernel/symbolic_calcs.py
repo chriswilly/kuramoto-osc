@@ -1,3 +1,9 @@
+"""
+symbolic derivation of gaussian function
+to construct wavelet for distance decay
+spatial kernel
+"""
+
 from sympy import (symbols,
                    diff,
                    solve,
@@ -24,7 +30,7 @@ def main(n: int = 4):
     x,a,b,c = symbols('x,a,b,c')
 
     fn = derivative(gaussian(x,a,b,c),n,x)
-    print(n,'th derivative',test)
+    # print('Gaussian',n,'th derivative\n',fn)
     return fn
 
 if __name__ == '__main__':
