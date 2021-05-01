@@ -10,14 +10,13 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # from numpy.random import standard_normal
-
-
-
-# custom
-from lib.plotformat import setup
+if __name__ == '__main__':
+    from lib.plotformat import setup
+else:
+    from .lib.plotformat import setup
 
 print(Path(__file__).resolve().parents[1])
-# sys.path.append(Path(__file__).resolve().parents[1]/'spatialKernel')
+# sys.path.append(Path(__file__).resolve().parents[1])
 # from .lib.plotformat import setup
 
 
@@ -53,7 +52,7 @@ def plot_phase(X: np.ndarray,
     plt.grid(b=True, which='major', axis='both')
     plt.colorbar(ticks=colorscale)
 
-    plt.title(plot_title)
+    plt.title(plot_title)  #  .join(r' Random IC $\in$ [-$\pi$,$\pi$)'))
     plt.xlabel(x_axis)
     plt.ylabel(y_axis)
 
@@ -87,7 +86,7 @@ def main():
     # print(np.asarray([x.flatten(),
     #                   y.flatten(),
     #                   ic.flatten()]))
-    plot_phase(phase_array,'Random IC on [-$\pi$,$\pi$)')
+    plot_phase(phase_array,'Oscillator Phase')
 
 if __name__ == '__main__':
     main()
