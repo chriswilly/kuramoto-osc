@@ -31,7 +31,8 @@ def initial_conditions(m:int = 16,
     rng = np.random.default_rng()
     return scale*rng.random((m,n)) + offset
 
-
+def distance():
+    pass
 
 def plot_phase(X: np.ndarray,
                plot_title:str = 'placeholder',
