@@ -26,6 +26,7 @@ class oscillatorArray(object):
                  ):
         self.level = output_level
         self.ic = self.initial_conditions(m,n)
+        self.distance = self.complete_distance() # to follow IC
 
 
     def initial_conditions(self,
@@ -37,17 +38,46 @@ class oscillatorArray(object):
         rng = np.random.default_rng()
         return scale*rng.random((m,n)) + offset
 
-    def distance(self,
-                 m:int = 16,
-                 n:int = 16,
-                 indx,
-                 ):
+
+        ## option:
         # from eucl_dist.cpu_dist import dist
         # def closest_rows_v2(a):
         #     dists = dist(a,a, matmul="gemm", method="ext")
         #     dists.ravel()[::dists.shape[1]+1] = dists.max()+1
         #     return a[dists.argmin(1)]
-        pass
+
+    def complete_distance(self,
+                          ) -> np.ndarray:
+        """construct m*n array of euclidian distance as integer or float"""
+        x,y = np.meshgrid(np.arange(self.ic.shape[0]),
+                          np.arange(self.ic.shape[1]),
+                          sparse=False, indexing='ij'))
+
+        d = np.zeros([self.ic.shape[0],
+                      self.ic.shape[1],
+                      self.ic.shape[0]*self.ic.shape[1]])
+
+        for i in range(self.ic.shape[0]):
+            for j in range(self.ic.shape[1]):
+                pass
+
+        return None
+
+    def distance(self,
+                 m:int = 16,
+                 n:int = 16,
+                 indx: tuple = (0,0),
+                 integer:bool = False,
+                 ) -> np.ndarray:
+        """construct m*n array of euclidian distance as integer or float"""
+        x,y = np.meshgrid(np.arange(self.ic.shape[0]),
+                          np.arange(self.ic.shape[1]),
+                          sparse=False, indexing='xy'))  # ij ?
+
+        if not integer:
+            return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
+        else:
+            return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2, dtype = int)
 
     def plot_phase(self,
                    X: np.ndarray,
