@@ -46,18 +46,19 @@ import sys
 from pathlib import Path
 sys.path.append(Path(__file__).resolve())
 if __name__ == '__main__' and __package__ is None:
-    __package__ = 'kuramotoNeighbor'
+    __package__ = 'kurosc'
 
 from corticalSheet.oscillator import oscillatorArray
 from secondOrderInteraction.decouple import interaction
 from spatialKernel.wavelet import kernel
 
 
-def build_ics():
+def build_ics(m:int = 128,
+              n:int = 128):
     """
     this demos how to construct a contour plot
     """
-    oscillators = oscillatorArray(256,256)
+    oscillators = oscillatorArray(m,n)
     x = np.linspace(0,oscillators.ic.shape[0],
                       oscillators.ic.shape[1])
     y = np.linspace(0,oscillators.ic.shape[1],
@@ -87,7 +88,7 @@ def spatial_kernel():
     params = {'a': 10000/3*2,
               'b': 0,
               'c': 10,
-              'order': 10,
+              'order': 4,
               }
     # g = kernel(s.gaussian,x,*params.values(),True)
     w = s.kernel(s.spatial_wavelet,x,*params.values(),True)
@@ -110,8 +111,9 @@ def decouple():
         g = a.gamma(x,**p)
         a.plot_phase(np.asarray([x,g]).T,
                     'R = {0}'.format(p['r']),
-                    '',
+                    # '',
                     # r'$\frac{d\theta}{dt}$',
+                    r'$\d\theta$\'',
                     r'$\phi$')
 
 
@@ -119,8 +121,10 @@ def decouple():
 
 
 if __name__ == '__main__':
-    build_ics()
-    spatial_kernel()
-    decouple()
+    build_ics(16,16)
+    # spatial_kernel()
+    # decouple()
+
+
     # print(Path(__file__).resolve())
     # print(__package__)

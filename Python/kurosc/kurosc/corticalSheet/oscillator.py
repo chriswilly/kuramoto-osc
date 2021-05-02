@@ -15,7 +15,7 @@ from lib.plotformat import setup
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
+from matplotlib.ticker import StrMethodFormatter
 
 
 class oscillatorArray(object):
@@ -51,7 +51,7 @@ class oscillatorArray(object):
         """construct m*n array of euclidian distance as integer or float"""
         x,y = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
-                          sparse=False, indexing='ij'))
+                          sparse=False, indexing='ij')
 
         d = np.zeros([self.ic.shape[0],
                       self.ic.shape[1],
@@ -72,7 +72,7 @@ class oscillatorArray(object):
         """construct m*n array of euclidian distance as integer or float"""
         x,y = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
-                          sparse=False, indexing='xy'))  # ij ?
+                          sparse=False, indexing='xy')  # ij ?
 
         if not integer:
             return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
@@ -103,6 +103,10 @@ class oscillatorArray(object):
         plt.clim(colorscale[0],colorscale[-1])
         plt.colorbar(ticks=colorscale,format='%1.2f')
 
+        # if self.ic.shape[1] < 20:
+        ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+        # if self.ic.shape[0] < 20:
+        ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
         plt.title(plot_title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
