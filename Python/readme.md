@@ -1,5 +1,7 @@
 # kurosc: kuramoto neighbor interaction & delay package
 
+      ./kuramoto-osc/tree/main/Python/kurosc/kurosc
+
 # spatialKernel
 wavelet.py<br>
 Figure 2<br>
