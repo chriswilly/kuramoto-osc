@@ -30,13 +30,13 @@ class interaction(object):
         """pase difference of element from global array"""
         return phase_array[self.index[0],self.index[1]] - phase_array
 
+
     def gamma(self,
               x: np.ndarray,
               beta: float = 1/4,
               r: float = 8/10
               ) -> np.ndarray:
         return -np.sin(x+beta) + r*np.sin(2*x)
-
 
 
     def plot_phase(self,
