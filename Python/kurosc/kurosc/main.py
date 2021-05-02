@@ -121,7 +121,7 @@ def decouple():
 
 
 if __name__ == '__main__':
-    build_ics(16,16)
+    build_ics(64,64)
     spatial_kernel()
     decouple()
 
