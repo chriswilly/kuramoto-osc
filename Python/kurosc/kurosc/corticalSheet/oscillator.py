@@ -79,6 +79,9 @@ class oscillatorArray(object):
         else:
             return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2, dtype = int)
 
+
+
+
     def plot_phase(self,
                    X: np.ndarray,
                    plot_title:str = None,

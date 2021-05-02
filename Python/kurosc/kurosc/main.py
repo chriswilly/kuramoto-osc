@@ -122,8 +122,8 @@ def decouple():
 
 if __name__ == '__main__':
     build_ics(16,16)
-    # spatial_kernel()
-    # decouple()
+    spatial_kernel()
+    decouple()
 
 
     # print(Path(__file__).resolve())
