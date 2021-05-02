@@ -23,5 +23,5 @@ def CreateGif(targetpath:str = '.',
 #targetpath = filedialog.askopenfilenames(parent=root, title = 'select files: ')
 
 delay = 1.33 #s
-targetpath = Path(r"/Users/Michael/Documents/GitHub/MacPersonal/AMATH502/plot_output/ps6")
+targetpath = Path(r'/Users/Michael/Documents/GitHub/MacPersonal/AMATH502/plot_output/ps6')
 CreateGif(targetpath,'png',delay)
