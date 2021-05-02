@@ -10,4 +10,4 @@ https://doi.org/10.3389/fnhum.2010.00190
 may eventually contain original paper source code
 
 # Python
-contains modification to distance Kumamoto model for next steps in project
+contains modification to distance Kuramoto model for next steps in project
