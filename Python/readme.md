@@ -1,4 +1,4 @@
-# kuramotoNeighbor package
+# kurosc: kuramoto neighbor interaction & delay package
 
 # spatialKernel
 wavelet.py<br>
