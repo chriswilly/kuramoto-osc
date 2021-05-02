@@ -11,3 +11,14 @@ may eventually contain original paper source code
 
 # Python
 contains modification to distance Kuramoto model for next steps in project
+
+# Plot Example
+
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_154316221059.png">
+
+
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_161605864631.png">
+
+
+
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_163132531210.png">
