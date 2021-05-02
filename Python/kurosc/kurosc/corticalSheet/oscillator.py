@@ -38,7 +38,15 @@ class oscillatorArray(object):
         return scale*rng.random((m,n)) + offset
 
     def distance(self,
+                 m:int = 16,
+                 n:int = 16,
+                 indx,
                  ):
+        # from eucl_dist.cpu_dist import dist
+        # def closest_rows_v2(a):
+        #     dists = dist(a,a, matmul="gemm", method="ext")
+        #     dists.ravel()[::dists.shape[1]+1] = dists.max()+1
+        #     return a[dists.argmin(1)]
         pass
 
     def plot_phase(self,

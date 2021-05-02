@@ -1,9 +1,9 @@
 from setuptools import setup
 __version__ = None
-exec(open('kuramotoNeighbor/version.py').read())
+exec(open('kurosc/version.py').read())
 
 
-setup(name='kuramotoNeighbor',  # 'kuramotoNeighbor'
+setup(name='kurosc',  # 'kuramotoNeighbor'
       version=__version__,
       description='AMATH 575 project on weakly coupled phase synchonous oscillators\
                    with distance delay and decay and second order interrupting interactions',
@@ -14,6 +14,6 @@ setup(name='kuramotoNeighbor',  # 'kuramotoNeighbor'
               'Blake Fletcher'],
       author_email=['michael  willy at gmail dot com','add yours here'],
       license='MIT',
-      packages=['kuramotoNeighbor'],
+      packages=['kurosc'],
       zip_safe=False
       )
