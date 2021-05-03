@@ -58,7 +58,8 @@ def build_ics(m:int = 128,
     """
     this demos how to construct a contour plot
     """
-    oscillators = oscillatorArray(m,n)
+    domain = (0,np.pi)
+    oscillators = oscillatorArray(m,n,domain)
     x = np.linspace(0,oscillators.ic.shape[0],
                       oscillators.ic.shape[1])
     y = np.linspace(0,oscillators.ic.shape[1],
@@ -69,9 +70,18 @@ def build_ics(m:int = 128,
                               y.flatten(),
                               oscillators.ic.flatten()]
                               ).T
-
+    if abs(domain[0]) % np.pi == 0 and not domain[0] == 0:
+        ti = r'\pi'
+        ti = '-'+ti
+    else:
+        ti = str(domain[0])
+    if abs(domain[1]) % np.pi == 0:
+        tf = r'\pi'
+    else:
+        tf = str(domain[1])
+        
     oscillators.plot_phase(phase_array,
-                           'Oscillator Phase $\in$ [-$\pi$,$\pi$)',
+                           'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf),
                            'Location y',
                            'Location x'
                            )
@@ -122,8 +132,8 @@ def decouple():
 
 if __name__ == '__main__':
     build_ics(64,64)
-    spatial_kernel()
-    decouple()
+    # spatial_kernel()
+    # decouple()
 
 
     # print(Path(__file__).resolve())

@@ -22,9 +22,11 @@ class oscillatorArray(object):
     def __init__(self,
                  m:int = 16,
                  n:int = 16,
+                 t:tuple = (0,np.pi),
                  output_level:int = 3  # not sure if required to be passing this thru
                  ):
         self.level = output_level
+        self.domain = t
         self.ic = self.initial_conditions(m,n)
         self.distance = self.complete_distance() # to follow IC
 
@@ -32,9 +34,10 @@ class oscillatorArray(object):
     def initial_conditions(self,
                            m:int = 16,
                            n:int = 16,
-                           scale: float = 2*np.pi,
-                           offset:float = -np.pi,
                            )->np.ndarray:
+        """return random phase array"""
+        scale = self.domain[1]
+        offset = self.domain[0]
         rng = np.random.default_rng()
         return scale*rng.random((m,n)) + offset
 
@@ -63,6 +66,9 @@ class oscillatorArray(object):
 
         return None
 
+
+
+
     def distance(self,
                  m:int = 16,
                  n:int = 16,
@@ -82,6 +88,7 @@ class oscillatorArray(object):
 
 
 
+
     def plot_phase(self,
                    X: np.ndarray,
                    plot_title:str = None,
@@ -93,9 +100,10 @@ class oscillatorArray(object):
         fig = plt.figure(figsize=(10,8))
         ax = fig.add_subplot(111)
 
-        scale = np.pi
         resolution = 16
-        colorscale = np.linspace(-scale,scale,resolution,endpoint=True)
+        colorscale = np.linspace(self.domain[0],
+                                 self.domain[1],
+                                 resolution,endpoint=True)
 
         plt.tricontourf(X[...,0],X[...,1],X[...,2],
                         colorscale,cmap=plt.cm.nipy_spectral,

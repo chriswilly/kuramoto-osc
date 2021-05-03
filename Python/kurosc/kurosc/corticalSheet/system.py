@@ -8,7 +8,7 @@ import numpy as np
 
 
 def differential_system(x):
-    dx = x + 'k/n * sum all(xi:x_j)*dist(xi - x_j * sin(thi - thj))'
+    dx = x + 'k/n * sum all(xi:x_j)*fun_of_dist(xi - x_j) * sin(thi - thj))'
     """
     system of m*n indep variables subject to constraints:
     x - xij for all other ij to feed into sin (phase diff)
