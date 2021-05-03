@@ -12,13 +12,15 @@ may eventually contain original paper source code
 # Python
 contains modification to distance Kuramoto model for next steps in project
 
-# Plot Example Arbitrary Size Array of Nodes
+# Plot Arbitrary Size Node Array Random Initial Conditions
 
-64<br>
-<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_163132531210.png">
+      corticalSheet.oscillator.oscillatorArray.plot_phase
 
-256<br>
-<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_154316221059.png">
+64 nodes<br>
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/figure_reproduction/Oscillator%20Phase%20in%200pi/Oscillator%20Phase%20in%200pi_210502_211254542002.png">
 
-16<br>
-<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/Oscillator%20Phase%20in%20-pipi/Oscillator%20Phase%20in%20-pipi_210502_161605864631.png">
+128 nodes<br>
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/figure_reproduction/Oscillator%20Phase%20in%200pi/Oscillator%20Phase%20in%200pi_210502_211548838946.png">
+
+16 nodes<br>
+<img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/figure_reproduction/Oscillator%20Phase%20in%200pi/Oscillator%20Phase%20in%200pi_210502_211605985844.png">
