@@ -22,13 +22,12 @@ class kuramoto_system(object):
                                        'c': 10, # breadth of wavelet
                                        'order': 4},
                  interaction_params:dict = {'beta': 0,
-                                            'r': 0}
+                                            'r': 0},
+                 gain:float = 1., # k-term
                  ):
         self.osc = oscillatorArray(array_size,(0,np.pi))
         self.kernel = kernel()
-
-        self.gain = 1/10  # k term, normalize wavelet
-
+        self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
 
@@ -150,7 +149,7 @@ def test_case():
           (w*g.flatten()).shape
           )
 
-def main():
+def run():
     nodes = 128
     time =  99
     kernel_params = {'a': 10000/3*2,
@@ -174,7 +173,7 @@ def main():
 
 if __name__ == '__main__':
     # test_case()
-    main()
+    run()
 
 
     """

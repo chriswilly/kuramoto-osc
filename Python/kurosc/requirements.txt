@@ -1,5 +1,4 @@
 setuptools
 pathlib
 datetime
-
 numpy
