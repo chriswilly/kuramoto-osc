@@ -52,6 +52,8 @@ from corticalSheet.oscillator import oscillatorArray
 from secondOrderInteraction.decouple import interaction
 from spatialKernel.wavelet import kernel
 
+np.set_printoptions(precision=3, suppress=True)
+
 
 def build_ics(m:int = 128,
               n:int = 128):
@@ -60,6 +62,7 @@ def build_ics(m:int = 128,
     """
     domain = (0,np.pi)
     oscillators = oscillatorArray(m,n,domain)
+
     x = np.linspace(0,oscillators.ic.shape[0],
                       oscillators.ic.shape[1])
     y = np.linspace(0,oscillators.ic.shape[1],
@@ -75,11 +78,11 @@ def build_ics(m:int = 128,
         ti = '-'+ti
     else:
         ti = str(domain[0])
-    if abs(domain[1]) % np.pi == 0:
+    if abs(domain[1]) % np.pi == 0 and not domain[1] == 0:
         tf = r'\pi'
     else:
         tf = str(domain[1])
-        
+
     oscillators.plot_phase(phase_array,
                            'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf),
                            'Location y',
@@ -131,7 +134,7 @@ def decouple():
 
 
 if __name__ == '__main__':
-    build_ics(64,64)
+    build_ics(16,16)
     # spatial_kernel()
     # decouple()
 

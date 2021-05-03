@@ -36,8 +36,9 @@ class oscillatorArray(object):
                            n:int = 16,
                            )->np.ndarray:
         """return random phase array"""
-        scale = self.domain[1]
-        offset = self.domain[0]
+        scale = np.max(np.absolute(self.domain))
+        offset = np.min(self.domain)
+        # print(scale, offset)
         rng = np.random.default_rng()
         return scale*rng.random((m,n)) + offset
 
@@ -101,9 +102,11 @@ class oscillatorArray(object):
         ax = fig.add_subplot(111)
 
         resolution = 16
-        colorscale = np.linspace(self.domain[0],
-                                 self.domain[1],
-                                 resolution,endpoint=True)
+
+        colorscale = np.linspace(np.min(self.domain),
+                                 np.max(self.domain),
+                                 resolution,
+                                 endpoint=True)
 
         plt.tricontourf(X[...,0],X[...,1],X[...,2],
                         colorscale,cmap=plt.cm.nipy_spectral,
