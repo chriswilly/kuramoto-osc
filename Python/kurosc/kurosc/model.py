@@ -78,7 +78,8 @@ class kuramoto_system(object):
 
     def plot_solution(self,
                       z:np.ndarray,
-                      t:float = None):
+                      t:float = None,
+                      title:str =''):
         """
         """
         x = np.linspace(0,self.osc.ic.shape[0],

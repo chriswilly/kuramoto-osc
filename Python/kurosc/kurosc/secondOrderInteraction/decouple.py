@@ -4,11 +4,13 @@ interaction is class, gamma is function, delta function
 
 if need to run in here pull in lib folder to dir
 """
-# import sys
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+
 # from pathlib import Path
 # sys.path.append(Path(__file__).resolve().parents[1])
-# if __name__ == '__main__' and __package__ is None:
-#     __package__ = 'kuramotoNeighbor.secondOrderInteraction'
 
 from lib.plotformat import setup
 

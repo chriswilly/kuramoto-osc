@@ -3,13 +3,14 @@ construct 2d array of pase state
 distance array
 
 """
-# import sys
+import sys
+import os
+import re
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 # from pathlib import Path
 # sys.path.append(Path(__file__).resolve().parents[1])
 # print(sys.path[0])
 
-# if __name__ == '__main__' and __package__ is None:
-#     __package__ = 'corticalSheet'
 from lib.plotformat import setup
 
 import numpy as np
@@ -93,8 +94,13 @@ class oscillatorArray(object):
                    x_axis:str = 'x',
                    resolution:int = 16
                    ):
-        # print(self.level,'\n',type(self.level))
-        fmt = setup(plot_title,self.level)  # plotting format obj
+        """
+        """
+        fldr = plot_title.replace('at t = ','')
+        fldr = re.sub('\d*\.\d*','',fldr).strip()
+
+        fmt = setup(fldr,self.level)  # plotting format obj
+
         fig = plt.figure(figsize=(10,8))
         ax = fig.add_subplot(111)
 
@@ -125,7 +131,7 @@ class oscillatorArray(object):
         # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
         # ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=1))
         plt.grid(b=None, which='major', axis='both')
-        plt.show()
+        # plt.show()
         fig.savefig(fmt.plot_name(plot_title,'png'))
 
 

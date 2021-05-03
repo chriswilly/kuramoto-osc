@@ -24,7 +24,7 @@ img.save(fp=fp_out, format='GIF', append_images=imgs,
 
 def CreateGif(targetpath:str = '.',
               ext:str = 'png',
-              delay:float = 1.2):
+              delay:float = 1.33):
     """
     """
     filelist = [f for f in os.listdir(targetpath) if isfile(join(targetpath, f)) and f.endswith(ext)]
