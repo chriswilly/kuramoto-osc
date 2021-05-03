@@ -1,6 +1,8 @@
 """
 second order neural interrupting interactions
-interaction is class, gamma is function
+interaction is class, gamma is function, delta function
+
+if need to run in here pull in lib folder to dir
 """
 # import sys
 # from pathlib import Path
@@ -20,15 +22,30 @@ import matplotlib.pyplot as plt
 
 class interaction(object):
     def __init__(self,
-                 index: np.ndarray = np.array([0,0])
+                 dim: np.ndarray = np.array([2,2])
                  ):
-        self.index = index
+        self.dimension = dim
+
 
     def delta(self,
-              phase_array: np.array = np.array([[1,5],[8,100]])
+              phase_array: np.array = np.array([[1,2],[3,4]])
               ) -> np.ndarray:
         """pase difference of element from global array"""
-        return phase_array[self.index[0],self.index[1]] - phase_array
+
+        d = np.zeros([self.dimension[0]*self.dimension[1],
+                      self.dimension[1],
+                      self.dimension[0]])
+
+        phase_array = phase_array.reshape((self.dimension[0],self.dimension[1]))
+
+        k=0
+        for j in np.arange(phase_array.shape[1]):
+            for i in np.arange(phase_array.shape[0]):
+                # print(i*j,j,i)
+                d[k,...] = phase_array - phase_array[i,j]
+                k+=1
+        return d
+
 
 
     def gamma(self,
@@ -45,6 +62,8 @@ class interaction(object):
                    y_axis:str = 'y',
                    x_axis:str = 'x',
                    ):
+        """
+        """
         fmt = setup(plot_title)  # plotting format obj
         fig = plt.figure(figsize=(9,9))
         ax = fig.add_subplot(111)
@@ -66,7 +85,8 @@ class interaction(object):
 
 
 def main():
-    """"""
+    """
+    """
     a = interaction()
     params = ({'beta': 0.25, 'r':0.95},
               {'beta': 0.25, 'r':0.8},

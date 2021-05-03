@@ -20,22 +20,21 @@ from matplotlib.ticker import StrMethodFormatter
 
 class oscillatorArray(object):
     def __init__(self,
-                 m:int = 16,
-                 n:int = 16,
-                 t:tuple = (0,np.pi),
-                 output_level:int = 3  # not sure if required to be passing this thru
+                 dimension: tuple = (16,16),
+                 domain:tuple = (0,np.pi),
+                 output_level:int = 3  # not sure if need to be passing this thru
                  ):
+        self.domain = domain
+        self.ic = self.initial_conditions(*dimension)
+        self.distance = self.entire_distance()
         self.level = output_level
-        self.domain = t
-        self.ic = self.initial_conditions(m,n)
-        self.distance = self.complete_distance() # to follow IC
 
 
     def initial_conditions(self,
                            m:int = 16,
                            n:int = 16,
                            )->np.ndarray:
-        """return random phase array"""
+        """return random 2D phase array"""
         scale = np.max(np.absolute(self.domain))
         offset = np.min(self.domain)
         # print(scale, offset)
@@ -43,48 +42,45 @@ class oscillatorArray(object):
         return scale*rng.random((m,n)) + offset
 
 
-        ## option:
-        # from eucl_dist.cpu_dist import dist
-        # def closest_rows_v2(a):
-        #     dists = dist(a,a, matmul="gemm", method="ext")
-        #     dists.ravel()[::dists.shape[1]+1] = dists.max()+1
-        #     return a[dists.argmin(1)]
 
-    def complete_distance(self,
-                          ) -> np.ndarray:
-        """construct m*n array of euclidian distance as integer or float"""
-        x,y = np.meshgrid(np.arange(self.ic.shape[0]),
-                          np.arange(self.ic.shape[1]),
-                          sparse=False, indexing='ij')
+    def entire_distance(self,
+                        integer:bool = False) -> np.ndarray:
+        """construct m*n*(m*n) array of euclidian distance as integer or float"""
 
-        d = np.zeros([self.ic.shape[0],
+        d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
                       self.ic.shape[1],
-                      self.ic.shape[0]*self.ic.shape[1]])
-
-        for i in range(self.ic.shape[0]):
-            for j in range(self.ic.shape[1]):
-                pass
-
-        return None
-
+                      self.ic.shape[0]])
+        # print(d.shape)
+        k=0
+        for j in np.arange(self.ic.shape[1]):
+            for i in np.arange(self.ic.shape[0]):
+                # print(i*j,j,i)
+                d[k,...] = self.distance((i,j),integer)
+                k+=1
+        return d
 
 
 
     def distance(self,
-                 m:int = 16,
-                 n:int = 16,
-                 indx: tuple = (0,0),
+                 indx:tuple = (0,0),
                  integer:bool = False,
                  ) -> np.ndarray:
         """construct m*n array of euclidian distance as integer or float"""
+
         x,y = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
                           sparse=False, indexing='xy')  # ij ?
-
+        """
+        print('dx:\n',(indx[0] - x),
+              '\ndy:\n',(indx[1] - y),
+              '\nsq(dx^2+dy^2):\n',
+              np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),
+              '\n')
+        """
         if not integer:
             return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
         else:
-            return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2, dtype = int)
+            return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
 
 
 
@@ -95,13 +91,14 @@ class oscillatorArray(object):
                    plot_title:str = None,
                    y_axis:str = 'y',
                    x_axis:str = 'x',
+                   resolution:int = 16
                    ):
         # print(self.level,'\n',type(self.level))
         fmt = setup(plot_title,self.level)  # plotting format obj
         fig = plt.figure(figsize=(10,8))
         ax = fig.add_subplot(111)
 
-        resolution = 16
+
 
         colorscale = np.linspace(np.min(self.domain),
                                  np.max(self.domain),
@@ -139,7 +136,7 @@ def main():
     """
     this demos a random contour plot
     """
-    corticalArray = oscillatorArray(64,64,1)
+    corticalArray = oscillatorArray((64,64),(-np.pi,np.pi),1)
     x = np.linspace(0,corticalArray.ic.shape[0],
                       corticalArray.ic.shape[1])
     y = np.linspace(0,corticalArray.ic.shape[1],
@@ -150,8 +147,6 @@ def main():
                               y.flatten(),
                               corticalArray.ic.flatten()]
                               ).T
-
-# np.ma.masked
 
     corticalArray.plot_phase(phase_array,
                              'Oscillator Phase $\in$ [-$\pi$,$\pi$)',

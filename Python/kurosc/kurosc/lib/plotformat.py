@@ -72,13 +72,13 @@ class setup(object):
     def params(self):
         """matplotlib parameters plot formatting"""
         mpl.rcParams['axes.labelsize'] = 24
-        mpl.rcParams['axes.titlesize'] = 34
-        mpl.rcParams['xtick.labelsize'] = 30
-        mpl.rcParams['ytick.labelsize'] = 30
+        mpl.rcParams['axes.titlesize'] = 28
+        mpl.rcParams['xtick.labelsize'] = 28
+        mpl.rcParams['ytick.labelsize'] = 28
         mpl.rcParams['axes.xmargin'] = 0
         mpl.rcParams['axes.ymargin'] = 0
         mpl.rcParams['lines.linewidth'] = 2.8
         mpl.rcParams['lines.markersize'] = 18
         mpl.rcParams['lines.markeredgewidth'] = 3
         mpl.rcParams['legend.framealpha'] = 0.93
-        mpl.rcParams['legend.fontsize'] = 32
+        mpl.rcParams['legend.fontsize'] = 24

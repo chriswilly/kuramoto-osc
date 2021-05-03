@@ -1,6 +1,6 @@
 # kurosc: kuramoto neighbor interaction & delay package
 
-      ./kuramoto-osc/tree/main/Python/kurosc/kurosc
+      /kuramoto-osc/tree/main/Python/kurosc/kurosc
 
 # spatialKernel
 wavelet.py<br>
@@ -19,7 +19,7 @@ scale 'c' linearly for width<br>
                 'c': 10,
                 'order': 19,
                 }
-      w = kernel(spatial_wavelet,x,*params.values(),True)
+      w = wavelet(spatial_wavelet,x,*params.values(),True)
 
 symbolic_calcs.py<br>
 recursive sympy differentiation for gaussian<br>
