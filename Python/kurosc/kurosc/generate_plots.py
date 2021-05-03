@@ -13,14 +13,14 @@ distance...
 
 ######
 Spatial considerations: spatialKernel.wavelet
-kernel(fn,
-       x: np.ndarray,
-       a: float = 10000/3*2,
-       b: float = 0,  # mean
-       c: float = 10,
-       d: float = 4,
-       normalize = False,
-       ) -> np.ndarray:
+wavelet(fn,
+        x: np.ndarray,
+        a: float = 10000/3*2,
+        b: float = 0,  # mean
+        c: float = 10,
+        d: float = 4,
+        normalize = False,
+        ) -> np.ndarray:
 
 w = kernel(spatial_wavelet,x,*params.values(),True)
 
@@ -61,7 +61,7 @@ def build_ics(m:int = 128,
     this demos how to construct a contour plot
     """
     domain = (0,np.pi)
-    oscillators = oscillatorArray(m,n,domain)
+    oscillators = oscillatorArray((m,n),domain)
 
     x = np.linspace(0,oscillators.ic.shape[0],
                       oscillators.ic.shape[1])
@@ -89,7 +89,8 @@ def build_ics(m:int = 128,
                            'Location x'
                            )
 def spatial_kernel():
-    """"""
+    """
+    """
     s = kernel()
     distance = 50
     resolution = 1000
@@ -101,10 +102,10 @@ def spatial_kernel():
     params = {'a': 10000/3*2,
               'b': 0,
               'c': 10,
-              'order': 4,
+              'order': 12,
               }
     # g = kernel(s.gaussian,x,*params.values(),True)
-    w = s.kernel(s.spatial_wavelet,x,*params.values(),True)
+    w = s.wavelet(s.spatial_wavelet,x,*params.values(),True)
     if isinstance(w,np.ndarray):
         s.plot_wavelet(np.asarray([x,w]).T,
                       '{}th Derivative Gaussian'.format(str(params['order'])),
@@ -112,7 +113,8 @@ def spatial_kernel():
                       'Node Distance')
 
 def decouple():
-    """"""
+    """
+    """
     a = interaction()
     params = ({'beta': 0.25, 'r':0.95},
               {'beta': 0.25, 'r':0.8},
@@ -132,11 +134,23 @@ def decouple():
 
     neighbors = interaction()
 
+def test():
+    domain = (0,np.pi)
+    osc = oscillatorArray(3,3)
+
+    x = np.linspace(0,osc.ic.shape[0],
+                      osc.ic.shape[1])
+    y = np.linspace(0,osc.ic.shape[1],
+                      osc.ic.shape[0])
+
+    print(osc.ic,'\n',osc.distance)
+
 
 if __name__ == '__main__':
+    # test()
     build_ics(16,16)
-    # spatial_kernel()
-    # decouple()
+    spatial_kernel()
+    decouple()
 
 
     # print(Path(__file__).resolve())

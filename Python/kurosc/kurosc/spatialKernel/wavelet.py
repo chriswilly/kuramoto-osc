@@ -25,6 +25,39 @@ class kernel(object):
                  ):
         self.index = index
 
+
+    def wavelet(self,
+                fn,
+                x: np.ndarray,
+                a: float = 10000/3*2,
+                b: float = 0,  # mean
+                c: float = 10,
+                d: float = 4,
+                normalize = False,
+                ) -> np.ndarray:
+        """generalized kernel using gaussian paramaterization"""
+        if d > 19:
+            print('derivative order too high')
+            return None
+        y = fn(x,a,b,c,d)
+        if normalize:
+            y = y/np.max(np.absolute(y))
+        return y
+
+
+    def spatial_wavelet(self,
+                        x: np.ndarray,
+                        a: float,
+                        b: float,
+                        c: float,
+                        d: int = 4,  # 4th derivative
+                        ) -> np.ndarray:
+        """arbitrary derivation of the gaussian to nth order and substitute params """
+        wavelet = derivative(d)
+        fn = lambdify(['x','a','b','c'], wavelet, 'numpy')
+        return fn(x,a,b,c)
+
+
     def gaussian(self,
                  x: np.ndarray,
                  a: float = 1,
@@ -52,19 +85,6 @@ class kernel(object):
                 )
 
 
-    def spatial_wavelet(self,
-                        x: np.ndarray,
-                        a: float,
-                        b: float,
-                        c: float,
-                        d: int = 4,  # 4th derivative
-                        ) -> np.ndarray:
-        """arbitrary derivation of the gaussian to nth order and substitute params """
-        wavelet = derivative(d)
-        fn = lambdify(['x','a','b','c'], wavelet, 'numpy')
-        return fn(x,a,b,c)
-
-
     def plot_wavelet(self,
                      X: np.ndarray,
                      plot_title:str = 'placeholder',
@@ -89,23 +109,6 @@ class kernel(object):
         fig.savefig(fmt.plot_name(plot_title,'png'))
 
 
-    def kernel(self,
-               fn,
-               x: np.ndarray,
-               a: float = 10000/3*2,
-               b: float = 0,  # mean
-               c: float = 10,
-               d: float = 4,
-               normalize = False,
-               ) -> np.ndarray:
-        """generalized kernel using gaussian paramaterization"""
-        if d > 19:
-            print('derivative order too high')
-            return None
-        y = fn(x,a,b,c,d)
-        if normalize:
-            y = y/np.max(y)
-        return y
 
 
 
@@ -125,7 +128,7 @@ def main():
               }
     # print(*params.values())
     # g = kernel(gaussian,x,*params.values(),True)
-    w = s.kernel(s.spatial_wavelet,x,*params.values(),True)
+    w = s.wavelet(s.spatial_wavelet,x,*params.values(),True)
     if isinstance(w,np.ndarray):
         # plot_wavelet(np.asarray([x,g]).T,
         #              'Gaussian',
