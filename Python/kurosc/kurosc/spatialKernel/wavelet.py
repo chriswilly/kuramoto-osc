@@ -7,7 +7,7 @@ returns a normalized gaussian nth order derivative
 # from pathlib import Path
 # sys.path.append(Path(__file__).resolve().parents[1])
 # if __name__ == '__main__' and __package__ is None:
-#     __package__ = 'kuramotoNeighbor.spatialKernel'
+#     __package__ = 'spatialKernel'
 
 from lib.plotformat import setup
 from spatialKernel.symdiff import main as derivative
