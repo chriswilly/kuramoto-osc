@@ -26,6 +26,7 @@ class kuramoto_system(object):
 
                  interaction_params:dict = {'beta': 0,
                                             'r': 0},
+                 normalize_kernel = False,
                  gain:float = 1., # k-term
                  ):
         self.osc = oscillatorArray(array_size,(0,np.pi))
@@ -37,7 +38,7 @@ class kuramoto_system(object):
         self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
                                            self.osc.distance.flatten(),
                                            *self.kernel_params.values(),
-                                           True
+                                           normalize_kernel
                                            )
         # this bool determines if the wavelet is normalized
         self.interaction = interaction(self.osc.ic.shape)

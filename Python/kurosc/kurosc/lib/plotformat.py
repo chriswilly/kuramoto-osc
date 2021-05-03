@@ -15,6 +15,7 @@ class setup(object):
         self.title = output
         self.level = level
         self.directory = None
+        self.timestamp = datetime.now().strftime("%y%m%d_%H%M%S%f")
         self.file_path(self.clean(output)) # creates self.directory
         self.params()  # modify specific mpl.rcParams
 
@@ -42,12 +43,10 @@ class setup(object):
                   txt:str=None,
                   extension:str = 'png'):
         # print(self.directory,self.title)
-        timestamp = datetime.now().strftime("%y%m%d_%H%M%S%f")
-
         if not txt:
             txt = self.title
         txt = self.clean(txt)
-        file = ''.join((txt,'_',timestamp,f'.{extension}'))
+        file = ''.join((txt,'_',self.timestamp,f'.{extension}'))
 
         return self.directory / file
 

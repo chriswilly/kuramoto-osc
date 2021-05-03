@@ -10,4 +10,4 @@ if __name__ == '__main__' and __package__ is None:
 print(Path(__file__).resolve())
 print(__package__)
 
-from kurosc.lib.plotformat import setup
+# from kurosc.lib.plotformat import setup

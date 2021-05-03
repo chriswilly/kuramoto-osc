@@ -14,7 +14,11 @@ np.set_printoptions(precision=3, suppress=True)
 
 from model import kuramoto_system
 from lib.plotformat import setup
-from lib.animate import to_gif
+from lib.animate import animate
+
+
+"""
+"""
 
 def save_data(data:np.ndarray,
               file_name:str = 'model_data'):
@@ -36,10 +40,12 @@ def run():
     """"""
     nodes = 64
     time =  10
-    gain = 1
-    kernel_params = {'a': 1, # arbitrary iff normalize in model self.wavelet = true
+    gain = 0.5
+    normalize_kernel = False
+
+    kernel_params = {'a': 10000/3*2, # arbitrary iff normalize in model self.wavelet = true
                      'b': 0,
-                     'c': 7,
+                     'c': 10,
                      'order': 4,
                      }
     interaction_params = ({'beta': 0, 'r':0},
@@ -50,8 +56,10 @@ def run():
     kuramoto = kuramoto_system((nodes,nodes),
                                 kernel_params,
                                 interaction_params[indx],
+                                normalize_kernel,
                                 gain
                                 )
+
     solution = kuramoto.solve((0,time))
     osc_state = solution.y.reshape((solution.t.shape[0],nodes,nodes))%np.pi
     print(solution.y.shape, solution.t.shape)
@@ -63,7 +71,9 @@ def run():
 
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
-    to_gif(kuramoto.osc.plot_directory,0.33)
+
+    vid = animate(kuramoto.osc.plot_directory)
+    vid.to_gif(kuramoto.osc.plot_directory,0.75,True)
     # save_data(title,solution)
     # kuramoto.plot_solution(osc_state[-1],solution.t[-1])
 

@@ -5,23 +5,24 @@ from pathlib import Path
 sys.path.append(Path(__file__).resolve())
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'kurosc'
+
+
 import numpy as np
+np.set_printoptions(precision=2, suppress=True)
 
 from datetime import datetime as dt
 
-from corticalSheet.oscillator import oscillatorArray
-from secondOrderInteraction.decouple import interaction
-from spatialKernel.wavelet import kernel
 
-np.set_printoptions(precision=2, suppress=True)
 """
 unit test dist in array
 call wavelet
-
 """
 
 def distance_test(m:int = 128,
-                  n:int = 128):
+                  n:int = 128,
+                  ):
+    from corticalSheet.oscillator import oscillatorArray
+
     domain = (-np.pi,np.pi)
     osc = oscillatorArray((m,n),domain)
 
@@ -36,6 +37,8 @@ def distance_test(m:int = 128,
     return osc.ic,osc.distance.flatten()
 
 def wavelet_test():
+    from spatialKernel.wavelet import kernel
+
     _,y = distance_test(3,3)
 
     s = kernel()
@@ -50,6 +53,7 @@ def wavelet_test():
 
 
 def decouple_test():
+    from secondOrderInteraction.decouple import interaction
 
     x,_ = distance_test(3,3)
     a = interaction(x.shape)
@@ -97,14 +101,19 @@ def system():
           w*g.flatten()
           )
 
-
+def gif_test():
+    from lib.animate import to_gif
+    filepath = Path('/Users/Michael/Documents/GitHub/kuramoto-osc/Python/Oscillator Phase in 0_pi')
+    to_gif(filepath,0.5,True)
 
 
 
 def main():
     # distance_test(3,3)
     # wavelet_test()
-    decouple_test()
+    # decouple_test()
+    gif_test()
+
 
 if __name__ == '__main__':
     main()
