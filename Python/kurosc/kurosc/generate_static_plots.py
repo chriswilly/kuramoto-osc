@@ -152,8 +152,8 @@ def test():
 
 if __name__ == '__main__':
     # test()
-    # build_ics(16,16)
-    spatial_kernel()
+    build_ics(256,256)
+    # spatial_kernel()
     # decouple()
 
 

@@ -109,7 +109,10 @@ class kuramoto_system(object):
 
         title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
         if t or not (t==None):
-            title+=f' at t = {t:,.1f}'
+            if t>=10:
+                title+=f' at t = {t:,.0f}'
+            else:
+                title+=f' at t = {t:,.1f}'
 
 
         self.osc.plot_phase(phase_array,

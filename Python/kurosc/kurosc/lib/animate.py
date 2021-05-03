@@ -12,7 +12,7 @@ import numpy as np
 # from tkinter import filedialog
 
 
-from .plotformat import setup
+# from .plotformat import setup
 
 
 """

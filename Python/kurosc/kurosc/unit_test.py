@@ -102,9 +102,10 @@ def system():
           )
 
 def gif_test():
-    from lib.animate import to_gif
+    from lib.animate import animate
     filepath = Path('/Users/Michael/Documents/GitHub/kuramoto-osc/Python/Oscillator Phase in 0_pi')
-    to_gif(filepath,0.5,True)
+    vid = animate(filepath)
+    vid.to_gif(filepath,0.75,True)
 
 
 
