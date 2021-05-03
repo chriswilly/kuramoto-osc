@@ -17,10 +17,13 @@ from spatialKernel.wavelet import kernel
 class kuramoto_system(object):
     def __init__(self,
                  array_size:tuple = (2,2),
+                 # initial_conditions:tuple = (0,np.pi),
+
                  kernel_params:dict = {'a': 10000/3*2,
                                        'b': 0,
                                        'c': 10, # breadth of wavelet
                                        'order': 4},
+
                  interaction_params:dict = {'beta': 0,
                                             'r': 0},
                  gain:float = 1., # k-term
@@ -92,6 +95,7 @@ class kuramoto_system(object):
                                   y.flatten(),
                                   z.flatten()%np.pi]
                                   ).T
+
         if abs(self.osc.domain[0]) % np.pi == 0 and not self.osc.domain[0] == 0:
             ti = r'\pi'
             ti = '-'+ti
@@ -103,7 +107,7 @@ class kuramoto_system(object):
             tf = str(self.osc.domain[1])
 
         title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
-        if t:
+        if t or not (t==None):
             title+=f' at t = {t:,.1f}'
 
 

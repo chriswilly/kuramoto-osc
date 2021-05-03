@@ -29,7 +29,7 @@ class oscillatorArray(object):
         self.ic = self.initial_conditions(*dimension)
         self.distance = self.entire_distance()
         self.level = output_level
-
+        self.plot_directory = None
 
     def initial_conditions(self,
                            m:int = 16,
@@ -100,6 +100,7 @@ class oscillatorArray(object):
         fldr = re.sub('\d*\.\d*','',fldr).strip()
 
         fmt = setup(fldr,self.level)  # plotting format obj
+        self.plot_directory = fmt.directory
 
         fig = plt.figure(figsize=(10,8))
         ax = fig.add_subplot(111)
@@ -120,16 +121,15 @@ class oscillatorArray(object):
         plt.clim(colorscale[0],colorscale[-1])
         plt.colorbar(ticks=colorscale,format='%1.2f')
 
-        # if self.ic.shape[1] < 20:
         ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-        # if self.ic.shape[0] < 20:
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+        # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
+        # ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=1))
+
         plt.title(plot_title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
 
-        # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
-        # ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=1))
         plt.grid(b=None, which='major', axis='both')
         # plt.show()
         fig.savefig(fmt.plot_name(plot_title,'png'))
