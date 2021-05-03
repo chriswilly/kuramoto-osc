@@ -14,11 +14,15 @@ class setup(object):
                  ):
         self.title = output
         self.level = level
-        self.params()  # modify specific mpl.rcParams
+        self.directory = None
         self.file_path(self.clean(output)) # creates self.directory
+        self.params()  # modify specific mpl.rcParams
+
+
+
 
     def clean(self,txt:str):
-        print(txt)
+        # print(txt)
         d = {"/":'-',
              "\\":'',
              '$':'',
@@ -51,7 +55,8 @@ class setup(object):
     def file_path(self,
                   subdirectory:str = 'plot_output',
                   ):
-
+        """
+        """
         self.directory = (Path(os.path.abspath(__file__))
                           .parents[self.level] / subdirectory) # assume plot dir one level up
 
@@ -65,14 +70,14 @@ class setup(object):
                 print('error:',e)
                 self.directory = Path('.')
 
-        print(self.directory)
+        # print(self.directory)
         # print(os.listdir(self.directory))
 
 
     def params(self):
         """matplotlib parameters plot formatting"""
         mpl.rcParams['axes.labelsize'] = 24
-        mpl.rcParams['axes.titlesize'] = 28
+        mpl.rcParams['axes.titlesize'] = 26
         mpl.rcParams['xtick.labelsize'] = 28
         mpl.rcParams['ytick.labelsize'] = 28
         mpl.rcParams['axes.xmargin'] = 0
