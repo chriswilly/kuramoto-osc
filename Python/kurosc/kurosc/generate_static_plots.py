@@ -102,10 +102,14 @@ def spatial_kernel():
     params = {'a': 10000/3*2,
               'b': 0,
               'c': 10,
-              'order': 12,
+              'order': 4,
               }
     # g = kernel(s.gaussian,x,*params.values(),True)
-    w = s.wavelet(s.spatial_wavelet,x,*params.values(),True)
+    w = s.wavelet(s.spatial_wavelet,
+                  x,
+                  *params.values(),
+                  False
+                  )
     if isinstance(w,np.ndarray):
         s.plot_wavelet(np.asarray([x,w]).T,
                       '{}th Derivative Gaussian'.format(str(params['order'])),
@@ -148,9 +152,9 @@ def test():
 
 if __name__ == '__main__':
     # test()
-    build_ics(16,16)
+    # build_ics(16,16)
     spatial_kernel()
-    decouple()
+    # decouple()
 
 
     # print(Path(__file__).resolve())
