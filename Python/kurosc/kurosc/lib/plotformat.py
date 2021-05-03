@@ -18,6 +18,7 @@ class setup(object):
         self.file_path(self.clean(output)) # creates self.directory
 
     def clean(self,txt:str):
+        print(txt)
         d = {"/":'-',
              "\\":'',
              '$':'',
@@ -25,10 +26,11 @@ class setup(object):
              ']':'',
              '(':'',
              ')':'',
-             ',':''}
-        for key,value in d.items():
+             ',':'_'
+             }
+        for (key,value) in d.items():
             txt = txt.replace(key,value)
-        # cl = lambda t,d: (t.replace(k,v) for k,v in d.items())
+        # cl = lambda t,d: t.replace(k,v) for (k,v) in d.items()
         # txt = cl(txt,d)
         return txt
 
@@ -48,10 +50,8 @@ class setup(object):
 
     def file_path(self,
                   subdirectory:str = 'plot_output',
-                  # level:int = 1
                   ):
 
-        # print('*****************',self.level)
         self.directory = (Path(os.path.abspath(__file__))
                           .parents[self.level] / subdirectory) # assume plot dir one level up
 
