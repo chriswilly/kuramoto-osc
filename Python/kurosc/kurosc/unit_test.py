@@ -1,9 +1,11 @@
-import numpy as np
+"""
+"""
 import sys
 from pathlib import Path
 sys.path.append(Path(__file__).resolve())
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'kurosc'
+import numpy as np
 
 from datetime import datetime as dt
 
