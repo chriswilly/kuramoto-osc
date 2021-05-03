@@ -38,8 +38,8 @@ def run():
             # print(image)
             kuramoto.plot_solution(image,solution.t[t])
     """"""
-    nodes = 64
-    time =  10
+    nodes = 100
+    time =  15
     gain = 0.5
     normalize_kernel = False
 
@@ -73,7 +73,7 @@ def run():
     print(kuramoto.osc.plot_directory)
 
     vid = animate(kuramoto.osc.plot_directory)
-    vid.to_gif(kuramoto.osc.plot_directory,0.75,True)
+    # vid.to_gif(kuramoto.osc.plot_directory,0.75,True)
     # save_data(title,solution)
     # kuramoto.plot_solution(osc_state[-1],solution.t[-1])
 
