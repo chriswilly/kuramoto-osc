@@ -85,7 +85,7 @@ class interaction(object):
 
 
 def main():
-    """
+    """plot needs lib in this wd
     """
     a = interaction()
     params = ({'beta': 0.25, 'r':0.95},
