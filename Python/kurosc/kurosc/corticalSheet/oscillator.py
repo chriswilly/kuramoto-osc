@@ -27,7 +27,7 @@ class oscillatorArray(object):
                  ):
         self.domain = domain
         self.ic = self.initial_conditions(*dimension)
-        self.distance = self.entire_distance()
+        self.distance = self.distance()
         self.level = output_level
         self.plot_directory = None
 
@@ -43,26 +43,47 @@ class oscillatorArray(object):
         return scale*rng.random((m,n)) + offset
 
 
+    def distance(self,
+                 integer:bool = False) -> np.ndarray:
 
-    def entire_distance(self,
-                        integer:bool = False) -> np.ndarray:
-        """construct m*n*(m*n) array of euclidian distance as integer or float"""
+        """construct m*n*(m*n) array of euclidian distance as integer or float
+           this could be optimized but is only called once as opposed to eth phase difference calc
+        """
+        """
+        u,v = np.meshgrid(np.arange(self.ic.shape[0]),
+                          np.arange(self.ic.shape[1]),
+                          sparse=False, indexing='xy')
+        u = u.flatten()
+        v = v.flatten()
+        q = np.array([u,v])
+        euc = lambda x,y,u,v:
+
+        d = ((euc(u,v)
+
+        if integer:
+            for (k,(x,y)) in enumerate(q):
+                d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=int)
+        else:
+            for (k,(x,y)) in enumerate(q):
+                d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=float)
+        """
 
         d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
                       self.ic.shape[1],
                       self.ic.shape[0]])
-        # print(d.shape)
+
+
         k=0
         for j in np.arange(self.ic.shape[1]):
             for i in np.arange(self.ic.shape[0]):
                 # print(i*j,j,i)
-                d[k,...] = self.distance((i,j),integer)
+                d[k,...] = self.indiv_distance((i,j),integer)
                 k+=1
         return d
 
 
 
-    def distance(self,
+    def indiv_distance(self,
                  indx:tuple = (0,0),
                  integer:bool = False,
                  ) -> np.ndarray:
@@ -70,7 +91,8 @@ class oscillatorArray(object):
 
         x,y = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
-                          sparse=False, indexing='xy')  # ij ?
+                          sparse=False, indexing='xy')
+
         """
         print('dx:\n',(indx[0] - x),
               '\ndy:\n',(indx[1] - y),
@@ -78,10 +100,12 @@ class oscillatorArray(object):
               np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),
               '\n')
         """
+
         if not integer:
             return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
         else:
             return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
+
 
 
 
@@ -92,7 +116,7 @@ class oscillatorArray(object):
                    plot_title:str = None,
                    y_axis:str = 'y',
                    x_axis:str = 'x',
-                   resolution:int = 16
+                   resolution:int = 24
                    ):
         """
         """
@@ -115,11 +139,12 @@ class oscillatorArray(object):
         plt.tricontourf(X[...,0],X[...,1],X[...,2],
                         colorscale,cmap=plt.cm.nipy_spectral,
                         )
+
         plt.gca().invert_yaxis()
         plt.grid(b=True, which='major', axis='both')
 
         plt.clim(colorscale[0],colorscale[-1])
-        plt.colorbar(ticks=colorscale,format='%1.2f')
+        plt.colorbar(ticks=colorscale[::4],format='%1.2f')
 
         ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
