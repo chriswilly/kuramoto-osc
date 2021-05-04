@@ -92,28 +92,28 @@ def spatial_kernel():
     """
     """
     s = kernel()
-    distance = 50
+    distance = 3/2
     resolution = 1000
     x = np.linspace(-distance,distance,resolution)
     # scale a nonlinearly ~10^n for magnitude
     # b is center mass
     # scale c linearly for width
     # d is order of derivative for arbitrary spatial_wavelet
-    params = {'a': 10000/3*2,
+    params = {'a': 1/7,
               'b': 0,
-              'c': 10,
-              'order': 4,
+              'c': 1/2,
+              'order':4,
               }
-    # g = kernel(s.gaussian,x,*params.values(),True)
-    w = s.wavelet(s.spatial_wavelet,
-                  x,
-                  *params.values(),
-                  False
-                  )
+    w = s.wavelet(s.gaussian,x,*params.values(),False)
+    # w = s.wavelet(s.spatial_wavelet,
+    #               x,
+    #               *params.values(),
+    #               False
+    #               )
     if isinstance(w,np.ndarray):
         s.plot_wavelet(np.asarray([x,w]).T,
                       '{}th Derivative Gaussian'.format(str(params['order'])),
-                      'Arbitrary Magnitube',
+                      'Likelihood',
                       'Node Distance')
 
 def decouple():
@@ -152,8 +152,8 @@ def test():
 
 if __name__ == '__main__':
     # test()
-    build_ics(256,256)
-    # spatial_kernel()
+    # build_ics(256,256)
+    spatial_kernel()
     # decouple()
 
 

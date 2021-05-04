@@ -41,6 +41,8 @@ class kernel(object):
             print('derivative order too high, it doesnt help either')
             return None
         y = fn(x,a,b,c,d)
+        # I = fn(x,a,b,c,d-1)  # integral
+
         if normalize:
             return y/np.max(np.absolute(y))
         else:

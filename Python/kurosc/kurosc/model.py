@@ -34,6 +34,7 @@ class kuramoto_system(object):
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
+        self.osc.natural_frequency = self.normal_dist(3/2)  # lookup x to gaussian
 
         self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
                                            self.osc.distance.flatten(),
@@ -42,6 +43,35 @@ class kuramoto_system(object):
                                            )
         # this bool determines if the wavelet is normalized
         self.interaction = interaction(self.osc.ic.shape)
+
+
+
+    def normal_dist(self,distance:float = 3/2):
+        """construct a normal dist frequency lookup"""
+        resolution = 1e6 #1mln samples
+        x = np.linspace(0,distance,int(resolution)) # Half curve
+        # by eye
+        params = {'a': 1/7,
+                  'b': 0,
+                  'c': 1/2,
+                  }
+
+        g = self.kernel.wavelet(self.kernel.gaussian,x,*params.values(),True)
+        rng = np.random.default_rng()
+        p = rng.choice(g,size=np.prod(self.osc.ic.shape),replace=False)
+        print('***********',p.shape,g.shape)
+        #init a bool indx
+        indx = np.zeros((*g.shape,*p.shape),dtype=bool)
+        print(indx.shape[1])
+        indy = np.arange(*g.shape)
+        for k,q in enumerate(p):
+            indx[indy[g==q],k] = 1
+            #return a mxn big list of frequencies
+        print(x[indx.any(axis=1)].shape)
+        y = x[indx.any(axis=1)]
+        y *= (-np.ones(*y.shape))**rng.choice((0,1),size=y.shape[0])
+        return y
+
 
 
     def differential_equation(self,
@@ -58,7 +88,7 @@ class kuramoto_system(object):
                                     .flatten())
 
         N = np.prod(self.osc.ic.shape)
-        return x + K/N*np.sum(W*G)
+        return self.osc.natural_frequency.flatten() + K/N*np.sum(W*G)
 
 
         # print('osc shape:',np.prod(self.osc.shape),

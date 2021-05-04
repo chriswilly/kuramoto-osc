@@ -39,8 +39,8 @@ def run():
         np.save(fmt.plot_name(file_name,'npy'),data)
 
     """"""
-    nodes = 72
-    time =  20
+    nodes = 64
+    time =  10
     gain = 10*nodes**2
     normalize_kernel = False
 
@@ -53,7 +53,7 @@ def run():
                           {'beta': 0.25, 'r':0.95}
                           )
 
-    indx = 1 # inspection param dict
+    indx = 0 # inspection param dict
     kuramoto = kuramoto_system((nodes,nodes),
                                 kernel_params,
                                 interaction_params[indx],
@@ -81,7 +81,7 @@ def run():
     title = f'{nodes}osc_with_{gain}_k_at_t_{time}_'
     title+='_'.join(param(interaction_params[indx]))
     title+='_'+'_'.join(param(kernel_params))
-
+    
     save_data(solution,title)
 
 
