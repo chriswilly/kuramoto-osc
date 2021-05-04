@@ -24,30 +24,33 @@ import matplotlib.pyplot as plt
 
 class interaction(object):
     def __init__(self,
-                 dim:tuple = (2,2)
+                 dim:tuple = (3,3)
                  ):
         self.dimension = dim
 
 
     def delta(self,
-              phase_array: np.array = np.array([[1,2],[3,4]])
+              phase_array: np.array = np.array([[0,1],[1,0]])
               ) -> np.ndarray:
         """pase difference of element from global array"""
 
         d = np.zeros([self.dimension[0]*self.dimension[1],
-                      self.dimension[1],
-                      self.dimension[0]])
+                      self.dimension[1]*self.dimension[0]])
 
+        # phase_array = phase_array.reshape((self.dimension[0],self.dimension[1]))
 
-        # TODO Check this reshape
-        phase_array = phase_array.reshape((self.dimension[0],self.dimension[1]))
+        # TODO validat this index assignment with flatten()
+        for (k,p) in enumerate(phase_array):
+            d[k,:] = np.array(((phase_array - p) % np.pi), dtype = float)
 
+        """
         k=0
         for j in np.arange(phase_array.shape[1]):
             for i in np.arange(phase_array.shape[0]):
                 # print(i*j,j,i)
                 d[k,...] = (phase_array - phase_array[i,j]) % np.pi
                 k+=1
+        """
         return d
 
 

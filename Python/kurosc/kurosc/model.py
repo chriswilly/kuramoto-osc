@@ -68,22 +68,23 @@ class kuramoto_system(object):
 
     def solve(self,
               time_scale:tuple = (0,10),
-              time_eval = None
+              ode_method:str = 'Radau',
+              time_eval:np.ndarray = None
               ):
-        """ solve_ivp is ode45
         """
-        fn = self.differential_equation
+        """
+        fn = self.differential_equation  # np.vectorize ?
         x0 = self.osc.ic.flatten()
-        sol = solve_ivp(fn,
-                        time_scale,
-                        x0,
-                        t_eval = time_eval,
-                        method='RK45',
-                        vectorized = True
-                        )
-        # print(sol.t)
-        # print(sol.y)
-        return sol
+
+        """option to vectorize but need to change downstream, keep false
+        """
+        return solve_ivp(fn,
+                         time_scale,
+                         x0,
+                         t_eval = time_eval,
+                         method=ode_method,
+                         vectorized = False
+                         )
 
 
 
@@ -186,6 +187,12 @@ def run():
                                 interaction_params[0]
                                 )
     solution = kuramoto.solve((0,time))
+    """
+    python -c "import numpy as np;
+    a=np.array([[[2,3],[1,4]],[[0,1],[1,0]],[[6,7],[4,5]]]);
+    b = a.flatten(); print(b);
+    print(a,a.shape,'\n\n',b.reshape(3,2,2))"
+    """
     osc_state = solution.y.reshape((solution.t.shape[0],nodes,nodes))%np.pi
     print(solution.y.shape, solution.t.shape)
     # print(osc_state[0])
