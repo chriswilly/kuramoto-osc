@@ -44,30 +44,24 @@ class oscillatorArray(object):
 
 
     def distance(self,
-                 integer:bool = False) -> np.ndarray:
+                 t:class = float) -> np.ndarray:
 
         """construct m*n*(m*n) array of euclidian distance as integer or float
            this could be optimized but is only called once as opposed to eth phase difference calc
-        """
         """
         u,v = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
                           sparse=False, indexing='xy')
         u = u.flatten()
         v = v.flatten()
-        q = np.array([u,v])
-        euc = lambda x,y,u,v:
+        z = np.array([u,v])
 
-        d = ((euc(u,v)
+        for (k,(x,y)) in enumerate(z):
+            d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=t)
+        return d
 
-        if integer:
-            for (k,(x,y)) in enumerate(q):
-                d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=int)
-        else:
-            for (k,(x,y)) in enumerate(q):
-                d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=float)
+
         """
-
         d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
                       self.ic.shape[1],
                       self.ic.shape[0]])
@@ -80,33 +74,35 @@ class oscillatorArray(object):
                 d[k,...] = self.indiv_distance((i,j),integer)
                 k+=1
         return d
+        """
 
 
 
+    """
     def indiv_distance(self,
                  indx:tuple = (0,0),
                  integer:bool = False,
                  ) -> np.ndarray:
-        """construct m*n array of euclidian distance as integer or float"""
+        ###construct m*n array of euclidian distance as integer or float
 
         x,y = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
                           sparse=False, indexing='xy')
 
-        """
+
         print('dx:\n',(indx[0] - x),
               '\ndy:\n',(indx[1] - y),
               '\nsq(dx^2+dy^2):\n',
               np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),
               '\n')
-        """
+
 
         if not integer:
             return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
         else:
             return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
 
-
+    """
 
 
 
@@ -144,7 +140,7 @@ class oscillatorArray(object):
         plt.grid(b=True, which='major', axis='both')
 
         plt.clim(colorscale[0],colorscale[-1])
-        plt.colorbar(ticks=colorscale[::4],format='%1.2f')
+        plt.colorbar(ticks=colorscale[::5],format='%1.2f')
 
         ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
