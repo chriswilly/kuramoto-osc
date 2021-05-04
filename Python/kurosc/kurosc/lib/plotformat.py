@@ -3,6 +3,7 @@ boilerplate plot output directory handling and file name timestamp
 plus common mpl.rcparams modifications for font and line size
 """
 import os
+import re
 import matplotlib as mpl
 from datetime import datetime
 from pathlib import Path
@@ -23,6 +24,10 @@ class setup(object):
 
 
     def clean(self,txt:str):
+        ## TODO: fix w/ regex
+
+        """
+        """
         # print(txt)
         d = {"/":'-',
              "\\":'',
@@ -31,8 +36,10 @@ class setup(object):
              ']':'',
              '(':'',
              ')':'',
-             ',':'_'
+             ',':''
              }
+
+        """ '[()[\]{}] | [,\\$]'   ''   ''  """
         for (key,value) in d.items():
             txt = txt.replace(key,value)
         # cl = lambda t,d: t.replace(k,v) for (k,v) in d.items()
@@ -45,6 +52,12 @@ class setup(object):
         # print(self.directory,self.title)
         if not txt:
             txt = self.title
+
+        ## TODO
+        # txt = re.sub('[()[\]{}] | [\\$]','',txt)
+        # txt = re.sub('/','-',txt)
+        # txt = re.sub(',','_',txt)
+
         txt = self.clean(txt)
         file = ''.join((txt,'_',self.timestamp,f'.{extension}'))
 
@@ -60,15 +73,15 @@ class setup(object):
                           .parents[self.level] / subdirectory) # assume plot dir one level up
 
         if os.path.exists(self.directory):
-            pass
+            return True
         else:
             try:
                 os.mkdir(self.directory)
-
+                return True
             except os.error as e:
                 print('error:',e)
                 self.directory = Path('.')
-
+                return False
         # print(self.directory)
         # print(os.listdir(self.directory))
 

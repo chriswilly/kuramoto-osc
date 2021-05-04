@@ -31,19 +31,20 @@ class kernel(object):
                 fn,
                 x: np.ndarray,
                 a: float = 10000/3*2,
-                b: float = 0,  # mean
+                b: float = 0,
                 c: float = 10,
                 d: float = 4,
                 normalize = False,
                 ) -> np.ndarray:
         """generalized kernel using gaussian paramaterization"""
         if d > 19:
-            print('derivative order too high')
+            print('derivative order too high, it doesnt help either')
             return None
         y = fn(x,a,b,c,d)
         if normalize:
-            y = y/np.max(np.absolute(y))
-        return y
+            return y/np.max(np.absolute(y))
+        else:
+            return y
 
 
     def spatial_wavelet(self,
@@ -108,6 +109,7 @@ class kernel(object):
         plt.grid(b=True, which='major', axis='both')
         plt.show()
         fig.savefig(fmt.plot_name(plot_title,'png'))
+        plt.close('all')
 
 
 
