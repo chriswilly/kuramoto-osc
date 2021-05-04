@@ -97,9 +97,9 @@ class oscillatorArray(object):
         """
         """
         fldr = plot_title.replace('at t = ','')
-        fldr = re.sub('\d*\.\d*','',fldr).strip()
-
-        fmt = setup(fldr,self.level)  # plotting format obj
+        fldr = re.sub('[*\d\.\d*]','',fldr).strip()
+        # print(fldr)
+        fmt = setup(fldr,self.level)
         self.plot_directory = fmt.directory
 
         fig = plt.figure(figsize=(10,8))
@@ -133,7 +133,7 @@ class oscillatorArray(object):
         plt.grid(b=None, which='major', axis='both')
         # plt.show()
         fig.savefig(fmt.plot_name(plot_title,'png'))
-
+        plt.close('all')
 
 
 

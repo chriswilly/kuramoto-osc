@@ -16,7 +16,7 @@ from spatialKernel.wavelet import kernel
 
 class kuramoto_system(object):
     def __init__(self,
-                 array_size:tuple = (2,2),
+                 array_size:tuple = (16,16),
                  # initial_conditions:tuple = (0,np.pi),
 
                  kernel_params:dict = {'a': 10000/3*2,
@@ -27,7 +27,7 @@ class kuramoto_system(object):
                  interaction_params:dict = {'beta': 0,
                                             'r': 0},
                  normalize_kernel = False,
-                 gain:float = 1., # k-term
+                 gain:float = 10*16**2, # k-term
                  ):
         self.osc = oscillatorArray(array_size,(0,np.pi))
         self.kernel = kernel()
@@ -50,14 +50,20 @@ class kuramoto_system(object):
                               ):
         """ of the form: xi - 'k/n * sum_all(x0:x_N)*fn_of_dist(xi - x_j) * sin(xj - xi))'
         """
-        phase_difference = self.interaction.delta(x)
-        k = self.gain
+
+        K = self.gain
         W = self.wavelet
-        G = (self.interaction.gamma(phase_difference,
+        G = (self.interaction.gamma(self.interaction.delta(x),
                                     **self.interaction_params)
                                     .flatten())
-        N = G.shape[0]
-        return x + k/N*np.sum(W*G)
+
+        N = np.prod(self.osc.ic.shape)
+        return x + K/N*np.sum(W*G)
+
+
+        # print('osc shape:',np.prod(self.osc.shape),
+        #       '\nG shape:',G.shape[0])
+
 
 
     def solve(self,
@@ -73,7 +79,8 @@ class kuramoto_system(object):
                         x0,
                         t_eval = time_eval,
                         method='RK45',
-                        vectorized = True)
+                        vectorized = True
+                        )
         # print(sol.t)
         # print(sol.y)
         return sol
@@ -83,7 +90,7 @@ class kuramoto_system(object):
     def plot_solution(self,
                       z:np.ndarray,
                       t:float = None,
-                      title:str =''):
+                      title:str = None):
         """
         """
         x = np.linspace(0,self.osc.ic.shape[0],
@@ -102,17 +109,20 @@ class kuramoto_system(object):
             ti = '-'+ti
         else:
             ti = str(self.osc.domain[0])
+
         if abs(self.osc.domain[1]) % np.pi == 0 and not self.osc.domain[1] == 0:
             tf = r'\pi'
         else:
             tf = str(self.osc.domain[1])
 
-        title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
-        if t or not (t==None):
-            if t>=10:
-                title+=f' at t = {t:,.0f}'
-            else:
-                title+=f' at t = {t:,.1f}'
+        if not title:
+            title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
+
+            if t or not (t==None):
+                if t>10:
+                    title+=f' at t = {t:.0f}'
+                else:
+                    title+=f' at t = {t:2.1f}'
 
 
         self.osc.plot_phase(phase_array,
@@ -140,7 +150,8 @@ def test_case():
                           {'beta': 0.25, 'r':0.95})
     w = s.wavelet(s.spatial_wavelet,
                   osc.distance.flatten(),
-                  *kernel_params.values(),True)
+                  *kernel_params.values(),
+                  True)
     # print(dt.now(),'\nwavelet\n',w)
 
     # test case using initial conditions
@@ -160,7 +171,7 @@ def test_case():
 
 def run():
     nodes = 128
-    time =  99
+    time =  10
     kernel_params = {'a': 10000/3*2,
                      'b': 0,
                      'c': 1,

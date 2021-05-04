@@ -20,13 +20,6 @@ from lib.animate import animate
 """
 """
 
-def save_data(data:np.ndarray,
-              file_name:str = 'model_data'):
-    print(file_name)
-    # fmt = setup(file_name,2)
-    # np.save(fmt.plot_name(file_name,'npy'))
-
-
 
 def run():
     """
@@ -37,13 +30,21 @@ def run():
         for t,image in enumerate(data):
             # print(image)
             kuramoto.plot_solution(image,solution.t[t])
+    """
+    """
+    def save_data(data:np.ndarray,
+                  file_name:str = 'model_data'):
+        print(file_name)
+        fmt = setup(file_name,3)
+        np.save(fmt.plot_name(file_name,'npy'),data)
+
     """"""
-    nodes = 100
-    time =  15
-    gain = 0.5
+    nodes = 128
+    time =  10
+    gain = 10*nodes**2
     normalize_kernel = False
 
-    kernel_params = {'a': 10000/3*2, # arbitrary iff normalize in model self.wavelet = true
+    kernel_params = {'a': np.round(10000/3*2), # arbitrary iff normalize in model self.wavelet = true
                      'b': 0,
                      'c': 10,
                      'order': 4,
@@ -64,19 +65,22 @@ def run():
     osc_state = solution.y.reshape((solution.t.shape[0],nodes,nodes))%np.pi
     print(solution.y.shape, solution.t.shape)
     # print(osc_state[0])
+    """Data labeling"""
     param = lambda d: [''.join(f'{key}={value}') for (key,value) in d.items()]
-    title = f'{nodes}osc_at_t_{time}_'
+    title = f'{nodes}osc_with_{gain}_k_at_t_{time}_'
     title+='_'.join(param(interaction_params[indx]))
+    title+='_'+'_'.join(param(kernel_params))
+
+    save_data(solution,title)
 
 
+    """Plotting & animation """
+    kuramoto.plot_solution(osc_state[-1],solution.t[-1])
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
     vid = animate(kuramoto.osc.plot_directory)
-    # vid.to_gif(kuramoto.osc.plot_directory,0.75,True)
-    # save_data(title,solution)
-    # kuramoto.plot_solution(osc_state[-1],solution.t[-1])
-
+    vid.to_gif(kuramoto.osc.plot_directory,0.75,True)
 
 if __name__ == '__main__':
     # test_case()

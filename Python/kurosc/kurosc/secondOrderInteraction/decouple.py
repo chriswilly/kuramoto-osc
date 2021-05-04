@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 
 class interaction(object):
     def __init__(self,
-                 dim: np.ndarray = np.array([2,2])
+                 dim:tuple = (2,2)
                  ):
         self.dimension = dim
 
@@ -38,13 +38,15 @@ class interaction(object):
                       self.dimension[1],
                       self.dimension[0]])
 
+
+        # TODO Check this reshape
         phase_array = phase_array.reshape((self.dimension[0],self.dimension[1]))
 
         k=0
         for j in np.arange(phase_array.shape[1]):
             for i in np.arange(phase_array.shape[0]):
                 # print(i*j,j,i)
-                d[k,...] = phase_array - phase_array[i,j]
+                d[k,...] = (phase_array - phase_array[i,j]) % np.pi
                 k+=1
         return d
 
@@ -84,6 +86,7 @@ class interaction(object):
         plt.grid(b=True, which='major', axis='both')
         plt.show()
         fig.savefig(fmt.plot_name(plot_title,'png'))
+        plt.close('all')
 
 
 def main():
