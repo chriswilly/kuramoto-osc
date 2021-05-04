@@ -27,6 +27,7 @@ class oscillatorArray(object):
                  ):
         self.domain = domain
         self.ic = self.initial_conditions(*dimension)
+        self.natural_frequency = None
         self.distance = self.distance()
         self.level = output_level
         self.plot_directory = None
@@ -44,11 +45,14 @@ class oscillatorArray(object):
 
 
     def distance(self,
-                 t:class = float) -> np.ndarray:
+                 t:str = 'float') -> np.ndarray:
 
         """construct m*n*(m*n) array of euclidian distance as integer or float
            this could be optimized but is only called once as opposed to eth phase difference calc
         """
+        d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
+                      self.ic.shape[1]*self.ic.shape[0]])
+
         u,v = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
                           sparse=False, indexing='xy')
@@ -56,8 +60,8 @@ class oscillatorArray(object):
         v = v.flatten()
         z = np.array([u,v])
 
-        for (k,(x,y)) in enumerate(z):
-            d[k,:] = np.array(np.sqrt((u - x)**2 + (v - y)**2),dtype=t)
+        for (k,x) in enumerate(z):
+            d[k,:] = np.array(np.sqrt((u - x[0])**2 + (v - x[1])**2),dtype=t)
         return d
 
 

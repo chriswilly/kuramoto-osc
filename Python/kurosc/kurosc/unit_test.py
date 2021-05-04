@@ -107,13 +107,35 @@ def gif_test():
     vid = animate(filepath)
     vid.to_gif(filepath,0.75,True)
 
-
+def normal_test():
+    from spatialKernel.wavelet import kernel
+    s = kernel()
+    """construct a normal dist frequency lookup"""
+    distance = 3/2
+    resolution = 20 #mln samples
+    x = np.linspace(-distance,distance,resolution)
+    # by eye
+    params = {'a': 1/7,
+              'b': 0,
+              'c': 1/2,
+              }
+    g = s.wavelet(s.gaussian,x,*params.values(),False)
+    rng = np.random.default_rng()
+    p = np.array(rng.choice(g,size=np.prod((2,2))),dtype=float)
+    print(type(p),'\n',g)
+    indx = np.zeros([g.shape[0],p.shape[0]],dtype=bool)
+    indy = np.arange(g.shape[0])
+    for k,q in enumerate(p):
+        indx[indy[g==q],k] = 1
+    print(indx,indx.any(axis=1))
+    # return
 
 def main():
     # distance_test(3,3)
     # wavelet_test()
     # decouple_test()
-    gif_test()
+    # gif_test()
+    normal_test()
 
 
 if __name__ == '__main__':
