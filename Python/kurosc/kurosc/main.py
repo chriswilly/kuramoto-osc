@@ -18,7 +18,11 @@ from lib.animate import animate
 
 
 """
-annotate:
+# annotate:
+#
+# note on mthds for ode soln
+# https://scicomp.stackexchange.com/questions/27178/bdf-vs-implicit-runge-kutta-time-stepping
+
 """
 
 
@@ -34,36 +38,45 @@ def run():
     """
     """
     def save_data(data:np.ndarray,
-                  file_name:str = 'model_data'):
+                  file_name:str = 'model_data',
+                  level:int = 3):
         print(file_name)
-        fmt = setup(file_name,3)
+        fmt = setup(file_name,level)
         np.save(fmt.plot_name(file_name,'npy'),data)
 
-    """"""
+    """
+    # notes 96x96 for LSODA @ c = 3 & gain = 10*nodes**2
+    #
+    #
+    #
+    #
+    """
 
 
-    nodes = 8
+    nodes = 96
     time =  5
     frames = 100
+    gain = 12*nodes**2
+    output_dir_level = 2
+    indx = 1 # inspection param dict
 
-    gain = 10*nodes**2
     normalize_kernel = False
 
     kernel_params = {'a': int(np.round(10000/3*2)), # arbitrary iff normalize in model self.wavelet = true
                      'b': 0,
-                     'c': 10,
+                     'c': 3,
                      'order': 4,
                      }
     interaction_params = ({'beta': 0, 'r':0},
                           {'beta': 0.25, 'r':0.95}
                           )
 
-    indx = 0 # inspection param dict
     kuramoto = kuramoto_system((nodes,nodes),
                                 kernel_params,
                                 interaction_params[indx],
                                 normalize_kernel,
-                                gain
+                                gain,
+                                output_dir_level
                                 )
     """Run Model"""
     time_eval = np.linspace(0,time,frames)
@@ -71,10 +84,10 @@ def run():
     continuous = False
 
     solution = kuramoto.solve((0,time),
-                              'LSODA',   # bdf is solid
+                              'LSODA',   # too stiff for 'RK45', use ‘BDF’, 'LSODA', 'Radau'
                               continuous,
                               time_eval,
-                              )  #'RK45','Radau',‘BDF’
+                              )
 
 
     osc_state = solution.y.reshape((solution.t.shape[0],
@@ -87,11 +100,11 @@ def run():
 
     """Data labeling"""
     param = lambda d: [''.join(f'{key}={value}') for (key,value) in d.items()]
-    title = f'{nodes}osc_with_{gain}_k_at_t_{time}_'
+    title = f'{nodes}_osc_with_k-n{int(gain/nodes)}_at_t_{time}_'
     title+='_'.join(param(interaction_params[indx]))
     title+='_'+'_'.join(param(kernel_params))
 
-    save_data(solution,title)
+    save_data(solution,title,output_dir_level)
 
 
     """Plotting & animation """
@@ -99,8 +112,8 @@ def run():
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
-    frame_rate = 60/140 # 120 bpm -> 0.5 s/f ,,, 140 is our target
-    vid = animate(kuramoto.osc.plot_directory)
+    frame_rate = 60/140 # 120 bpm -> 0.5 s/f
+    vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True)
 
 
