@@ -6,11 +6,12 @@ if need to run in here pull in lib folder to dir
 """
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-
-# from pathlib import Path
-# sys.path.append(Path(__file__).resolve().parents[1])
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parents[1])
+if __name__ == '__main__' and __package__ is None:
+    __package__ = 'kurosc'
 
 from lib.plotformat import setup
 
@@ -39,8 +40,9 @@ class interaction(object):
 
         # phase_array = phase_array.reshape((self.dimension[0],self.dimension[1]))
 
-        # TODO validat this index assignment with flatten()
+        # TODO validat this index assignment with ravel()
         for (k,p) in enumerate(phase_array):
+            # print(p.shape)
             d[k,:] = np.array(((phase_array - p) % np.pi), dtype = float)
 
         """
@@ -60,6 +62,7 @@ class interaction(object):
               beta: float = 1/4,
               r: float = 8/10
               ) -> np.ndarray:
+        # print(x.shape)
         return -np.sin(x+beta) + r*np.sin(2*x)
 
 

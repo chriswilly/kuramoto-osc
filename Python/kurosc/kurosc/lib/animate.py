@@ -3,18 +3,20 @@
 make gif from select folder
 credit to https://github.com/dm20/gif-maker
 """
+# from tkinter import filedialog
 import imageio
 import os
 import sys
 import re
-from os.path import isfile, join
-from pathlib import Path
 import numpy as np
-# from tkinter import filedialog
+from os.path import isfile, join
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parents[1])
+if __name__ == '__main__' and __package__ is None:
+    __package__ = 'kurosc'
 
-from .plotformat import setup
+from lib.plotformat import setup
 
 
 """
@@ -36,14 +38,20 @@ class animate(object):
         self.img_name = None
         self.fmt = setup('animation',3)
 
+    def transition(self):
+        pass
+
+
     def to_gif(self,
-               targetpath:str = '.',
+               targetpath:str = None,
                delay:float = 1.33,
                sort:bool = False,
                ext:str = 'png'
                ):
         """
         """
+        if not targetpath:
+            targetpath = self.plot_directory
         filelist = [f for f in os.listdir(targetpath)
                     if isfile(join(targetpath, f))
                     and f.endswith(ext)]
@@ -66,11 +74,24 @@ class animate(object):
         images = list(map(img, filelist))
 
         self.img_name = self.fmt.plot_name(str(targetpath.stem),'gif')
-        print('self.img_name',self.img_name)
-
-        dest = self.plot_directory.parent / (str(targetpath.stem)+'.gif')
-        print('dest',dest)
+        # print('self.img_name',self.img_name)
+        # dest = self.plot_directory.parent / (str(targetpath.stem)+'.gif')
+        # print('dest',dest)
         imageio.mimsave(self.img_name, images, duration = delay)
+
+
+        try:
+            # # print(targetpath.stem)
+            # new = self.fmt.plotname(str(targetpath.stem))
+            # print(self.plot_directory/new)
+            new = self.fmt.plotname(str(targetpath.stem))
+            print('',new)
+            print(f'did not actually timestamp images, make sure to clean {targetpath.stem} up before running agin :)')
+
+        except:
+            print(f'error timestamping images, make sure to clean {targetpath.stem} up before running agin :)')
+
+
 
 
 if __name__=='__main__':

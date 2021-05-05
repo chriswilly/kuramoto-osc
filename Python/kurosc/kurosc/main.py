@@ -18,11 +18,12 @@ from lib.animate import animate
 
 
 """
+annotate:
 """
 
 
 def run():
-    """
+    """subfn to keep obj dep going
     """
     def plot_output(data:np.ndarray,
                     time:np.ndarray,
@@ -39,8 +40,12 @@ def run():
         np.save(fmt.plot_name(file_name,'npy'),data)
 
     """"""
-    nodes = 64
-    time =  10
+
+
+
+
+    nodes = 8
+    time =  5
     gain = 10*nodes**2
     normalize_kernel = False
 
@@ -61,18 +66,22 @@ def run():
                                 gain
                                 )
     """Run Model"""
-    time_eval = np.linspace(0,time,30)
+    # time_eval = np.linspace(0,time,300)
+
+    continuous = False
+
     solution = kuramoto.solve((0,time),
-                              'Radau',
-                              time_eval
-                              )  #'RK45','Radau'
+                              'LSODA',   # bdf is solid
+                              continuous,
+                              # time_eval,
+                              )  #'RK45','Radau',‘BDF’
 
 
     osc_state = solution.y.reshape((solution.t.shape[0],
                                     nodes,
                                     nodes))%np.pi
 
-    print(solution.y.shape, solution.t.shape)
+    print('\nsol.shape:',solution.y.shape, '\nt.shape:',solution.t.shape, '\nosc.shape:',osc_state.shape)
     # print(osc_state[0])
 
 
@@ -81,19 +90,23 @@ def run():
     title = f'{nodes}osc_with_{gain}_k_at_t_{time}_'
     title+='_'.join(param(interaction_params[indx]))
     title+='_'+'_'.join(param(kernel_params))
-    
+
     save_data(solution,title)
 
 
     """Plotting & animation """
-    # kuramoto.plot_solution(osc_state[-1],solution.t[-1])
+    ### kuramoto.plot_solution(osc_state[-1],solution.t[-1])
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
 
-    frame_rate = 0.88
+    frame_rate = 1./3  # s per frame
     vid = animate(kuramoto.osc.plot_directory)
-    vid.to_gif(kuramoto.osc.plot_directory,frame_rate,True)
+    vid.to_gif(None,frame_rate,True)
+
+
+
+
 
 if __name__ == '__main__':
     # test_case()

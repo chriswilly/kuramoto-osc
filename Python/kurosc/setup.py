@@ -9,6 +9,7 @@ setup(name='kurosc',  # 'kuramotoNeighbor'
                    with distance delay and decay and second order interrupting interactions',
       url='https://github.com/chriswilly/kuramoto-osc',
       author=['Michael Willy',
+              'Group Contributors:',
               'Tomek Fraczek',
               'Yundong Lin',
               'Blake Fletcher'],

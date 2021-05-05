@@ -2,9 +2,11 @@
 """
 import sys
 from pathlib import Path
-sys.path.append(Path(__file__).resolve())
+sys.path.append(Path(__file__).resolve().parents[1])
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'kurosc'
+
+from lib.plotformat import setup
 
 
 import numpy as np
@@ -130,12 +132,21 @@ def normal_test():
     print(indx,indx.any(axis=1))
     # return
 
+def move_dirs():
+    from lib.plotformat import setup
+    fmt = setup('test_dir',3)
+    txt ='Oscillator Phase in pi'
+    print(txt)
+    print(fmt.plot_name(str(txt)))
+
+
 def main():
     # distance_test(3,3)
     # wavelet_test()
     # decouple_test()
     # gif_test()
-    normal_test()
+    # normal_test()
+    move_dirs()
 
 
 if __name__ == '__main__':

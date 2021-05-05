@@ -5,10 +5,11 @@ returns a normalized gaussian nth order derivative
 """
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-
-# from pathlib import Path
-# sys.path.append(Path(__file__).resolve().parents[1])
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parents[1])
+if __name__ == '__main__' and __package__ is None:
+    __package__ = 'kurosc'
 
 from lib.plotformat import setup
 from spatialKernel.symdiff import main as derivative

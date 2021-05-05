@@ -6,12 +6,17 @@ distance array
 import sys
 import os
 import re
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-# from pathlib import Path
-# sys.path.append(Path(__file__).resolve().parents[1])
-# print(sys.path[0])
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parents[1])
+if __name__ == '__main__' and __package__ is None:
+    __package__ = 'kurosc'
 
 from lib.plotformat import setup
+
+# print(sys.path[0])
+
+# curious if this
 
 import numpy as np
 import matplotlib as mpl
@@ -56,8 +61,8 @@ class oscillatorArray(object):
         u,v = np.meshgrid(np.arange(self.ic.shape[0]),
                           np.arange(self.ic.shape[1]),
                           sparse=False, indexing='xy')
-        u = u.flatten()
-        v = v.flatten()
+        u = u.ravel()
+        v = v.ravel()
         z = np.array([u,v])
 
         for (k,x) in enumerate(z):
@@ -174,9 +179,9 @@ def main():
                       corticalArray.ic.shape[0])
     x,y = np.meshgrid(x,y)
 
-    phase_array = np.asarray([x.flatten(),
-                              y.flatten(),
-                              corticalArray.ic.flatten()]
+    phase_array = np.asarray([x.ravel(),
+                              y.ravel(),
+                              corticalArray.ic.ravel()]
                               ).T
 
     corticalArray.plot_phase(phase_array,
