@@ -38,8 +38,6 @@ class animate(object):
         self.img_name = None
         self.fmt = setup('animation',3)
 
-    def transition(self):
-        pass
 
 
     def to_gif(self,

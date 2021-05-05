@@ -30,7 +30,7 @@ def run():
                     file_name:str = 'model_data'):
         for t,image in enumerate(data):
             # print(image)
-            kuramoto.plot_solution(image,solution.t[t])
+            kuramoto.plot_contour(image,solution.t[t])
     """
     """
     def save_data(data:np.ndarray,
@@ -44,7 +44,7 @@ def run():
 
 
 
-    nodes = 8
+    nodes = 24
     time =  5
     gain = 10*nodes**2
     normalize_kernel = False
@@ -66,14 +66,15 @@ def run():
                                 gain
                                 )
     """Run Model"""
-    # time_eval = np.linspace(0,time,300)
+    frames = 100
+    time_eval = np.linspace(0,time,frames)
 
     continuous = False
 
     solution = kuramoto.solve((0,time),
                               'LSODA',   # bdf is solid
                               continuous,
-                              # time_eval,
+                              time_eval,
                               )  #'RK45','Radau',‘BDF’
 
 
@@ -100,7 +101,7 @@ def run():
     print(kuramoto.osc.plot_directory)
 
 
-    frame_rate = 1./3  # s per frame
+    frame_rate = 2*time/frames  # s per frame
     vid = animate(kuramoto.osc.plot_directory)
     vid.to_gif(None,frame_rate,True)
 
