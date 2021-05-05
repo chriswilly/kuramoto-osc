@@ -1,17 +1,21 @@
 """
 """
 import sys
-from pathlib import Path
-sys.path.append(Path(__file__).resolve())
 
 from scipy.integrate import solve_ivp
 import numpy as np
-np.set_printoptions(precision=3, suppress=True)
+# np.set_printoptions(precision=3, suppress=True)
 from datetime import datetime as dt
+
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parents[1])
+if __name__ == '__main__' and __package__ is None:
+    __package__ = 'kurosc'
 
 from corticalSheet.oscillator import oscillatorArray
 from secondOrderInteraction.decouple import interaction
 from spatialKernel.wavelet import kernel
+# from kurosc.lib.plotformat import setup
 
 
 class kuramoto_system(object):
@@ -36,8 +40,11 @@ class kuramoto_system(object):
         self.interaction_params = interaction_params
         self.osc.natural_frequency = self.normal_dist(3/2)  # lookup x to gaussian
 
+        print('\nmean natural frequency:',np.round(np.mean(self.osc.natural_frequency),3),
+              '\nstdev:',np.round(np.std(self.osc.natural_frequency),3))
+
         self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
-                                           self.osc.distance.flatten(),
+                                           self.osc.distance.ravel(),
                                            *self.kernel_params.values(),
                                            normalize_kernel
                                            )
@@ -59,15 +66,15 @@ class kuramoto_system(object):
         g = self.kernel.wavelet(self.kernel.gaussian,x,*params.values(),True)
         rng = np.random.default_rng()
         p = rng.choice(g,size=np.prod(self.osc.ic.shape),replace=False)
-        print('***********',p.shape,g.shape)
+        # print('***********',p.shape,g.shape)
         #init a bool indx
         indx = np.zeros((*g.shape,*p.shape),dtype=bool)
-        print(indx.shape[1])
+        # print(indx.shape[1])
         indy = np.arange(*g.shape)
         for k,q in enumerate(p):
             indx[indy[g==q],k] = 1
             #return a mxn big list of frequencies
-        print(x[indx.any(axis=1)].shape)
+        # print(x[indx.any(axis=1)].shape)
         y = x[indx.any(axis=1)]
         y *= (-np.ones(*y.shape))**rng.choice((0,1),size=y.shape[0])
         return y
@@ -83,12 +90,12 @@ class kuramoto_system(object):
 
         K = self.gain
         W = self.wavelet
-        G = (self.interaction.gamma(self.interaction.delta(x),
-                                    **self.interaction_params)
-                                    .flatten())
-
+        ## unknown: is it ok to flatten
+        G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
+                                    **self.interaction_params)).ravel()
+        print(G.shape)
         N = np.prod(self.osc.ic.shape)
-        return self.osc.natural_frequency.flatten() + K/N*np.sum(W*G)
+        return K/N*np.sum(W*G)+ self.osc.natural_frequency.ravel()
 
 
         # print('osc shape:',np.prod(self.osc.shape),
@@ -99,12 +106,13 @@ class kuramoto_system(object):
     def solve(self,
               time_scale:tuple = (0,10),
               ode_method:str = 'Radau',
+              continuous = True,
               time_eval:np.ndarray = None
               ):
         """
         """
         fn = self.differential_equation  # np.vectorize ?
-        x0 = self.osc.ic.flatten()
+        x0 = self.osc.ic.ravel()
 
         """option to vectorize but need to change downstream, keep false
         """
@@ -113,6 +121,7 @@ class kuramoto_system(object):
                          x0,
                          t_eval = time_eval,
                          method=ode_method,
+                         dense_output = continuous,
                          vectorized = False
                          )
 
@@ -130,9 +139,9 @@ class kuramoto_system(object):
                           self.osc.ic.shape[0])
         x,y = np.meshgrid(x,y)
 
-        phase_array = np.asarray([x.flatten(),
-                                  y.flatten(),
-                                  z.flatten()%np.pi]
+        phase_array = np.asarray([x.ravel(),
+                                  y.ravel(),
+                                  z.ravel()%np.pi]
                                   ).T
 
         if abs(self.osc.domain[0]) % np.pi == 0 and not self.osc.domain[0] == 0:
@@ -148,20 +157,32 @@ class kuramoto_system(object):
 
         if not title:
             title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
+            # title_trans = ''
 
             if t or not (t==None):
                 if t>10:
                     title+=f' at t = {t:.0f}'
                 else:
                     title+=f' at t = {t:2.1f}'
-
-
+        """Make 2 copies for  to smooth graphics by avg, don't want to make fake data
+        between timepoints bc that is questionable to me"""
         self.osc.plot_phase(phase_array,
                             title,
                             'Location y',
                             'Location x'
                             )
 
+        # self.osc.plot_phase(phase_array,
+        #                     title,
+        #                     'Location y',
+        #                     'Location x'
+        #                     )
+        """actually that breaks output path too..."""
+        # self.osc.plot_phase(phase_array,
+        #                     None,
+        #                     'Location y',
+        #                     'Location x'
+        #                     )
 
 
 def test_case():
@@ -180,7 +201,7 @@ def test_case():
     interaction_params = ({'beta': 0, 'r':0},
                           {'beta': 0.25, 'r':0.95})
     w = s.wavelet(s.spatial_wavelet,
-                  osc.distance.flatten(),
+                  osc.distance.ravel(),
                   *kernel_params.values(),
                   True)
     # print(dt.now(),'\nwavelet\n',w)
@@ -194,10 +215,10 @@ def test_case():
           '\nwavelet\n',
           w,'\n',type(w),
           '\n\nphase difference vector\n',
-          g.flatten(),'\n',
-          type(g.flatten()),
+          g.ravel(),'\n',
+          type(g.ravel()),
           '\nwavelet*difference\n',
-          (w*g.flatten()).shape
+          (w*g.ravel()).shape
           )
 
 def run():

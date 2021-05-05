@@ -69,9 +69,9 @@ def build_ics(m:int = 128,
                       oscillators.ic.shape[0])
     x,y = np.meshgrid(x,y)
 
-    phase_array = np.asarray([x.flatten(),
-                              y.flatten(),
-                              oscillators.ic.flatten()]
+    phase_array = np.asarray([x.ravel(),
+                              y.ravel(),
+                              oscillators.ic.ravel()]
                               ).T
     if abs(domain[0]) % np.pi == 0 and not domain[0] == 0:
         ti = r'\pi'

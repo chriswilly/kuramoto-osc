@@ -48,7 +48,13 @@ class setup(object):
 
     def plot_name(self,
                   txt:str=None,
-                  extension:str = 'png'):
+                  extension:str =None):
+        p = ''
+        if not extension:
+            extension = ''
+        else:
+            p='.'
+
         # print(self.directory,self.title)
         if not txt:
             txt = self.title
@@ -59,7 +65,7 @@ class setup(object):
         # txt = re.sub(',','_',txt)
 
         txt = self.clean(txt)
-        file = ''.join((txt,'_',self.timestamp,f'.{extension}'))
+        file = ''.join((txt,'_',self.timestamp,p,f'{extension}'))
 
         return self.directory / file
 
