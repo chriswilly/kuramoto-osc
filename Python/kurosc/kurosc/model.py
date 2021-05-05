@@ -35,11 +35,12 @@ class kuramoto_system(object):
                                             'r': 0},
                  normalize_kernel = False,
                  gain:float = 10*16**2, # k-term
+                 out_dir:int = 3,
                  ):
 
         """
         """
-        self.osc = oscillatorArray(array_size,(0,np.pi),4)
+        self.osc = oscillatorArray(array_size,(0,np.pi),out_dir)
         self.kernel = kernel()
         self.gain = gain
         self.kernel_params = kernel_params
@@ -73,7 +74,7 @@ class kuramoto_system(object):
                      t:float = None,
                      title:str = None):
         """takes instance of oscillatorArray and plots like the plot_solution below"""
-        scale = 3
+        scale = None
         plot_contour(self.osc,z,t,title,scale)
 
 

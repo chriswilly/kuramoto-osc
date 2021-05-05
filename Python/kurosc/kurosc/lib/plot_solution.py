@@ -8,7 +8,7 @@ def plot_contour(osc,
                  z:np.ndarray,
                  t:float = None,
                  title:str = None,
-                 scale:int = 1):
+                 scale:int = None):
     """
     """
     # want to keep this dependence on init setup may also use z.shape[]
@@ -16,26 +16,24 @@ def plot_contour(osc,
                       osc.ic.shape[1])
     y = np.linspace(0,osc.ic.shape[1],
                       osc.ic.shape[0])
+    if scale:
+        # print('x:',x.shape,'y:',y.shape,'z:',z.shape)
+        s = RectBivariateSpline(x,y,z,kx=3,ky=3)
 
-    # X,Y = np.meshgrid(x,y,sparse=False)
-    print('x:',x.shape,'y:',y.shape,'z:',z.shape)
-    input('debug pause')
-    s = RectBivariateSpline(x,y,z)
-
-    # Rescale, overwrite x,y to scale
-    x = np.linspace(0,osc.ic.shape[0],
-                      osc.ic.shape[1]*scale)
-    y = np.linspace(0,osc.ic.shape[1],
-                      osc.ic.shape[0]*scale)
-    Z = s.__call__(x,y)
-    print(Z.shape)
+        # Rescale, overwrite x,y to scale
+        x = np.linspace(0,osc.ic.shape[0],
+                          osc.ic.shape[1]*scale)
+        y = np.linspace(0,osc.ic.shape[1],
+                          osc.ic.shape[0]*scale)
+        Z = s.__call__(x,y).ravel()
+    else:
+        Z = z.ravel()
 
 
     X,Y = np.meshgrid(x,y,sparse=False)
-
     phase_array = np.asarray([X.ravel(),
                               Y.ravel(),
-                              Z.ravel()%np.pi]
+                              Z%np.pi]
                               ).T
 
     if abs(osc.domain[0]) % np.pi == 0 and not osc.domain[0] == 0:

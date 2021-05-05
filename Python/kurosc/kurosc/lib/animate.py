@@ -33,10 +33,11 @@ img.save(fp=fp_out, format='GIF', append_images=imgs,
 
 class animate(object):
     def __init__(self,
-                 output):
-        self.plot_directory = output
+                 out_folder_name:str,
+                 level:int = 3):
+        self.plot_directory = out_folder_name
         self.img_name = None
-        self.fmt = setup('animation',4)
+        self.fmt = setup('animation',level)
 
 
 
@@ -79,11 +80,11 @@ class animate(object):
 
 
         try:
-            # # print(targetpath.stem)
+            print('***********************',targetpath.stem)
             # new = self.fmt.plotname(str(targetpath.stem))
             # print(self.plot_directory/new)
             new = self.fmt.plotname(str(targetpath.stem))
-            print('',new)
+            print('**********************',new)
             print(f'did not actually timestamp images, make sure to clean {targetpath.stem} up before running agin :)')
 
         except:

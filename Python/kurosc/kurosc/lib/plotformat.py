@@ -10,14 +10,14 @@ from pathlib import Path
 
 class setup(object):
     def __init__(self,
-                 output:str = 'plot_output',
+                 out_folder_name:str = 'plot_output',
                  level:int = 3
                  ):
-        self.title = output
+        self.title = out_folder_name
         self.level = level
         self.directory = None
         self.timestamp = datetime.now().strftime("%y%m%d_%H%M%S%f")
-        self.file_path(self.clean(output)) # creates self.directory
+        self.file_path(self.clean(out_folder_name)) # creates self.directory
         self.params()  # modify specific mpl.rcParams
 
 
@@ -48,7 +48,7 @@ class setup(object):
 
     def plot_name(self,
                   txt:str=None,
-                  extension:str =None):
+                  extension:str = None):
         p = ''
         if not extension:
             extension = ''
