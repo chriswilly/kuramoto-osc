@@ -68,51 +68,51 @@ class oscillatorArray(object):
         for (k,x) in enumerate(z):
             d[k,:] = np.array(np.sqrt((u - x[0])**2 + (v - x[1])**2),dtype=t)
         return d
-
-
-        """
-        d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
-                      self.ic.shape[1],
-                      self.ic.shape[0]])
-
-
-        k=0
-        for j in np.arange(self.ic.shape[1]):
-            for i in np.arange(self.ic.shape[0]):
-                # print(i*j,j,i)
-                d[k,...] = self.indiv_distance((i,j),integer)
-                k+=1
-        return d
-        """
-
-
-
-    """
-    def indiv_distance(self,
-                 indx:tuple = (0,0),
-                 integer:bool = False,
-                 ) -> np.ndarray:
-        ###construct m*n array of euclidian distance as integer or float
-
-        x,y = np.meshgrid(np.arange(self.ic.shape[0]),
-                          np.arange(self.ic.shape[1]),
-                          sparse=False, indexing='xy')
-
-
-        print('dx:\n',(indx[0] - x),
-              '\ndy:\n',(indx[1] - y),
-              '\nsq(dx^2+dy^2):\n',
-              np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),
-              '\n')
-
-
-        if not integer:
-            return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
-        else:
-            return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
-
-    """
-
+    #
+    #
+    #     """
+    #     d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
+    #                   self.ic.shape[1],
+    #                   self.ic.shape[0]])
+    #
+    #
+    #     k=0
+    #     for j in np.arange(self.ic.shape[1]):
+    #         for i in np.arange(self.ic.shape[0]):
+    #             # print(i*j,j,i)
+    #             d[k,...] = self.indiv_distance((i,j),integer)
+    #             k+=1
+    #     return d
+    #     """
+    #
+    #
+    #
+    # """
+    # def indiv_distance(self,
+    #              indx:tuple = (0,0),
+    #              integer:bool = False,
+    #              ) -> np.ndarray:
+    #     ###construct m*n array of euclidian distance as integer or float
+    #
+    #     x,y = np.meshgrid(np.arange(self.ic.shape[0]),
+    #                       np.arange(self.ic.shape[1]),
+    #                       sparse=False, indexing='xy')
+    #
+    #
+    #     print('dx:\n',(indx[0] - x),
+    #           '\ndy:\n',(indx[1] - y),
+    #           '\nsq(dx^2+dy^2):\n',
+    #           np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),
+    #           '\n')
+    #
+    #
+    #     if not integer:
+    #         return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
+    #     else:
+    #         return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
+    #
+    # """
+    #
 
 
 

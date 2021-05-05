@@ -1,42 +1,53 @@
-"""takes object oscillatorArray: "self.osc" instance from model.py and constructs plot
+"""takes oscect oscillatorArray: "self.osc" instance from model.py and constructs plot
 """
 import numpy as np
+from scipy.interpolate import RectBivariateSpline
 
-from lib.interp import smooth_image
 
-
-def plot_contour(obj,
+def plot_contour(osc,
                  z:np.ndarray,
                  t:float = None,
-                 title:str = None):
+                 title:str = None,
+                 scale:int = 1):
     """
     """
     # want to keep this dependence on init setup may also use z.shape[]
-    x = np.linspace(0,obj.ic.shape[0],
-                      obj.ic.shape[1])
-    y = np.linspace(0,obj.ic.shape[1],
-                      obj.ic.shape[0])
+    x = np.linspace(0,osc.ic.shape[0],
+                      osc.ic.shape[1])
+    y = np.linspace(0,osc.ic.shape[1],
+                      osc.ic.shape[0])
 
-    # x,y = np.meshgrid(x,y,sparse=True)
-    # z,x,y = smooth_image()
-    x,y = np.meshgrid(x,y,sparse=False)
+    # X,Y = np.meshgrid(x,y,sparse=False)
+    print('x:',x.shape,'y:',y.shape,'z:',z.shape)
+    input('debug pause')
+    s = RectBivariateSpline(x,y,z)
+
+    # Rescale, overwrite x,y to scale
+    x = np.linspace(0,osc.ic.shape[0],
+                      osc.ic.shape[1]*scale)
+    y = np.linspace(0,osc.ic.shape[1],
+                      osc.ic.shape[0]*scale)
+    Z = s.__call__(x,y)
+    print(Z.shape)
 
 
-    phase_array = np.asarray([x.ravel(),
-                              y.ravel(),
-                              z.ravel()%np.pi]
+    X,Y = np.meshgrid(x,y,sparse=False)
+
+    phase_array = np.asarray([X.ravel(),
+                              Y.ravel(),
+                              Z.ravel()%np.pi]
                               ).T
 
-    if abs(obj.domain[0]) % np.pi == 0 and not obj.domain[0] == 0:
+    if abs(osc.domain[0]) % np.pi == 0 and not osc.domain[0] == 0:
         ti = r'\pi'
         ti = '-'+ti
     else:
-        ti = str(obj.domain[0])
+        ti = str(osc.domain[0])
 
-    if abs(obj.domain[1]) % np.pi == 0 and not obj.domain[1] == 0:
+    if abs(osc.domain[1]) % np.pi == 0 and not osc.domain[1] == 0:
         tf = r'\pi'
     else:
-        tf = str(obj.domain[1])
+        tf = str(osc.domain[1])
 
     if not title:
         title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
@@ -50,7 +61,7 @@ def plot_contour(obj,
     """Make 2 copies for  to smooth graphics by avg, don't want to make fake data
     between timepoints bc that is questionable to me"""
 
-    obj.plot_phase(phase_array,
+    osc.plot_phase(phase_array,
                     title,
                     'Location y',
                     'Location x'

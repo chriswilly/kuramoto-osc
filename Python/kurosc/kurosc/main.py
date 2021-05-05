@@ -42,9 +42,7 @@ def run():
     """"""
 
 
-
-
-    nodes = 24
+    nodes = 8
     time =  5
     frames = 100
 
@@ -101,11 +99,7 @@ def run():
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
-    ratio = 60/120 # 120 bpm -> 0.5 s/f is our target
-    ############# total_time/frames := resolution
-    ############# frame_rate := frame/s
-    ############# so 2 s/f =
-    frame_rate = time/frames*15  # x time
+    frame_rate = 60/140 # 120 bpm -> 0.5 s/f ,,, 140 is our target
     vid = animate(kuramoto.osc.plot_directory)
     vid.to_gif(None,frame_rate,True)
 

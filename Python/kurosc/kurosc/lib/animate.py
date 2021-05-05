@@ -36,7 +36,7 @@ class animate(object):
                  output):
         self.plot_directory = output
         self.img_name = None
-        self.fmt = setup('animation',3)
+        self.fmt = setup('animation',4)
 
 
 
