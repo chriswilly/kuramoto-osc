@@ -1,4 +1,7 @@
-from scipy.interpolate import interp2d, RectBivariateSpline
+from scipy.interpolate import (interp2d,
+                               RectBivariateSpline,
+                               SmoothBivariateSpline,
+                               )
 from scipy.ndimage.filters import gaussian_filter
 
 import numpy as np
@@ -11,6 +14,8 @@ def smooth_image(#self,
                  scale:int = 2,
                  sigma:np.ndarray = np.array([7,7])
                  )->np.ndarray:
+
+    
 
     # z = interp2d
     # x = interp2d

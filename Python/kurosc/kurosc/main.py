@@ -46,6 +46,8 @@ def run():
 
     nodes = 24
     time =  5
+    frames = 100
+
     gain = 10*nodes**2
     normalize_kernel = False
 
@@ -66,7 +68,6 @@ def run():
                                 gain
                                 )
     """Run Model"""
-    frames = 100
     time_eval = np.linspace(0,time,frames)
 
     continuous = False
@@ -100,8 +101,11 @@ def run():
     plot_output(osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
-
-    frame_rate = 2*time/frames  # s per frame
+    ratio = 60/120 # 120 bpm -> 0.5 s/f is our target
+    ############# total_time/frames := resolution
+    ############# frame_rate := frame/s
+    ############# so 2 s/f =
+    frame_rate = time/frames*15  # x time
     vid = animate(kuramoto.osc.plot_directory)
     vid.to_gif(None,frame_rate,True)
 

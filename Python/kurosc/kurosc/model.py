@@ -18,6 +18,7 @@ from spatialKernel.wavelet import kernel
 # from kurosc.lib.plotformat import setup
 
 from lib.plot_solution import plot_contour
+from lib.normal import normal_dist
 
 
 class kuramoto_system(object):
@@ -35,15 +36,28 @@ class kuramoto_system(object):
                  normalize_kernel = False,
                  gain:float = 10*16**2, # k-term
                  ):
+
+        """
+        """
         self.osc = oscillatorArray(array_size,(0,np.pi))
         self.kernel = kernel()
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
-        self.osc.natural_frequency = self.normal_dist(3/2)  # lookup x to gaussian
+        self.osc.natural_frequency = normal_dist(self.osc,self.kernel,
+                                                 3/2,
+                                                 1e6, #1mln samples
+                                                 {'a': 1/7,
+                                                  'b': 0,
+                                                  'c': 1/2,
+                                                  })     # by eye fig 2?
+                                                 # lookup x to gaussian
 
-        print('\nmean natural frequency:',np.round(np.mean(self.osc.natural_frequency),3),
-              '\nstdev:',np.round(np.std(self.osc.natural_frequency),3))
+        print('\nmean natural frequency:',
+                np.round(np.mean(self.osc.natural_frequency),3),
+              '\nstdev:',
+              np.round(np.std(self.osc.natural_frequency),3)
+              )
 
         self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
                                            self.osc.distance.ravel(),
@@ -54,32 +68,13 @@ class kuramoto_system(object):
         self.interaction = interaction(self.osc.ic.shape)
 
 
+    def plot_contour(self,
+                     z:np.ndarray,
+                     t:float = None,
+                     title:str = None):
+        """takes instance of oscillatorArray and plots like the plot_solution below"""
+        plot_contour(self.osc,z,t,title)
 
-    def normal_dist(self,distance:float = 3/2):
-        """construct a normal dist frequency lookup"""
-        resolution = 1e6 #1mln samples
-        x = np.linspace(0,distance,int(resolution)) # Half curve
-        # by eye
-        params = {'a': 1/7,
-                  'b': 0,
-                  'c': 1/2,
-                  }
-
-        g = self.kernel.wavelet(self.kernel.gaussian,x,*params.values(),True)
-        rng = np.random.default_rng()
-        p = rng.choice(g,size=np.prod(self.osc.ic.shape),replace=False)
-        # print('***********',p.shape,g.shape)
-        #init a bool indx
-        indx = np.zeros((*g.shape,*p.shape),dtype=bool)
-        # print(indx.shape[1])
-        indy = np.arange(*g.shape)
-        for k,q in enumerate(p):
-            indx[indy[g==q],k] = 1
-            #return a mxn big list of frequencies
-        # print(x[indx.any(axis=1)].shape)
-        y = x[indx.any(axis=1)]
-        y *= (-np.ones(*y.shape))**rng.choice((0,1),size=y.shape[0])
-        return y
 
 
 
@@ -92,7 +87,7 @@ class kuramoto_system(object):
 
         K = self.gain
         W = self.wavelet
-        ## unknown: is it ok to flatten
+        ## unknown: is it ok to flatten, yes
         G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
                                     **self.interaction_params)).ravel()
         print(G.shape)
@@ -107,11 +102,11 @@ class kuramoto_system(object):
 
     def solve(self,
               time_scale:tuple = (0,10),
-              ode_method:str = 'Radau',
+              ode_method:str = 'LSODA',  # 'Radau' works too, ode45 not so much
               continuous = True,
               time_eval:np.ndarray = None
               ):
-        """
+        """Solve ODE using methods, problem may be stiff so go with inaccurate to hit convergence
         """
         fn = self.differential_equation  # np.vectorize ?
         x0 = self.osc.ic.ravel()
@@ -127,22 +122,61 @@ class kuramoto_system(object):
                          vectorized = False
                          )
 
-    def plot_contour(self,
-                     z:np.ndarray,
-                     t:float = None,
-                     title:str = None):
-        """takes instance of oscillatorArray and plots like the plot_solution below"""
-        plot_contour(self.osc,z,t,title)
 
 
+    #### packaged to lib.normal
+    # def normal_dist(self,
+    #                 distance:float = 3/2,
+    #                 resolution:int = 1e6, #1mln samples
+    #
+    #
+    #                 params:dict = {'a': 1/7,
+    #                                'b': 0,
+    #                                'c': 1/2,
+    #                                },     # by eye fig 2?
+    #                 )->np.ndarray:
+    #     # construct a normal dist frequency lookup
+    #     # can be packaged to lib but need some onject passing
+    #
+    #     x = np.linspace(0,distance,int(resolution)) # Half curve
+    #
+    #
+    #     g = self.kernel.wavelet(self.kernel.gaussian,
+    #                             x,*params.values(),True)
+    #     rng = np.random.default_rng()
+    #
+    #     p = rng.choice(g,
+    #                    size=np.prod(self.osc.ic.shape),
+    #                    replace=False
+    #                    )
+    #     # print('***********',p.shape,g.shape)
+    #
+    #     #init a bool indx
+    #     indx = np.zeros((*g.shape,*p.shape),dtype=bool)
+    #     # print(indx.shape[1])
+    #
+    #
+    #     indy = np.arange(*g.shape)
+    #
+    #     for k,q in enumerate(p):
+    #         indx[indy[g==q],k] = 1
+    #         #return a mxn big list of frequencies matches
+    #     # print(x[indx.any(axis=1)].shape)
+    #
+    #     y = x[indx.any(axis=1)]  # flatten
+    #     # create random sign by x^(0 | -1; p(0)=0.5)
+    #     y *= (-np.ones(*y.shape))**rng.choice((0,1),size=y.shape[0])
+    #     return y
 
-    """packaged to lib, use plot()"""
-    def plot_solution(self,
-                      z:np.ndarray,
-                      t:float = None,
-                      title:str = None):
-        pass
 
+    # def plot_solution(self,
+    #                   z:np.ndarray,
+    #                   t:float = None,
+    #                   title:str = None):
+    #     print('packaged to lib, use plot_contour(z)')
+    #     pass
+
+######################################################
 
 def test_case():
     #initialize an osc array
@@ -179,6 +213,11 @@ def test_case():
           '\nwavelet*difference\n',
           (w*g.ravel()).shape
           )
+
+
+
+
+
 
 def run():
     nodes = 128
