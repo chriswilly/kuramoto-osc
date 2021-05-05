@@ -18,7 +18,7 @@ contains modification to distance Kuramoto model for next steps in project
 
 
 
-96x95 nodes  LSODA solve<br>
+96x96 nodes  LSODA solve<br>
 <img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/__keep__/96x96_LSODA_Oscillator%20Phase%20in%20pi_210505_175825598041.gif">
 
 128 nodes<br>
