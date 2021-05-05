@@ -17,6 +17,8 @@ from secondOrderInteraction.decouple import interaction
 from spatialKernel.wavelet import kernel
 # from kurosc.lib.plotformat import setup
 
+from lib.plot_solution import plot_contour
+
 
 class kuramoto_system(object):
     def __init__(self,
@@ -125,64 +127,21 @@ class kuramoto_system(object):
                          vectorized = False
                          )
 
+    def plot_contour(self,
+                     z:np.ndarray,
+                     t:float = None,
+                     title:str = None):
+        """takes instance of oscillatorArray and plots like the plot_solution below"""
+        plot_contour(self.osc,z,t,title)
 
 
+
+    """packaged to lib, use plot()"""
     def plot_solution(self,
                       z:np.ndarray,
                       t:float = None,
                       title:str = None):
-        """
-        """
-        x = np.linspace(0,self.osc.ic.shape[0],
-                          self.osc.ic.shape[1])
-        y = np.linspace(0,self.osc.ic.shape[1],
-                          self.osc.ic.shape[0])
-        x,y = np.meshgrid(x,y)
-
-        phase_array = np.asarray([x.ravel(),
-                                  y.ravel(),
-                                  z.ravel()%np.pi]
-                                  ).T
-
-        if abs(self.osc.domain[0]) % np.pi == 0 and not self.osc.domain[0] == 0:
-            ti = r'\pi'
-            ti = '-'+ti
-        else:
-            ti = str(self.osc.domain[0])
-
-        if abs(self.osc.domain[1]) % np.pi == 0 and not self.osc.domain[1] == 0:
-            tf = r'\pi'
-        else:
-            tf = str(self.osc.domain[1])
-
-        if not title:
-            title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
-            # title_trans = ''
-
-            if t or not (t==None):
-                if t>10:
-                    title+=f' at t = {t:.0f}'
-                else:
-                    title+=f' at t = {t:2.1f}'
-        """Make 2 copies for  to smooth graphics by avg, don't want to make fake data
-        between timepoints bc that is questionable to me"""
-        self.osc.plot_phase(phase_array,
-                            title,
-                            'Location y',
-                            'Location x'
-                            )
-
-        # self.osc.plot_phase(phase_array,
-        #                     title,
-        #                     'Location y',
-        #                     'Location x'
-        #                     )
-        """actually that breaks output path too..."""
-        # self.osc.plot_phase(phase_array,
-        #                     None,
-        #                     'Location y',
-        #                     'Location x'
-        #                     )
+        pass
 
 
 def test_case():
