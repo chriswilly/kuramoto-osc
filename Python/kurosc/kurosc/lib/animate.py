@@ -46,8 +46,8 @@ class animate(object):
                targetpath:str = None,
                delay:float = 1.33,
                sort:bool = False,
+               clean:bool = False,
                ext:str = 'png',
-               clean:bool = False
                ):
         """
         """
@@ -76,34 +76,56 @@ class animate(object):
 
         self.img_name = self.fmt.plot_name(str(targetpath.stem),'gif')
         imageio.mimsave(self.img_name, images, duration = delay)
+
         if clean:
             self.cleanup(targetpath)
 
 
 
-
-
-
     def cleanup(self,
                 targetpath:str = None):
+
+        for filename in os.listdir(targetpath):
+            file_path = os.path.join(targetpath, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+
+            except Exception as e:
+                print(f'Failed to delete {file_path}. Reason: {e}')
+                return False
+
         try:
-            new_fldr = self.fmt.plot_name(str(targetpath.stem)).stem
-            archive = self.plot_directory/new_fldr
-            print('***target',targetpath.stem)
-            print('***to archive',new_fldr)
-            os.replace(targetpath,archive)
+            os.rmdir(targetpath)
 
-            # self.zip(archive)
+        except OSError as err:
+            print(err)
+            return False
+        return True
 
-        except:
-            print(f'error timestamping image fldr, make sure to clean {targetpath.stem} up before running agin :)')
 
-    def zip(self, dir:str):
-        try:  # base_name, format[, root_dir[, base_dir
-            shutil.make_archive(archive, 'zip', self.plot_directory)
-            # os.rmdir(archive, *, dir_fd=None)
-        except:
-            print(f'error zipping images, make sure to clean {targetpath.stem} up before running agin :)')
+# TODO enable zip img
+    #     try:
+    #         new_fldr = self.fmt.plot_name(str(targetpath.stem)).stem
+    #         archive = self.plot_directory/new_fldr
+    #         print('***target',targetpath.stem)
+    #         print('***to archive',new_fldr)
+    #         os.replace(targetpath,archive)
+    #
+    #         # self.zip(archive)
+    #
+    #     except:
+    #         print(f'error timestamping image fldr, make sure to clean {targetpath.stem} up before running agin :)')
+    #
+    # def zip(self, dir:str):
+    #     try:  # base_name, format[, root_dir[, base_dir
+    #         shutil.make_archive(archive, 'zip', self.plot_directory)
+    #         # os.rmdir(archive, *, dir_fd=None)
+    #     except:
+    #         print(f'error zipping images, make sure to clean {targetpath.stem} up before running agin :)')
 
 
 
