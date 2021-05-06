@@ -1,8 +1,12 @@
-numpy=1.20.1
-scipy=1.6.2
-matplotlib=3.3.4
-sympy=1.8
+numpy==1.20.1
+scipy==1.6.2
+matplotlib==3.3.4
+sympy==1.8
 setuptools
 importlib
+shutil
 pathlib
 datetime
+imageio
+json
+re

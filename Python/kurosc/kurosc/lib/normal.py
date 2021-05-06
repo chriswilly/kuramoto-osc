@@ -1,5 +1,8 @@
 import numpy as np
-
+""" not used but i'm leaving here to show what a goofy workaround
+    using rng.choice
+    incalc a gaussian and ***not*** feeding into  choice but whatever
+"""
 
 def normal_dist(obj, kernel,
                 distance:float = 3/2,

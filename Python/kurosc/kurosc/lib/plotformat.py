@@ -25,7 +25,6 @@ class setup(object):
 
     def clean(self,txt:str):
         ## TODO: fix w/ regex
-
         """
         """
         # print(txt)
@@ -48,14 +47,11 @@ class setup(object):
 
     def plot_name(self,
                   txt:str=None,
-                  extension:str = None):
+                  extension:str = ''):
         p = ''
-        if not extension:
-            extension = ''
-        else:
+        if extension:
             p='.'
 
-        # print(self.directory,self.title)
         if not txt:
             txt = self.title
 
@@ -76,8 +72,8 @@ class setup(object):
         """
         """
         self.directory = (Path(os.path.abspath(__file__))
-                          .parents[self.level] / subdirectory) # assume plot dir one level up
-
+                          .parents[self.level] / subdirectory)
+                          
         if os.path.exists(self.directory):
             return True
         else:

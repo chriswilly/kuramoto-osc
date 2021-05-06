@@ -31,7 +31,7 @@ class interaction(object):
 
 
     def delta(self,
-              phase_array: np.array = np.array([[0,1],[1,0]])
+              phase_array: np.array = np.array([0,1,1,0])
               ) -> np.ndarray:
         """pase difference of element from global array"""
 
