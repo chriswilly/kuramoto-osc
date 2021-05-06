@@ -41,8 +41,8 @@
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
 
-          "nodes": 4,
-          "time": 5,
+          "nodes": 32,
+          "time": 7,
 
           "ODE_method": "LSODA",
           "continuous_soln": "False",
@@ -51,7 +51,7 @@
           "frame_rate": 0.457,
 
           "interaction_complexity": "Kuramoto",
-          "gain_ratio": 18,
+          "gain_ratio": 16,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
                                   "Hansel":{"beta":0.25, "r":0.95}
                                   },
@@ -60,7 +60,7 @@
           "normalize_kernel": "False",
           "kernel_params" : {"a":666,
                              "b":0,
-                             "c":14,
+                             "c":16,
                              "order":0
                            },
 

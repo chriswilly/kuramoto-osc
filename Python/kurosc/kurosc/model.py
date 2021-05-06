@@ -4,7 +4,7 @@ import sys
 
 from scipy.integrate import solve_ivp
 import numpy as np
-# np.set_printoptions(precision=3, suppress=True)
+np.set_printoptions(precision=3, suppress=True)
 from datetime import datetime as dt
 
 from pathlib import Path

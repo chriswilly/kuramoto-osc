@@ -43,7 +43,7 @@ class interaction(object):
         # TODO validat this index assignment with ravel()
         for (k,p) in enumerate(phase_array):
             # print(p.shape)
-            d[k,:] = np.array(((phase_array - p) % np.pi), dtype = float)
+            d[:,k] = np.array(((phase_array - p) % np.pi), dtype = float)
 
         """
         k=0
@@ -80,9 +80,6 @@ class interaction(object):
         ax.plot(X[...,0]/np.pi,X[...,1],'-b')
         ax.plot(np.asarray([X[0,0],X[-1,0]])/np.pi,[0,0],'-k',linewidth=1)  #
 
-        # plt.autoscale(enable=True, axis='both', tight=True)
-        # plt.axis('tight')
-        # ax.legend(loc=3)
         plt.title(plot_title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
