@@ -11,6 +11,7 @@
 
           "frames": 100,
           "frame_rate": 0.457,
+          "interpolate_plot":"False",
 
           "interaction_complexity": "Kuramoto",
           "gain_ratio": 10,
@@ -49,7 +50,7 @@
 
           "frames": 160,
           "frame_rate": 0.457,
-
+          "interpolate_plot":"False",
           "interaction_complexity": "Kuramoto",
           "gain_ratio": 16,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},

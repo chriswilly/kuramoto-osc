@@ -24,14 +24,13 @@ def save_data(data:np.ndarray,
 def plot_output(model,obj,
                 data:np.ndarray,
                 time:np.ndarray,
+                scale:bool = False,
                 file_name:str = 'model_data'):
-    print(data.shape)
-    for t,image in enumerate(data):
-        print('\n\n\n*****************\n\n',image)
-        # print(kuramoto,kuramoto.osc,'\n\n',image,solution.t[t])
-        # input('.')
-        model.plot_contour(obj,image,time[t])
 
+    # print(data.shape)
+    for k in np.arange(data.shape[2]):
+        # print(data[...,k].shape,time[k])
+        model.plot_contour(obj,data[...,k],time[k],)
 
 
 
@@ -49,12 +48,11 @@ def plot_contour(obj,
                       obj.ic.shape[0])
 
 
-    # print('*****',x.shape,y.shape,z.shape)
-    # input('.')
-
 
     if scale:
-        s = RectBivariateSpline(x,y,z,kx=3,ky=3)
+        s = RectBivariateSpline(x,y,z,
+                                kx=obj.ic.shape[0],
+                                ky=obj.ic.shape[1])
 
         x = np.linspace(0,obj.ic.shape[0],
                           obj.ic.shape[1]*scale)
@@ -67,8 +65,6 @@ def plot_contour(obj,
     x,y = np.meshgrid(x,y,sparse=False)
 
 
-    # print('%%%%%',x.shape,y.shape,z.shape)
-    # input('.')
 
 
     phase_array = np.asarray([x.ravel(),y.ravel(),z.ravel()%np.pi]).T
@@ -129,7 +125,7 @@ def plot_phase(obj,
                              endpoint=True)
 
     # print(X[...,0].shape,X[...,1].shape,X[...,2].shape)
-    print('\n\nx:0',X[0:6,0],'\n\ny:1',X[0:6,1],'\n\nz:2',X[0:6,2])
+    # print('\n\nx:0',X[0:6,0],'\n\ny:1',X[0:6,1],'\n\nz:2',X[0:6,2])
     # input('.')
 
 

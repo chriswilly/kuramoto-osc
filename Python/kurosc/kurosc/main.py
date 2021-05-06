@@ -39,6 +39,7 @@ def run(config_file:str = Path('model_config.json').resolve(),
     time =  var[set]['time']
     frames = var[set]['frames']
     frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
+    interpolate = bool(var[set]['interpolate_plot'])
 
     gain_ratio = var[set]['gain_ratio']
     output_dir_level = var[set]['output_dir_level']
@@ -73,10 +74,15 @@ def run(config_file:str = Path('model_config.json').resolve(),
                               continuous_soln,
                               time_eval,
                               )
-
-    osc_state = solution.y.reshape((solution.t.shape[0],
+    # print('\ny.shape:',solution.y.shape)   # for 32x32 : 1024 x 160
+    # reshape(0,1,2)
+    # thgen enumerate on ax 2
+    # numpy.nditer(
+    #
+    # input('.')
+    osc_state = solution.y.reshape((nodes,
                                     nodes,
-                                    nodes,
+                                    solution.t.shape[0]
                                     ))
 
     print('\nsol.shape:',solution.y.shape,
@@ -99,7 +105,8 @@ def run(config_file:str = Path('model_config.json').resolve(),
     ### kuramoto.plot_solution(osc_state[-1],solution.t[-1])
 
     plot_output(kuramoto,kuramoto.osc,
-                osc_state,solution.t)
+                osc_state,solution.t, interpolate)
+
     print(kuramoto.osc.plot_directory)
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
