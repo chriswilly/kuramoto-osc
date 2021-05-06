@@ -74,12 +74,8 @@ def run(config_file:str = Path('model_config.json').resolve(),
                               continuous_soln,
                               time_eval,
                               )
-    # print('\ny.shape:',solution.y.shape)   # for 32x32 : 1024 x 160
-    # reshape(0,1,2)
-    # thgen enumerate on ax 2
-    # numpy.nditer(
-    #
-    # input('.')
+
+
     osc_state = solution.y.reshape((nodes,
                                     nodes,
                                     solution.t.shape[0]
