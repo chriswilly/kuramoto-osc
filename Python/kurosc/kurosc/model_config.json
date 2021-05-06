@@ -3,7 +3,7 @@
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
 
-          "nodes": 64,
+          "nodes": 72,
           "time": 10,
 
           "ODE_method": "LSODA",
