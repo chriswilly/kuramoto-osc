@@ -42,16 +42,15 @@ class interaction(object):
 
         # TODO validat this index assignment with ravel()
         for (k,p) in enumerate(phase_array):
-            # print(p.shape)
-            d[:,k] = np.array(((phase_array - p) % np.pi), dtype = float)
+            d[k,:] = np.array(((phase_array - p) % np.pi), dtype = float)
 
         """
-        k=0
-        for j in np.arange(phase_array.shape[1]):
-            for i in np.arange(phase_array.shape[0]):
-                # print(i*j,j,i)
-                d[k,...] = (phase_array - phase_array[i,j]) % np.pi
-                k+=1
+        # k=0
+        # for j in np.arange(phase_array.shape[1]):
+        #     for i in np.arange(phase_array.shape[0]):
+        #         # print(i*j,j,i)
+        #         d[k,...] = (phase_array - phase_array[i,j]) % np.pi
+        #         k+=1
         """
         return d
 

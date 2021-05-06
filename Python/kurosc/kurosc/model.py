@@ -130,9 +130,6 @@ class kuramoto_system(object):
 
         return dx
 
-        # print('osc shape:',np.prod(self.osc.shape),
-        #       '\nG shape:',G.shape[0])
-
 
     def solve(self,
               time_scale:tuple = (0,10),
