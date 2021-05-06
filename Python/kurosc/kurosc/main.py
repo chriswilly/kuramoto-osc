@@ -26,7 +26,7 @@ from lib.plot_solution import ( plot_output,
 
 
 def run(config_file:str = Path('model_config.json').resolve(),
-        set:str = 'test_set1'):
+        set:str = 'test_set0'):
     """
     """
     f = open(config_file)
