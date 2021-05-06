@@ -2,6 +2,19 @@
 
       /kuramoto-osc/tree/main/Python/kurosc/kurosc
 
+
+
+            kurosc/
+            ----kurosc/
+            --------model_config.py
+            --------main.py    <---run()
+            --------model.py
+            --------lib
+
+
+
+
+
 # spatialKernel
 wavelet.py<br>
 Figure 2<br>
