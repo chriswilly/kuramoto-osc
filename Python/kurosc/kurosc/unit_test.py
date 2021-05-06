@@ -20,6 +20,7 @@ unit test dist in array
 call wavelet
 """
 
+
 def distance_test(m:int = 128,
                   n:int = 128,
                   ):
@@ -140,6 +141,22 @@ def move_dirs():
     print(fmt.plot_name(str(txt)))
 
 
+
+
+
+def load_j():
+    import json
+    f = open('model_config.json')
+    var = json.load(f)
+    [print(var['test_set0'][k]) for k,v in var['test_set0'].items()]
+
+
+
+
+
+
+
+
 def main():
     # distance_test(3,3)
     # wavelet_test()
@@ -147,6 +164,7 @@ def main():
     # gif_test()
     # normal_test()
     move_dirs()
+    load_j()
 
 
 if __name__ == '__main__':

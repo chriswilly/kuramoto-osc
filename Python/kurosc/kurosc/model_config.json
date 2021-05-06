@@ -1,0 +1,74 @@
+{
+"test_set0": {
+          "output_dir_level": 3,
+          "output_dir_name": "placeholder",
+
+          "nodes": 64,
+          "time": 10,
+
+          "ODE_method": "LSODA",
+          "continuous_soln": "False",
+
+          "frames": 100,
+          "frame_rate": 0.457,
+
+          "interaction_complexity": "Kuramoto",
+          "gain_ratio": 10,
+          "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
+                                  "Hansel":{"beta":0.25, "r":0.95}
+                                  },
+
+
+          "normalize_kernel": "False",
+          "kernel_params" : {"a":666,
+                             "b":0,
+                             "c":3,
+                             "order":4
+                           },
+
+          "natural_freq_params" : {"a": 0.16667,
+                                   "b":0,
+                                   "c":0.4,
+                                   "order":0
+                                 }
+
+        },
+
+
+
+
+"test_set1": {
+          "output_dir_level": 3,
+          "output_dir_name": "placeholder",
+
+          "nodes": 4,
+          "time": 5,
+
+          "ODE_method": "LSODA",
+          "continuous_soln": "False",
+
+          "frames": 160,
+          "frame_rate": 0.457,
+
+          "interaction_complexity": "Kuramoto",
+          "gain_ratio": 18,
+          "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
+                                  "Hansel":{"beta":0.25, "r":0.95}
+                                  },
+
+
+          "normalize_kernel": "False",
+          "kernel_params" : {"a":666,
+                             "b":0,
+                             "c":14,
+                             "order":0
+                           },
+
+          "natural_freq_params" : {"a": 0.16667,
+                                   "b":0,
+                                   "c":0.0000001,
+                                   "order":0
+                                 }
+
+        }
+}

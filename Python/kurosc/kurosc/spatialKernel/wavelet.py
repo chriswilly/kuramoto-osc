@@ -41,11 +41,11 @@ class kernel(object):
         if d > 19:
             print('derivative order too high, it doesnt help either')
             return None
+
         y = fn(x,a,b,c,d)
-        # I = fn(x,a,b,c,d-1)  # integral
 
         if normalize:
-            return y/np.max(np.absolute(y))
+            return y/np.sum(np.absolute(y))
         else:
             return y
 
@@ -103,9 +103,6 @@ class kernel(object):
 
         ax.plot(X[...,0],X[...,1],'-b')
 
-        # plt.autoscale(enable=True, axis='both', tight=True)
-        # plt.axis('tight')
-        # ax.legend(loc=3)
         plt.title(plot_title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)

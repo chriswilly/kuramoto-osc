@@ -1,6 +1,5 @@
 """
 """
-
 import sys
 from pathlib import Path
 sys.path.append(Path(__file__).resolve())
@@ -9,13 +8,13 @@ if __name__ == '__main__' and __package__ is None:
 
 from datetime import datetime as dt
 import numpy as np
-np.set_printoptions(precision=3, suppress=True)
-
+import json
 
 from model import kuramoto_system
-from lib.plotformat import setup
 from lib.animate import animate
-
+from lib.plot_solution import ( plot_output,
+                                save_data
+                                )
 
 """
 # annotate:
@@ -26,54 +25,40 @@ from lib.animate import animate
 """
 
 
-def run():
-    """subfn to keep obj dep going
-    """
-    def plot_output(data:np.ndarray,
-                    time:np.ndarray,
-                    file_name:str = 'model_data'):
-        for t,image in enumerate(data):
-            # print(image)
-            kuramoto.plot_contour(image,solution.t[t])
+def run(config_file:str = Path('model_config.json').resolve(),
+        set:str = 'test_set1'):
     """
     """
-    def save_data(data:np.ndarray,
-                  file_name:str = 'model_data',
-                  level:int = 3):
-        print(file_name)
-        fmt = setup(file_name,level)
-        np.save(fmt.plot_name(file_name,'npy'),data)
-
-    """
-    # notes 96x96 for LSODA @ c = 3 & gain = 10*nodes**2
-    #
-    #
-    #
-    #
-    """
+    f = open(config_file)
+    var = json.load(f)
 
 
-    nodes = 96
-    time =  5
-    frames = 100
-    gain = 12*nodes**2
-    output_dir_level = 2
-    indx = 1 # inspection param dict
+    method = var[set]['ODE_method']   # too stiff for 'RK45', use 'LSODA',‘BDF’,'Radau'
 
-    normalize_kernel = False
+    nodes = var[set]['nodes']
+    time =  var[set]['time']
+    frames = var[set]['frames']
+    frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
 
-    kernel_params = {'a': int(np.round(10000/3*2)), # arbitrary iff normalize in model self.wavelet = true
-                     'b': 0,
-                     'c': 3,
-                     'order': 4,
-                     }
-    interaction_params = ({'beta': 0, 'r':0},
-                          {'beta': 0.25, 'r':0.95}
-                          )
+    gain_ratio = var[set]['gain_ratio']
+    output_dir_level = var[set]['output_dir_level']
+    interaction_complexity = var[set]['interaction_complexity']
+
+    normalize_kernel = bool(var[set]['normalize_kernel'])
+    continuous_soln =  bool(var[set]['continuous_soln'])
+
+    kernel_params = var[set]['kernel_params']
+    interaction_params = var[set]['interaction_params']
+    natural_freq_params = var[set]['natural_freq_params']
+
+
+    """Init model"""
+    gain = gain_ratio*nodes**2
 
     kuramoto = kuramoto_system((nodes,nodes),
                                 kernel_params,
-                                interaction_params[indx],
+                                interaction_params[interaction_complexity],
+                                natural_freq_params,
                                 normalize_kernel,
                                 gain,
                                 output_dir_level
@@ -81,27 +66,30 @@ def run():
     """Run Model"""
     time_eval = np.linspace(0,time,frames)
 
-    continuous = False
+
 
     solution = kuramoto.solve((0,time),
-                              'LSODA',   # too stiff for 'RK45', use ‘BDF’, 'LSODA', 'Radau'
-                              continuous,
+                              method,
+                              continuous_soln,
                               time_eval,
                               )
 
-
     osc_state = solution.y.reshape((solution.t.shape[0],
                                     nodes,
-                                    nodes))%np.pi
+                                    nodes,
+                                    ))
 
-    print('\nsol.shape:',solution.y.shape, '\nt.shape:',solution.t.shape, '\nosc.shape:',osc_state.shape)
-    # print(osc_state[0])
+    print('\nsol.shape:',solution.y.shape,
+          '\nt.shape:',solution.t.shape,
+          '\nosc.shape:',osc_state.shape)
+
+
 
 
     """Data labeling"""
     param = lambda d: [''.join(f'{key}={value}') for (key,value) in d.items()]
-    title = f'{nodes}_osc_with_k-n{int(gain/nodes)}_at_t_{time}_'
-    title+='_'.join(param(interaction_params[indx]))
+    title = f'{nodes}_osc_with_kn={int(gain/nodes)}_at_t_{time}_'
+    title+='_'.join(param(interaction_params[interaction_complexity]))
     title+='_'+'_'.join(param(kernel_params))
 
     save_data(solution,title,output_dir_level)
@@ -109,10 +97,11 @@ def run():
 
     """Plotting & animation """
     ### kuramoto.plot_solution(osc_state[-1],solution.t[-1])
-    plot_output(osc_state,solution.t)
+
+    plot_output(kuramoto,kuramoto.osc,
+                osc_state,solution.t)
     print(kuramoto.osc.plot_directory)
 
-    frame_rate = 60/140 # 120 bpm -> 0.5 s/f
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True)
 
@@ -121,5 +110,4 @@ def run():
 
 
 if __name__ == '__main__':
-    # test_case()
     run()

@@ -8,6 +8,7 @@ import imageio
 import os
 import sys
 import re
+import shutil
 import numpy as np
 from os.path import isfile, join
 
@@ -45,7 +46,8 @@ class animate(object):
                targetpath:str = None,
                delay:float = 1.33,
                sort:bool = False,
-               ext:str = 'png'
+               ext:str = 'png',
+               clean:bool = False
                ):
         """
         """
@@ -73,22 +75,35 @@ class animate(object):
         images = list(map(img, filelist))
 
         self.img_name = self.fmt.plot_name(str(targetpath.stem),'gif')
-        # print('self.img_name',self.img_name)
-        # dest = self.plot_directory.parent / (str(targetpath.stem)+'.gif')
-        # print('dest',dest)
         imageio.mimsave(self.img_name, images, duration = delay)
+        if clean:
+            self.cleanup(targetpath)
 
 
+
+
+
+
+    def cleanup(self,
+                targetpath:str = None):
         try:
-            print('***********************',targetpath.stem)
-            # new = self.fmt.plotname(str(targetpath.stem))
-            # print(self.plot_directory/new)
-            new = self.fmt.plotname(str(targetpath.stem))
-            print('**********************',new)
-            print(f'did not actually timestamp images, make sure to clean {targetpath.stem} up before running agin :)')
+            new_fldr = self.fmt.plot_name(str(targetpath.stem)).stem
+            archive = self.plot_directory/new_fldr
+            print('***target',targetpath.stem)
+            print('***to archive',new_fldr)
+            os.replace(targetpath,archive)
+
+            # self.zip(archive)
 
         except:
-            print(f'error timestamping images, make sure to clean {targetpath.stem} up before running agin :)')
+            print(f'error timestamping image fldr, make sure to clean {targetpath.stem} up before running agin :)')
+
+    def zip(self, dir:str):
+        try:  # base_name, format[, root_dir[, base_dir
+            shutil.make_archive(archive, 'zip', self.plot_directory)
+            # os.rmdir(archive, *, dir_fd=None)
+        except:
+            print(f'error zipping images, make sure to clean {targetpath.stem} up before running agin :)')
 
 
 

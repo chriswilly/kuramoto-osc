@@ -12,17 +12,8 @@ sys.path.append(Path(__file__).resolve().parents[1])
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'kurosc'
 
-from lib.plotformat import setup
-
-# print(sys.path[0])
-
-# curious if this
-
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from matplotlib.ticker import StrMethodFormatter
-
+from lib.plot_solution import plot_phase
 
 class oscillatorArray(object):
     def __init__(self,
@@ -32,10 +23,12 @@ class oscillatorArray(object):
                  ):
         self.domain = domain
         self.ic = self.initial_conditions(*dimension)
-        self.natural_frequency = None
+        self.natural_frequency = None  # initialized in model, dependent on spatial kernel fns to calc arry
         self.distance = self.distance()
         self.level = output_level
+        self.plot_phase = plot_phase
         self.plot_directory = None
+
 
     def initial_conditions(self,
                            m:int = 16,
@@ -68,9 +61,12 @@ class oscillatorArray(object):
         for (k,x) in enumerate(z):
             d[k,:] = np.array(np.sqrt((u - x[0])**2 + (v - x[1])**2),dtype=t)
         return d
-    #
-    #
-    #     """
+
+
+
+
+
+
     #     d = np.zeros([self.ic.shape[0]*self.ic.shape[1],
     #                   self.ic.shape[1],
     #                   self.ic.shape[0]])
@@ -83,11 +79,9 @@ class oscillatorArray(object):
     #             d[k,...] = self.indiv_distance((i,j),integer)
     #             k+=1
     #     return d
-    #     """
-    #
-    #
-    #
-    # """
+
+
+
     # def indiv_distance(self,
     #              indx:tuple = (0,0),
     #              integer:bool = False,
@@ -110,60 +104,8 @@ class oscillatorArray(object):
     #         return np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2)
     #     else:
     #         return np.asarray(np.sqrt((indx[0] - x)**2 + (indx[1] - y)**2),dtype = int)
-    #
-    # """
-    #
 
 
-
-    def plot_phase(self,
-                   X: np.ndarray,
-                   plot_title:str = None,
-                   y_axis:str = 'y',
-                   x_axis:str = 'x',
-                   resolution:int = 24
-                   ):
-        """
-        """
-        fldr = plot_title.replace('at t = ','')
-        fldr = re.sub('[*\d\.\d*]','',fldr).strip()
-        # print(fldr)
-        fmt = setup(fldr,self.level)
-        self.plot_directory = fmt.directory
-
-        fig = plt.figure(figsize=(10,8))
-        ax = fig.add_subplot(111)
-
-
-
-        colorscale = np.linspace(np.min(self.domain),
-                                 np.max(self.domain),
-                                 resolution,
-                                 endpoint=True)
-
-        plt.tricontourf(X[...,0],X[...,1],X[...,2],
-                        colorscale,cmap=plt.cm.nipy_spectral,
-                        )
-
-        plt.gca().invert_yaxis()
-        plt.grid(b=True, which='major', axis='both')
-
-        plt.clim(colorscale[0],colorscale[-1])
-        plt.colorbar(ticks=colorscale[::5],format='%1.2f')
-
-        ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-        ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-        # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
-        # ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=1))
-
-        plt.title(plot_title)
-        plt.xlabel(x_axis)
-        plt.ylabel(y_axis)
-
-        plt.grid(b=None, which='major', axis='both')
-        # plt.show()
-        fig.savefig(fmt.plot_name(plot_title,'png'))
-        plt.close('all')
 
 
 

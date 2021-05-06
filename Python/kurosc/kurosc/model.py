@@ -18,13 +18,12 @@ from spatialKernel.wavelet import kernel
 # from kurosc.lib.plotformat import setup
 
 from lib.plot_solution import plot_contour
-from lib.normal import normal_dist
+# from lib.normal import normal_dist
 
 
 class kuramoto_system(object):
     def __init__(self,
                  array_size:tuple = (16,16),
-                 # initial_conditions:tuple = (0,np.pi),
 
                  kernel_params:dict = {'a': 10000/3*2,
                                        'b': 0,
@@ -33,6 +32,13 @@ class kuramoto_system(object):
 
                  interaction_params:dict = {'beta': 0,
                                             'r': 0},
+
+                 natural_freq_params:dict = {'a': 1/6,
+                                             'b': 0,
+                                             'c': 2/5,
+                                             'order':0,
+                                             },
+
                  normalize_kernel = False,
                  gain:float = 10*16**2, # k-term
                  out_dir:int = 3,
@@ -45,37 +51,61 @@ class kuramoto_system(object):
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
-        self.osc.natural_frequency = normal_dist(self.osc,self.kernel,
-                                                 3/2,
-                                                 1e6, #1mln samples
-                                                 {'a': 1/7,
-                                                  'b': 0,
-                                                  'c': 1/2,
-                                                  })     # by eye fig 2?
-                                                 # lookup x to gaussian
-
-        print('\nmean natural frequency:',
-                np.round(np.mean(self.osc.natural_frequency),3),
-              '\nstdev:',
-              np.round(np.std(self.osc.natural_frequency),3)
-              )
+        self.osc.natural_frequency = self.natural_frequency()
 
         self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
                                            self.osc.distance.ravel(),
                                            *self.kernel_params.values(),
                                            normalize_kernel
                                            )
-        # this bool determines if the wavelet is normalized
+
         self.interaction = interaction(self.osc.ic.shape)
+        self.plot_contour = plot_contour
 
 
-    def plot_contour(self,
-                     z:np.ndarray,
-                     t:float = None,
-                     title:str = None):
-        """takes instance of oscillatorArray and plots like the plot_solution below"""
-        scale = None
-        plot_contour(self.osc,z,t,title,scale)
+
+
+    def natural_frequency(self,
+                          params:dict = {'a': 1/6,
+                                         'b': 0,
+                                         'c': 2/5,
+                                         'order':0,
+                                         }
+                          )->np.ndarray:
+        """rtrn x vals for normal weighted abt 0
+            #  distinct vals for replace = false
+        """
+
+        # range discerned by eye fig 1 fitting a&c
+        x = np.linspace(params['b']-3.5*params['c'],
+                        params['b']+3.5*params['c'],
+                        int(1e6)
+                        )
+
+        prob = self.kernel.wavelet(self.kernel.gaussian,
+                                   x,
+                                   *params.values(),
+                                   True
+                                   )
+
+        prob = prob/np.sum(prob)  # pdf for weights
+
+        rng = np.random.default_rng()
+
+        frequency = rng.choice(x,
+                               size=np.prod(self.osc.ic.shape),
+                               p = prob,
+                               replace=False,
+                               )
+
+        print('\nmean natural frequency:',
+              np.round(np.mean(frequency),3),
+              '\nstdev:',
+              np.round(np.std(frequency),3)
+              )
+
+        return frequency
+
 
 
 
@@ -89,24 +119,26 @@ class kuramoto_system(object):
 
         K = self.gain
         W = self.wavelet
-        ## unknown: is it ok to flatten, yes
+
         G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
                                     **self.interaction_params)).ravel()
-        print(G.shape)
         N = np.prod(self.osc.ic.shape)
-        return K/N*np.sum(W*G)+ self.osc.natural_frequency.ravel()
 
+        dx = K/N*np.sum(W*G) + self.osc.natural_frequency.ravel()
+
+        print('t_step:',np.round(t,4))
+
+        return dx
 
         # print('osc shape:',np.prod(self.osc.shape),
         #       '\nG shape:',G.shape[0])
 
 
-
     def solve(self,
               time_scale:tuple = (0,10),
-              ode_method:str = 'LSODA',  # 'Radau' works too, ode45 not so much
-              continuous = True,
-              time_eval:np.ndarray = None
+              ode_method:str = 'LSODA',  # 'Radau' works too, RK45 not so much
+              continuous_fn = True,
+              time_eval:np.ndarray = None,
               ):
         """Solve ODE using methods, problem may be stiff so go with inaccurate to hit convergence
         """
@@ -120,66 +152,14 @@ class kuramoto_system(object):
                          x0,
                          t_eval = time_eval,
                          method=ode_method,
-                         dense_output = continuous,
+                         dense_output = continuous_fn,
                          vectorized = False
                          )
 
 
-
-    #### packaged to lib.normal
-    # def normal_dist(self,
-    #                 distance:float = 3/2,
-    #                 resolution:int = 1e6, #1mln samples
-    #
-    #
-    #                 params:dict = {'a': 1/7,
-    #                                'b': 0,
-    #                                'c': 1/2,
-    #                                },     # by eye fig 2?
-    #                 )->np.ndarray:
-    #     # construct a normal dist frequency lookup
-    #     # can be packaged to lib but need some onject passing
-    #
-    #     x = np.linspace(0,distance,int(resolution)) # Half curve
-    #
-    #
-    #     g = self.kernel.wavelet(self.kernel.gaussian,
-    #                             x,*params.values(),True)
-    #     rng = np.random.default_rng()
-    #
-    #     p = rng.choice(g,
-    #                    size=np.prod(self.osc.ic.shape),
-    #                    replace=False
-    #                    )
-    #     # print('***********',p.shape,g.shape)
-    #
-    #     #init a bool indx
-    #     indx = np.zeros((*g.shape,*p.shape),dtype=bool)
-    #     # print(indx.shape[1])
-    #
-    #
-    #     indy = np.arange(*g.shape)
-    #
-    #     for k,q in enumerate(p):
-    #         indx[indy[g==q],k] = 1
-    #         #return a mxn big list of frequencies matches
-    #     # print(x[indx.any(axis=1)].shape)
-    #
-    #     y = x[indx.any(axis=1)]  # flatten
-    #     # create random sign by x^(0 | -1; p(0)=0.5)
-    #     y *= (-np.ones(*y.shape))**rng.choice((0,1),size=y.shape[0])
-    #     return y
-
-
-    # def plot_solution(self,
-    #                   z:np.ndarray,
-    #                   t:float = None,
-    #                   title:str = None):
-    #     print('packaged to lib, use plot_contour(z)')
-    #     pass
-
-######################################################
-
+###############################################################################
+## unit tests may need update below but not called into model
+###############################################################################
 def test_case():
     #initialize an osc array
     dimension = (2,2)
@@ -215,8 +195,6 @@ def test_case():
           '\nwavelet*difference\n',
           (w*g.ravel()).shape
           )
-
-
 
 
 
