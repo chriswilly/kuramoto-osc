@@ -10,7 +10,16 @@ https://doi.org/10.3389/fnhum.2010.00190
 may eventually contain original paper source code
 
 # Python
-contains modification to distance Kuramoto model for next steps in project
+contains modification to distance Kuramoto model for next steps in project<br>
+
+
+      kurosc/
+      ----kurosc/
+      --------model_config.py
+      --------main.py    <---run()
+      --------model.py
+      --------lib
+
 
 # Plot Arbitrary Size Node Array Random Initial Conditions
 

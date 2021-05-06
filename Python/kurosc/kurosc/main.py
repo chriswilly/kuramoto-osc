@@ -39,14 +39,17 @@ def run(config_file:str = Path('model_config.json').resolve(),
     time =  var[set]['time']
     frames = var[set]['frames']
     frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
-    interpolate = bool(var[set]['interpolate_plot'])
+    interpolate = var[set]['interpolate_plot']
+    save_numpy = var[set]['save_numpy']
 
     gain_ratio = var[set]['gain_ratio']
+
+
     output_dir_level = var[set]['output_dir_level']
     interaction_complexity = var[set]['interaction_complexity']
 
-    normalize_kernel = bool(var[set]['normalize_kernel'])
-    continuous_soln =  bool(var[set]['continuous_soln'])
+    normalize_kernel = var[set]['normalize_kernel']
+    continuous_soln =  var[set]['continuous_soln']
 
     kernel_params = var[set]['kernel_params']
     interaction_params = var[set]['interaction_params']
@@ -94,7 +97,8 @@ def run(config_file:str = Path('model_config.json').resolve(),
     title+='_'.join(param(interaction_params[interaction_complexity]))
     title+='_'+'_'.join(param(kernel_params))
 
-    save_data(solution,title,output_dir_level)
+    if save_numpy:
+        save_data(solution,title,output_dir_level)
 
 
     """Plotting & animation """

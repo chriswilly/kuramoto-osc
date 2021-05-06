@@ -3,8 +3,11 @@
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
 
+          "save_numpy":"False",
+
+
           "nodes": 72,
-          "time": 10,
+          "time": 7,
 
           "ODE_method": "LSODA",
           "continuous_soln": "False",
@@ -14,7 +17,7 @@
           "interpolate_plot":"False",
 
           "interaction_complexity": "Kuramoto",
-          "gain_ratio": 10,
+          "gain_ratio": 11,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
                                   "Hansel":{"beta":0.25, "r":0.95}
                                   },
@@ -23,7 +26,7 @@
           "normalize_kernel": "False",
           "kernel_params" : {"a":666,
                              "b":0,
-                             "c":3,
+                             "c":4,
                              "order":4
                            },
 
@@ -41,6 +44,8 @@
 "test_set1": {
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
+          "save_numpy":"False",
+
 
           "nodes": 32,
           "time": 7,
