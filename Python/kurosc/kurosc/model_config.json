@@ -46,13 +46,13 @@
 
 
           "nodes": 64,
-          "time": 30,
+          "time": 11,
 
           "ODE_method": "LSODA",
           "continuous_soln":"True",
 
           "frames": 300,
-          "frame_rate": 0.457,
+          "frame_rate": 0.45,
           "interpolate_plot":"False",
 
           "interaction_complexity":"Kuramoto",
