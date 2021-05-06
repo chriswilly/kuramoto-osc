@@ -4,14 +4,16 @@ jump to <br>
 
 
 
-    
+
             kurosc/
             ----kurosc/
             --------model_config.py
             --------main.py    <---run()
             --------model.py
             --------lib
-
+            --------corticalSheet  : oscillator arrays & ics
+            --------spatialKernel  : gaussian differentiate
+            --------secondOrderInteraction  : nominal kuramoto model when r,beta = 0,0  
 
 
 

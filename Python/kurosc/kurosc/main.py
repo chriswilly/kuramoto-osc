@@ -25,8 +25,8 @@ from lib.plot_solution import ( plot_output,
 """
 
 
-def run(config_file:str = Path('model_config.json').resolve(),
-        set:str = 'test_set0'):
+def run(set:str = 'global_sync',
+        config_file:str = Path('model_config.json').resolve()):
     """
     """
     f = open(config_file)
@@ -39,8 +39,8 @@ def run(config_file:str = Path('model_config.json').resolve(),
     time =  var[set]['time']
     frames = var[set]['frames']
     frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
-    interpolate = var[set]['interpolate_plot']
-    save_numpy = var[set]['save_numpy']
+    interpolate = (False if var[set]['interpolate_plot']=='False' else True)
+    save_numpy = (False if var[set]['save_numpy']=='False' else True)
 
     gain_ratio = var[set]['gain_ratio']
 
@@ -48,8 +48,8 @@ def run(config_file:str = Path('model_config.json').resolve(),
     output_dir_level = var[set]['output_dir_level']
     interaction_complexity = var[set]['interaction_complexity']
 
-    normalize_kernel = var[set]['normalize_kernel']
-    continuous_soln =  var[set]['continuous_soln']
+    normalize_kernel = (False if var[set]['normalize_kernel']=='False' else True)
+    continuous_soln =  (False if var[set]['continuous_soln']=='False' else True)
 
     kernel_params = var[set]['kernel_params']
     interaction_params = var[set]['interaction_params']
@@ -97,7 +97,12 @@ def run(config_file:str = Path('model_config.json').resolve(),
     title+='_'.join(param(interaction_params[interaction_complexity]))
     title+='_'+'_'.join(param(kernel_params))
 
+
+    #TODO inspect this
+
     if save_numpy:
+        print('\ndata save is set to:',save_numpy,'type', type(save_numpy),
+        '\noutput to:', title,output_dir_level,'levels up from lib')
         save_data(solution,title,output_dir_level)
 
 
@@ -110,7 +115,7 @@ def run(config_file:str = Path('model_config.json').resolve(),
     print(kuramoto.osc.plot_directory)
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
-    vid.to_gif(None,frame_rate,True)
+    vid.to_gif(None,frame_rate,True,True)
 
 
 
