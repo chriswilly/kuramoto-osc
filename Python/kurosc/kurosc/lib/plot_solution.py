@@ -9,6 +9,7 @@ from lib.plotformat import setup
 
 import re
 import numpy as np
+np.set_printoptions(precision=3, suppress=True)
 from scipy.interpolate import RectBivariateSpline
 
 
@@ -26,7 +27,7 @@ def plot_output(model,obj,
                 file_name:str = 'model_data'):
     print(data.shape)
     for t,image in enumerate(data):
-        print('\n\n\n*****************',image)
+        print('\n\n\n*****************\n\n',image)
         # print(kuramoto,kuramoto.osc,'\n\n',image,solution.t[t])
         # input('.')
         model.plot_contour(obj,image,time[t])
