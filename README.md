@@ -28,7 +28,7 @@ contains modification to distance Kuramoto model for next steps in project<br>
 
 
 72x72 nodes  LSODA solve<br>
-<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/Oscillator Phase in pi_210506_152127776909.gif">
+<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/Oscillator%20Phase%20in%20pi_210506_155237982627.gif">
 
 128 nodes<br>
 <img width="1039" alt="random ic" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/figure_reproduction/Oscillator%20Phase%20in%200pi/Oscillator%20Phase%20in%200pi_210502_211548838946.png">
