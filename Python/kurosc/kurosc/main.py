@@ -9,7 +9,9 @@ if __name__ == '__main__' and __package__ is None:
 from datetime import datetime as dt
 import numpy as np
 import json
+import argparse
 
+##
 from model import kuramoto_system
 from lib.animate import animate
 from lib.plot_solution import ( plot_output,
@@ -26,9 +28,10 @@ from lib.plot_solution import ( plot_output,
 
 
 def run(set:str = 'global_sync',
-        config_file:str = Path('model_config.json').resolve()):
+        config_file:str = 'model_config.json'):
     """
     """
+    config_file = Path(config_file).resolve()
     f = open(config_file)
     var = json.load(f)
 
@@ -119,6 +122,24 @@ def run(set:str = 'global_sync',
 
 
 
+def main():
+    parser = argparse.ArgumentParser(description='Select model_config scenario & path (optional):')
+
+    parser.add_argument('--set', metavar='scenario | variable set',
+                        type=str, nargs='?',
+                        help='model_config.json key like global_sync',
+                        default='test_set0')
+
+
+    parser.add_argument('--path', metavar='directory to config.json',
+                        type=str, nargs='?',
+                        help='model_config.json path, default is pwd',
+                        default='model_config.json')
+
+    args = parser.parse_args()
+    run(args.set, args.path)
+
+
 
 if __name__ == '__main__':
-    run()
+    main()
