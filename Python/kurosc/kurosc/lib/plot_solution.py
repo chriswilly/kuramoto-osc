@@ -145,8 +145,9 @@ def plot_phase(obj,
 
     ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-    # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
-    # ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=1))
+    ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=obj.ic.shape[0]/4))
+    ax.yaxis.set_major_locator(mpl.ticker.MultipleLocator(base=obj.ic.shape[1]/4))
+
 
     plt.title(plot_title)
     plt.xlabel(x_axis)

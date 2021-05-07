@@ -73,7 +73,7 @@ class setup(object):
         """
         self.directory = (Path(os.path.abspath(__file__))
                           .parents[self.level] / subdirectory)
-                          
+
         if os.path.exists(self.directory):
             return True
         else:
@@ -101,3 +101,11 @@ class setup(object):
         mpl.rcParams['lines.markeredgewidth'] = 3
         mpl.rcParams['legend.framealpha'] = 0.93
         mpl.rcParams['legend.fontsize'] = 24
+
+
+
+
+    # ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%g $\pi$'))
+    # ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([1,5,8]))
+    # ax.xaxis.set_major_formatter(matplotlib.ticker.FixedFormatter([1,5,8]))
+    # ax.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
