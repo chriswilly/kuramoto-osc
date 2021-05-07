@@ -46,8 +46,8 @@
           "save_numpy":"False",
 
 
-          "nodes": 64,
-          "time": 13,
+          "nodes": 96,
+          "time": 7,
 
           "ODE_method": "LSODA",
           "continuous_soln":"True",
@@ -64,7 +64,7 @@
                                   },
 
 
-          "normalize_kernel": "True",
+          "normalize_kernel": "False",
           "kernel_params" : {"a":666,
                              "b":0,
                              "c":2,

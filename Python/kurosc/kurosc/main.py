@@ -91,8 +91,6 @@ def run(set:str = 'global_sync',
           '\nosc.shape:',osc_state.shape)
 
 
-
-
     """Data labeling"""
     param = lambda d: [''.join(f'{key}={value}') for (key,value) in d.items()]
     title = f'{nodes}_osc_with_kn={int(gain/nodes)}_at_t_{time}_'
@@ -114,11 +112,10 @@ def run(set:str = 'global_sync',
     plot_output(kuramoto,kuramoto.osc,
                 osc_state,solution.t, interpolate)
 
-    print(kuramoto.osc.plot_directory)
+    # print(kuramoto.osc.plot_directory)
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True,True)
-
 
 
 
