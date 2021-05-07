@@ -66,7 +66,9 @@ def plot_contour(obj,
 
 
 
-
+    #### this z%pi is to show phase locking and not precisely the phase state in time
+    #### see figures in paper for demo
+    #### may do %2pi but would look more chaotic
     phase_array = np.asarray([x.ravel(),y.ravel(),z.ravel()%np.pi]).T
     # print(phase_array.shape)
 
@@ -94,8 +96,8 @@ def plot_contour(obj,
     plot_phase(obj,
                phase_array,
                title,
-               'Location y',
-               'Location x'
+               'Vertical Node Location',
+               'Horizontal Node Location'
                )
 
 
@@ -124,9 +126,6 @@ def plot_phase(obj,
                              resolution,
                              endpoint=True)
 
-    # print(X[...,0].shape,X[...,1].shape,X[...,2].shape)
-    # print('\n\nx:0',X[0:6,0],'\n\ny:1',X[0:6,1],'\n\nz:2',X[0:6,2])
-    # input('.')
 
 
     plt.tricontourf(X[...,0],X[...,1],X[...,2],
@@ -138,7 +137,9 @@ def plot_phase(obj,
     plt.grid(b=True, which='major', axis='both')
 
     plt.clim(colorscale[0],colorscale[-1])
-    obj.domain[1]
+
+
+    # tick_marks = np.append(colorscale[::-1][::5],0).sort()
 
     plt.colorbar(ticks=colorscale[::-1][::5],format='%1.2f')
 

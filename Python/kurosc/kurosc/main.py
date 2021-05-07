@@ -50,6 +50,7 @@ def run(set:str = 'global_sync',
 
     normalize_kernel = (False if var[set]['normalize_kernel']=='False' else True)
     continuous_soln =  (False if var[set]['continuous_soln']=='False' else True)
+    zero_ics = (False if var[set]['zero_ics']=='False' else True)
 
     kernel_params = var[set]['kernel_params']
     interaction_params = var[set]['interaction_params']
@@ -76,6 +77,7 @@ def run(set:str = 'global_sync',
                               method,
                               continuous_soln,
                               time_eval,
+                              zero_ics
                               )
 
 
