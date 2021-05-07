@@ -14,11 +14,8 @@ if __name__ == '__main__' and __package__ is None:
 
 from corticalSheet.oscillator import oscillatorArray
 from secondOrderInteraction.decouple import interaction
-from spatialKernel.wavelet import kernel
-# from kurosc.lib.plotformat import setup
-
+# from spatialKernel.wavelet import kernel
 from lib.plot_solution import plot_contour
-# from lib.normal import normal_dist
 
 
 class kuramoto_system(object):
@@ -47,65 +44,20 @@ class kuramoto_system(object):
         """
         """
         self.osc = oscillatorArray(array_size,(0,np.pi),out_dir)
-        self.kernel = kernel()
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
-        self.osc.natural_frequency = self.natural_frequency()
+        self.osc.natural_frequency = self.osc.natural_frequency
 
-        self.wavelet = self.kernel.wavelet(self.kernel.spatial_wavelet,
-                                           self.osc.distance.ravel(),
-                                           *self.kernel_params.values(),
-                                           normalize_kernel
-                                           )
+        #TODO change to inheret self.osc.kernel bc osc initializes one now too for the normal ics
+        self.wavelet = self.osc.kernel.wavelet(self.osc.kernel.spatial_wavelet,
+                                               self.osc.distance.ravel(),
+                                               *self.kernel_params.values(),
+                                               normalize_kernel
+                                               )
 
         self.interaction = interaction(self.osc.ic.shape)
         self.plot_contour = plot_contour
-
-
-
-
-    def natural_frequency(self,
-                          params:dict = {'a': 1/6,
-                                         'b': 0,
-                                         'c': 2/5,
-                                         'order':0,
-                                         }
-                          )->np.ndarray:
-        """rtrn x vals for normal weighted abt 0
-            #  distinct vals for replace = false
-        """
-
-        # range discerned by eye fig 1 fitting a&c
-        x = np.linspace(params['b']-3.5*params['c'],
-                        params['b']+3.5*params['c'],
-                        int(1e6)
-                        )
-
-        prob = self.kernel.wavelet(self.kernel.gaussian,
-                                   x,
-                                   *params.values(),
-                                   True
-                                   )
-
-        prob = prob/np.sum(prob)  # pdf for weights
-
-        rng = np.random.default_rng()
-
-        frequency = rng.choice(x,
-                               size=np.prod(self.osc.ic.shape),
-                               p = prob,
-                               replace=False,
-                               )
-
-        print('\nmean natural frequency:',
-              np.round(np.mean(frequency),3),
-              '\nstdev:',
-              np.round(np.std(frequency),3)
-              )
-
-        return frequency
-
 
 
 
@@ -136,11 +88,16 @@ class kuramoto_system(object):
               ode_method:str = 'LSODA',  # 'Radau' works too, RK45 not so much
               continuous_fn = True,
               time_eval:np.ndarray = None,
+              zero_ics:bool = False,
               ):
         """Solve ODE using methods, problem may be stiff so go with inaccurate to hit convergence
         """
         fn = self.differential_equation  # np.vectorize ?
-        x0 = self.osc.ic.ravel()
+
+        if not zero_ics:
+            x0 = self.osc.ic.ravel()
+        else:
+            x0 = np.zeros(np.prod(self.osc.ic.shape))
 
         """option to vectorize but need to change downstream, keep false
         """
@@ -158,6 +115,7 @@ class kuramoto_system(object):
 ## unit tests may need update below but not called into model
 ###############################################################################
 def test_case():
+    from spatialKernel.wavelet import kernel
     #initialize an osc array
     dimension = (2,2)
     domain = (0,np.pi)

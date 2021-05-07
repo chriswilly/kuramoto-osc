@@ -14,6 +14,7 @@ if __name__ == '__main__' and __package__ is None:
 
 import numpy as np
 from lib.plot_solution import plot_phase
+from spatialKernel.wavelet import kernel
 
 class oscillatorArray(object):
     def __init__(self,
@@ -22,23 +23,117 @@ class oscillatorArray(object):
                  output_level:int = 3  # not sure if need to be passing this thru
                  ):
         self.domain = domain
+        self.kernel = kernel()
         self.ic = self.initial_conditions(*dimension)
-        self.natural_frequency = None  # initialized in model, dependent on spatial kernel fns to calc arry
+        self.natural_frequency = self.natural_frequency()
         self.distance = self.distance()
         self.level = output_level
         self.plot_phase = plot_phase
-        self.plot_directory = None
+        self.plot_directory = None  # initialized in a plot module i think
 
 
     def initial_conditions(self,
                            m:int = 16,
                            n:int = 16,
+                           params:dict = {'a': 1/6,
+                                          'b': 0,
+                                          'c': 2/5,
+                                          'order':0,
+                                           }
                            )->np.ndarray:
+        """rtrn x vals for normal weighted across -pi pi
+            #  distinct vals for replace = false
+        """
+
+        ### range discerned by eye fig 1 fitting a&c
+        ### 1hz spread --> 2pi  t*2pi at 1 s gives 1 rev
+        ### omega = 2pi/s so sin(omega*t) makes sense
+        ### chose np.max(abs(domain)) to scale by pi even if -
+
+        x = np.linspace(params['b']-3.5*params['c'],
+                        params['b']+3.5*params['c'],
+                        int(1e6)
+                        )*np.max(np.abs(self.domain))
+
+        prob = self.kernel.wavelet(self.kernel.gaussian,
+                                   x,
+                                   *params.values(),
+                                   True
+                                   )
+
+        prob = prob/np.sum(prob)  # pdf for weights
+
+        rng = np.random.default_rng()
+
+        phase = rng.choice(x,
+                           size=np.prod(m*n),
+                           p = prob,
+                           replace=False,
+                           ).reshape(m,n)
+
+        print('\nintial contitions in phase space:',
+              np.round(np.mean(phase),3),
+              '\nstdev:',
+              np.round(np.std(phase),3)
+              )
+
+        return phase
+
+
+    def natural_frequency(self,
+                          params:dict = {'a': 1/6,
+                                         'b': 0,
+                                         'c': 2/5,
+                                         'order':0,
+                                         }
+                          )->np.ndarray:
+        """rtrn x vals for normal weighted abt 0hz
+            #  distinct vals for replace = false
+        """
+
+        # range discerned by eye fig 1 fitting a&c
+        x = np.linspace(params['b']-3.5*params['c'],
+                        params['b']+3.5*params['c'],
+                        int(1e6)
+                        )
+
+        prob = self.kernel.wavelet(self.kernel.gaussian,
+                                   x,
+                                   *params.values(),
+                                   True
+                                   )
+
+        prob = prob/np.sum(prob)  # pdf for weights
+
+        rng = np.random.default_rng()
+
+        frequency = rng.choice(x,
+                               size=np.prod(self.ic.shape),
+                               p = prob,
+                               replace=False,
+                               )
+
+        print('\nmean natural frequency in hz:',
+              np.round(np.mean(frequency),3),
+              '\nstdev:',
+              np.round(np.std(frequency),3),
+              '\nconverted to phase angle on output'
+              )
+        # t -->
+        return frequency*np.pi*2
+
+
+
+    def uniform_initial_conditions(self,
+                                   m:int = 16,
+                                   n:int = 16,
+                                   )->np.ndarray:
         """return random 2D phase array"""
         scale = np.max(np.absolute(self.domain))
         offset = np.min(self.domain)
         # print(scale, offset)
         rng = np.random.default_rng()
+
         return scale*rng.random((m,n)) + offset
 
 

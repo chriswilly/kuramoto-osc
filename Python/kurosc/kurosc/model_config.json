@@ -11,6 +11,7 @@
 
           "ODE_method": "LSODA",
           "continuous_soln": "True",
+          "zero_ics": "False",
 
           "frames": 100,
           "frame_rate": 0.457,
@@ -46,17 +47,18 @@
 
 
           "nodes": 64,
-          "time": 11,
+          "time": 13,
 
           "ODE_method": "LSODA",
           "continuous_soln":"True",
+          "zero_ics": "True",
 
-          "frames": 300,
-          "frame_rate": 0.45,
+          "frames": 500,
+          "frame_rate": 0.435,
           "interpolate_plot":"False",
 
           "interaction_complexity":"Kuramoto",
-          "gain_ratio": 14,
+          "gain_ratio": 12,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
                                   "Hansel":{"beta":0.25, "r":0.95}
                                   },
@@ -65,8 +67,8 @@
           "normalize_kernel": "True",
           "kernel_params" : {"a":666,
                              "b":0,
-                             "c":4,
-                             "order":0
+                             "c":2,
+                             "order":4
                            },
 
           "natural_freq_params" : {"a": 1,
@@ -90,6 +92,7 @@
 
           "ODE_method":"LSODA",
           "continuous_soln":"True",
+          "zero_ics": "False",
 
           "frames": 160,
           "frame_rate": 0.457,
