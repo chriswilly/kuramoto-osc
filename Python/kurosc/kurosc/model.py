@@ -38,6 +38,10 @@ class kuramoto_system(object):
 
                  normalize_kernel = False,
                  gain:float = 10*16**2, # k-term
+
+                 external_input:bool=False,
+                 input_weight:float=0,
+
                  out_dir:int = 3,
                  ):
 
@@ -58,7 +62,8 @@ class kuramoto_system(object):
 
         self.interaction = interaction(self.osc.ic.shape)
         self.plot_contour = plot_contour
-
+        self.external_input = external_input
+        self.input_weight = input_weight
 
 
 
@@ -77,6 +82,11 @@ class kuramoto_system(object):
         N = np.prod(self.osc.ic.shape)
 
         dx = K/N*np.sum(W*G) + self.osc.natural_frequency.ravel()
+
+
+
+        if self.external_input:
+            dx+=self.input_weight*self.external_input_fn(t)
 
         print('t_step:',np.round(t,4))
 
@@ -109,6 +119,12 @@ class kuramoto_system(object):
                          dense_output = continuous_fn,
                          vectorized = False
                          )
+
+
+
+        def external_input_fn(self,t:float,w:float):
+            cos(w*t)
+            pass
 
 
 ###############################################################################

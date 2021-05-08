@@ -38,7 +38,7 @@ def run(set:str = 'global_sync',
 
     method = var[set]['ODE_method']   # too stiff for 'RK45', use 'LSODA',‘BDF’,'Radau'
 
-    nodes = var[set]['nodes']
+    nodes = var[set]['sqrt_nodes']
     time =  var[set]['time']
     frames = var[set]['frames']
     frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
@@ -59,6 +59,9 @@ def run(set:str = 'global_sync',
     interaction_params = var[set]['interaction_params']
     natural_freq_params = var[set]['natural_freq_params']
 
+    external_input = (False if var[set]['external_input']=='False' else True)
+    external_input_weight = var[set]['external_input_weight']
+
 
     """Init model"""
     gain = gain_ratio*nodes**2
@@ -69,6 +72,8 @@ def run(set:str = 'global_sync',
                                 natural_freq_params,
                                 normalize_kernel,
                                 gain,
+                                external_input,
+                                external_input_weight,
                                 output_dir_level
                                 )
     """Run Model"""
@@ -96,12 +101,11 @@ def run(set:str = 'global_sync',
 
     """Data labeling"""
     param = lambda d: [''.join(f'{key}={value}') for (key,value) in d.items()]
-    title = f'{nodes}_osc_with_kn={int(gain/nodes)}_at_t_{time}_'
+    title = f'{nodes}_osc_with_kn={int(gain/nodes**2)}_at_t_{time}_'
     title+='_'.join(param(interaction_params[interaction_complexity]))
     title+='_'+'_'.join(param(kernel_params))
 
 
-    #TODO inspect this
 
     if save_numpy:
         print('\ndata save is set to:',save_numpy,'type', type(save_numpy),
