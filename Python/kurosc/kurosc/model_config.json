@@ -6,7 +6,7 @@
           "save_numpy":"False",
 
 
-          "nodes": 72,
+          "sqrt_nodes": 72,
           "time": 7,
 
           "ODE_method": "LSODA",
@@ -35,8 +35,10 @@
                                    "b":0,
                                    "c":0.4,
                                    "order":0
-                                 }
+                                 },
 
+          "external_input":"False",
+          "external_input_weight":0
         },
 
 "global_sync": {
@@ -46,7 +48,7 @@
           "save_numpy":"False",
 
 
-          "nodes": 96,
+          "sqrt_nodes": 96,
           "time": 7,
 
           "ODE_method": "LSODA",
@@ -75,7 +77,11 @@
                                    "b":0,
                                    "c":0.4,
                                    "order":0
-                                 }
+                                 },
+
+          "external_input":"False",
+          "external_input_weight":0
+
 
         },
 
@@ -87,7 +93,7 @@
           "save_numpy":"False",
 
 
-          "nodes": 24,
+          "sqrt_nodes": 24,
           "time": 7,
 
           "ODE_method": "LSODA",
@@ -116,7 +122,10 @@
                                    "b":0,
                                    "c":0.4,
                                    "order":0
-                                 }
+                                 },
+
+          "external_input":"False",
+          "external_input_weight":0
 
         },
 
@@ -127,7 +136,7 @@
           "save_numpy":"False",
 
 
-          "nodes": 32,
+          "sqrt_nodes": 32,
           "time": 7,
 
           "ODE_method":"LSODA",
@@ -155,7 +164,10 @@
                                    "b":0,
                                    "c":0.0000001,
                                    "order":0
-                                 }
+                                 },
+
+          "external_input":"False",
+          "external_input_weight":0
 
         }
 }
