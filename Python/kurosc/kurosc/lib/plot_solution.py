@@ -24,13 +24,117 @@ def save_data(data:np.ndarray,
 def plot_output(model,obj,
                 data:np.ndarray,
                 time:np.ndarray,
+                samples:int=4,
+                seconds:int=4,
                 scale:bool = False,
                 file_name:str = 'model_data'):
 
     # print(data.shape)
     for k in np.arange(data.shape[2]):
-        # print(data[...,k].shape,time[k])
         model.plot_contour(obj,data[...,k],time[k],)
+
+        if samples and np.round(10*time[k])%10==0 and not time[k]==time[-1]:
+            print(np.round(time[k]))
+            idx=np.where(time>=time[k])[0]  # larger set of two
+            idy=np.where(time<time[k]+seconds)[0]
+            idz = idx[np.in1d(idx, idy)]  # intersection of sets
+
+            # print(idz,'\n',time[idz])
+            # input('.')
+            model.plot_timeseries(obj,
+                                  data[...,idz],
+                                  time[idz],
+                                  samples,
+                                  seconds)
+
+
+    #TODO call timeseries fn for z,t to select random clusters nearby for 8 periods at each t%1s=0
+
+################################################################################
+
+
+def plot_timeseries(obj,
+                    z:np.ndarray,
+                    t:np.ndarray,
+                    samples:int=3,
+                    seconds:int = 2,
+                    title:str = None,
+                    y_axis:str = '$\cos(\omega*t)$',
+                    x_axis:str = 'time, s',
+                   ):
+    """plot the solution timeseries for a random cluster of neighbor nodes
+    """
+    if not title:
+        title = f'Solution Timeseries for {samples} Random Neighbors'
+
+        if t[0]:
+            if t[0]>10:
+                title+=f' at t = {t[0]:.0f} to {t[-1]:.0f}'
+            else:
+                title+=f' at t = {t[0]:2.1f} to {t[-1]:2.1f}'
+
+
+    fmt = setup(title,obj.level)  # plotting format obj
+    fig = plt.figure(figsize=(16,8))
+    ax = fig.add_subplot(111)
+
+    rng = np.random.default_rng()
+
+    rnd_node = rng.choice(np.arange(z.shape[0]),
+                          size=2,
+                          replace=False,
+                          )
+
+    # TODO generalize this to larger square m*n
+    neighbors = np.array([[1,1,-1,-1,0,0,1,-1],
+                          [1,-1,1,-1,1,-1,0,0]]).T
+
+    idx = np.broadcast_to(rnd_node,neighbors.shape) + neighbors
+
+    ##validate in range, since these are 2d but coupled pairs and where returns 1d just use unique
+    # idlimit = np.where(idx<=z.shape[0:2])[0]
+    # idzero = np.where(idx>=0)[0]
+
+    # indx within limit
+    idlimit0 = np.where(idx[:,0]<z.shape[0])[0]
+    idlimit1 = np.where(idx[:,1]<z.shape[1])[0]
+    # indx >0, actually if ~-1, -2 that is permissable but it won't be as local
+    idzero0 = np.where(idx[:,0]>=0)[0]
+    idzero1 = np.where(idx[:,1]>=0)[0]
+    # down select x's, y's indiv
+    idu = np.intersect1d(idlimit0,idzero0)
+    idv = np.intersect1d(idlimit1,idzero1)
+    # intersection of permissable sets
+    idw = np.intersect1d(idu,idv)
+
+    rnd_near = rng.choice(idx[idw,:],
+                         size=samples,
+                         replace=False,
+                         )
+    # rnd_near = np.squeeze(rnd_near)
+    ax.plot(t,np.cos(z[rnd_node[0],rnd_node[1],:]),
+            '-k',label=f'oscillator at {rnd_node[0]},{rnd_node[1]}')
+    for nearby in rnd_near:
+        ax.plot(t,np.cos(z[nearby[0],nearby[1],:]),
+                '--r',label=f'oscillator at {nearby[0]},{nearby[1]}')
+    plt.title(title)
+    plt.xlabel(x_axis)
+    plt.ylabel(y_axis)
+    plt.grid(b=True, which='major', axis='both')
+    ax.legend(loc=0)
+
+    # plt.show()
+    fig.savefig(fmt.plot_name(title,'png'))
+    plt.close('all')
+
+
+
+
+################################################################################
+
+
+
+
 
 
 
@@ -157,3 +261,5 @@ def plot_phase(obj,
     # plt.show()
     fig.savefig(fmt.plot_name(plot_title,'png'))
     plt.close('all')
+
+################################################################################

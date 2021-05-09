@@ -15,7 +15,8 @@ if __name__ == '__main__' and __package__ is None:
 from corticalSheet.oscillator import oscillatorArray
 from secondOrderInteraction.decouple import interaction
 # from spatialKernel.wavelet import kernel
-from lib.plot_solution import plot_contour
+from lib.plot_solution import (plot_contour,
+                               plot_timeseries)
 
 
 class kuramoto_system(object):
@@ -62,6 +63,7 @@ class kuramoto_system(object):
 
         self.interaction = interaction(self.osc.ic.shape)
         self.plot_contour = plot_contour
+        self.plot_timeseries = plot_timeseries
         self.external_input = external_input
         self.input_weight = input_weight
 
@@ -98,6 +100,7 @@ class kuramoto_system(object):
               ode_method:str = 'LSODA',  # 'Radau' works too, RK45 not so much
               continuous_fn = True,
               time_eval:np.ndarray = None,
+              max_delta_t:float = 0.1,
               zero_ics:bool = False,
               ):
         """Solve ODE using methods, problem may be stiff so go with inaccurate to hit convergence
@@ -115,6 +118,7 @@ class kuramoto_system(object):
                          time_scale,
                          x0,
                          t_eval = time_eval,
+                         max_step = max_delta_t,
                          method=ode_method,
                          dense_output = continuous_fn,
                          vectorized = False
@@ -124,7 +128,7 @@ class kuramoto_system(object):
 
         def external_input_fn(self,t:float,w:float):
             cos(w*t)
-            pass
+            return 0
 
 
 ###############################################################################

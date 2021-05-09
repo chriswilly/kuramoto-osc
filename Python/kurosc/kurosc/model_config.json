@@ -1,4 +1,56 @@
 {
+
+
+  "local_async": {
+            "output_dir_level": 3,
+            "output_dir_name": "placeholder",
+
+            "save_numpy":"False",
+
+
+            "sqrt_nodes": 24,
+            "time": 4,
+
+            "ODE_method": "LSODA",
+            "continuous_soln":"True",
+            "max_delta_t":0.1,
+            "zero_ics": "True",
+
+            "frames": 500,
+            "frame_rate": 0.77,
+            "interpolate_plot":"False",
+            "inspect_t_seconds":1.0,
+            "inspect_t_samples":2,
+
+
+            "interaction_complexity":"Hansel",
+            "gain_ratio": 9,
+            "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
+                                    "Hansel":{"beta":0.25, "r":0.8}
+                                    },
+
+
+            "normalize_kernel": "False",
+            "kernel_params" : {"a":666,
+                               "b":0,
+                               "c":2,
+                               "order":4
+                             },
+
+            "natural_freq_params" : {"a": 1,
+                                     "b":0,
+                                     "c":0.4,
+                                     "order":0
+                                   },
+
+            "external_input":"False",
+            "external_input_weight":0
+
+          },
+
+
+
+
 "test_set0": {
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
@@ -11,11 +63,15 @@
 
           "ODE_method": "LSODA",
           "continuous_soln": "True",
+          "max_delta_t":0.1,
           "zero_ics": "False",
 
           "frames": 100,
           "frame_rate": 0.457,
           "interpolate_plot":"False",
+          "inspect_t_samples":0,
+          "inspect_t_seconds":0,
+
 
           "interaction_complexity": "Kuramoto",
           "gain_ratio": 11,
@@ -52,12 +108,16 @@
           "time": 7,
 
           "ODE_method": "LSODA",
+          "max_delta_t":0.1,
           "continuous_soln":"True",
           "zero_ics": "True",
 
           "frames": 500,
           "frame_rate": 0.435,
           "interpolate_plot":"False",
+          "inspect_t_seconds":0,
+          "inspect_t_samples":0,
+
 
           "interaction_complexity":"Kuramoto",
           "gain_ratio": 12,
@@ -86,48 +146,6 @@
         },
 
 
-"local_async": {
-          "output_dir_level": 3,
-          "output_dir_name": "placeholder",
-
-          "save_numpy":"False",
-
-
-          "sqrt_nodes": 24,
-          "time": 7,
-
-          "ODE_method": "LSODA",
-          "continuous_soln":"True",
-          "zero_ics": "True",
-
-          "frames": 500,
-          "frame_rate": 0.435,
-          "interpolate_plot":"False",
-
-          "interaction_complexity":"Hansel",
-          "gain_ratio": 9,
-          "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
-                                  "Hansel":{"beta":0.25, "r":0.8}
-                                  },
-
-
-          "normalize_kernel": "False",
-          "kernel_params" : {"a":666,
-                             "b":0,
-                             "c":2,
-                             "order":4
-                           },
-
-          "natural_freq_params" : {"a": 1,
-                                   "b":0,
-                                   "c":0.4,
-                                   "order":0
-                                 },
-
-          "external_input":"False",
-          "external_input_weight":0
-
-        },
 
 
 "test_set1": {
@@ -141,11 +159,16 @@
 
           "ODE_method":"LSODA",
           "continuous_soln":"True",
+          "max_delta_t":0.1,
           "zero_ics": "False",
 
           "frames": 160,
           "frame_rate": 0.457,
           "interpolate_plot":"False",
+          "inspect_t_seconds":0,
+          "inspect_t_samples":0,
+
+
           "interaction_complexity":"Kuramoto",
           "gain_ratio": 16,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
