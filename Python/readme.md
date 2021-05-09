@@ -1,4 +1,4 @@
-# kurosc: kuramoto neighbor interaction & delay package
+ # kurosc: kuramoto neighbor interaction & delay package
 
       /kuramoto-osc/tree/main/Python/kurosc/kurosc
 
@@ -7,9 +7,23 @@
             kurosc/
             ----kurosc/
             --------model_config.py
-            --------main.py    <---run()
+            --------main.py    <---fn main() calls run()
             --------model.py
             --------lib
+            --------corticalSheet  : oscillator arrays & ics
+            --------spatialKernel  : gaussian differentiate
+            --------secondOrderInteraction  : nominal kuramoto model when r,beta = 0,0  
+
+
+
+            use argparse:
+
+            % python main.py --set local_async
+            % ...
+
+            % python main.py --set global_sync
+
+            will import different sets from model_config.json
 
 
 

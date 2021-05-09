@@ -35,11 +35,17 @@ def run(set:str = 'global_sync',
     f = open(config_file)
     var = json.load(f)
 
-
+    """Load all variables from specified set in json"""
     method = var[set]['ODE_method']   # too stiff for 'RK45', use 'LSODA',‘BDF’,'Radau'
 
     nodes = var[set]['sqrt_nodes']
     time =  var[set]['time']
+    max_delta_t = var[set]['max_delta_t']
+    inspect_t_seconds = var[set]['inspect_t_seconds']
+    inspect_t_samples = var[set]['inspect_t_samples']
+
+
+
     frames = var[set]['frames']
     frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
     interpolate = (False if var[set]['interpolate_plot']=='False' else True)
@@ -85,7 +91,8 @@ def run(set:str = 'global_sync',
                               method,
                               continuous_soln,
                               time_eval,
-                              zero_ics
+                              max_delta_t,
+                              zero_ics,
                               )
 
 
@@ -117,13 +124,16 @@ def run(set:str = 'global_sync',
     ### kuramoto.plot_solution(osc_state[-1],solution.t[-1])
 
     plot_output(kuramoto,kuramoto.osc,
-                osc_state,solution.t, interpolate)
-
-    # print(kuramoto.osc.plot_directory)
+                osc_state,solution.t,
+                inspect_t_samples,
+                inspect_t_seconds,
+                interpolate)
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True,True)
 
+
+    #TODO post process numpy array to have time series or just hadle it in this chain
 
 
 def main():

@@ -110,7 +110,7 @@ class oscillatorArray(object):
         frequency = rng.choice(x,
                                size=np.prod(self.ic.shape),
                                p = prob,
-                               replace=False,
+                               replace=True,
                                )
 
         print('\nmean natural frequency in hz:',
