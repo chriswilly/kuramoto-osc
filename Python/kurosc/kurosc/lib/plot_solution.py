@@ -121,7 +121,8 @@ def plot_timeseries(osc,
               }
     for k in np.arange(rnd_near.shape[0]):
         ax.plot(t,np.cos(z[rnd_near[k,0],rnd_near[k,1],:]),
-                colors[k%6],label=f'node ({rnd_near[k,0]},{rnd_near[k,1]})')
+                colors[k%len(colors.values())],
+                label=f'node ({rnd_near[k,0]},{rnd_near[k,1]})')
     plt.title(title)
     plt.xlabel(x_axis)
     plt.ylabel(y_axis)
