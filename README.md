@@ -41,4 +41,4 @@ contains modification to distance Kuramoto model for next steps in project<br>
 
 
 32x32 nodes with 0 ics LSODA solve<br>
-<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/Oscillator%20Phase%20in%20pi_210507_021946476379.gif">
+<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D%20beta%3D%20K-N%3D%20%26%20c%3D%20for%20theta_tinpi_210509_224745277371.gif">
