@@ -1,4 +1,4 @@
-"""takes select soscillatorArray: "obj.osc" instance from model.py and constructs plot
+"""takes select soscillatorArray: "osc" instance from model.py and constructs plot
 """
 
 import matplotlib as mpl
@@ -21,7 +21,7 @@ def save_data(data:np.ndarray,
     np.save(fmt.plot_name(file_name,'npy'),data)
 
 
-def plot_output(model,obj,
+def plot_output(model,osc,
                 data:np.ndarray,
                 time:np.ndarray,
                 samples:int=4,
@@ -31,29 +31,24 @@ def plot_output(model,obj,
 
     # print(data.shape)
     for k in np.arange(data.shape[2]):
-        model.plot_contour(obj,data[...,k],time[k],)
+        model.plot_contour(osc,data[...,k],time[k],)
 
-        if samples and np.round(10*time[k])%10==0 and not time[k]==time[-1]:
+        if samples and np.round(100*time[k])%100==0 and not time[k]==time[-1]:
             print(np.round(time[k]))
             idx=np.where(time>=time[k])[0]  # larger set of two
             idy=np.where(time<time[k]+seconds)[0]
             idz = idx[np.in1d(idx, idy)]  # intersection of sets
 
-            # print(idz,'\n',time[idz])
-            # input('.')
-            model.plot_timeseries(obj,
+            model.plot_timeseries(osc,
                                   data[...,idz],
                                   time[idz],
                                   samples,
                                   seconds)
 
-
-    #TODO call timeseries fn for z,t to select random clusters nearby for 8 periods at each t%1s=0
-
 ################################################################################
 
 
-def plot_timeseries(obj,
+def plot_timeseries(osc,
                     z:np.ndarray,
                     t:np.ndarray,
                     samples:int=3,
@@ -74,7 +69,7 @@ def plot_timeseries(obj,
                 title+=f' at t = {t[0]:2.1f} to {t[-1]:2.1f}'
 
 
-    fmt = setup(title,obj.level)  # plotting format obj
+    fmt = setup(title,osc.level)  # plotting format osc
     fig = plt.figure(figsize=(16,8))
     ax = fig.add_subplot(111)
 
@@ -113,10 +108,20 @@ def plot_timeseries(obj,
                          )
     # rnd_near = np.squeeze(rnd_near)
     ax.plot(t,np.cos(z[rnd_node[0],rnd_node[1],:]),
-            '-k',label=f'oscillator at {rnd_node[0]},{rnd_node[1]}')
-    for nearby in rnd_near:
-        ax.plot(t,np.cos(z[nearby[0],nearby[1],:]),
-                '--r',label=f'oscillator at {nearby[0]},{nearby[1]}')
+            '-k',label=f'oscillator node ({rnd_node[0]},{rnd_node[1]})')
+
+
+
+    colors = {0:'--r',
+              1:'--b',
+              2:'--g',
+              3:'--c',
+              4:'--m',
+              5:'--y',
+              }
+    for k in np.arange(rnd_near.shape[0]):
+        ax.plot(t,np.cos(z[rnd_near[k,0],rnd_near[k,1],:]),
+                colors[k%6],label=f'node ({rnd_near[k,0]},{rnd_near[k,1]})')
     plt.title(title)
     plt.xlabel(x_axis)
     plt.ylabel(y_axis)
@@ -134,11 +139,7 @@ def plot_timeseries(obj,
 
 
 
-
-
-
-
-def plot_contour(obj,
+def plot_contour(osc,
                  z:np.ndarray,
                  t:float = None,
                  title:str = None,
@@ -146,22 +147,22 @@ def plot_contour(obj,
     """
     """
     # want to keep this dependence on init setup may also use z.shape[]
-    x = np.linspace(0,obj.ic.shape[0],
-                      obj.ic.shape[1])
-    y = np.linspace(0,obj.ic.shape[1],
-                      obj.ic.shape[0])
+    x = np.linspace(0,osc.ic.shape[0],
+                      osc.ic.shape[1])
+    y = np.linspace(0,osc.ic.shape[1],
+                      osc.ic.shape[0])
 
 
 
     if scale:
         s = RectBivariateSpline(x,y,z,
-                                kx=obj.ic.shape[0],
-                                ky=obj.ic.shape[1])
+                                kx=osc.ic.shape[0],
+                                ky=osc.ic.shape[1])
 
-        x = np.linspace(0,obj.ic.shape[0],
-                          obj.ic.shape[1]*scale)
-        y = np.linspace(0,obj.ic.shape[1],
-                          obj.ic.shape[0]*scale)
+        x = np.linspace(0,osc.ic.shape[0],
+                          osc.ic.shape[1]*scale)
+        y = np.linspace(0,osc.ic.shape[1],
+                          osc.ic.shape[0]*scale)
         z = s.__call__(x,y).ravel()
     else:
         z = z.ravel()
@@ -176,19 +177,22 @@ def plot_contour(obj,
     phase_array = np.asarray([x.ravel(),y.ravel(),z.ravel()%np.pi]).T
     # print(phase_array.shape)
 
-    if abs(obj.domain[0]) % np.pi == 0 and not obj.domain[0] == 0:
+    if abs(osc.domain[0]) % np.pi == 0 and not osc.domain[0] == 0:
         ti = r'\pi'
         ti = '-'+ti
     else:
-        ti = str(obj.domain[0])
+        ti = str(osc.domain[0])
 
-    if abs(obj.domain[1]) % np.pi == 0 and not obj.domain[1] == 0:
+    if abs(osc.domain[1]) % np.pi == 0 and not osc.domain[1] == 0:
         tf = r'\pi'
     else:
-        tf = str(obj.domain[1])
+        tf = str(osc.domain[1])
 
     if not title:
-        title = 'Oscillator Phase $\in$ [${0}$,${1}$)'.format(ti,tf)
+        title = 'R={r:.1f} $\\beta$={beta:.1f} K/N={kn:.0f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(**osc.interaction_params,
+                                                                                       **osc.kernel_params,
+                                                                                       kn=np.round(osc.gain/np.prod(osc.ic.shape)),
+                                                                                       ti=ti, tf=tf)
         # title_trans = ''
 
         if t or not (t==None):
@@ -197,7 +201,7 @@ def plot_contour(obj,
             else:
                 title+=f' at t = {t:2.1f}'
 
-    plot_phase(obj,
+    plot_phase(osc,
                phase_array,
                title,
                'Vertical Node Location',
@@ -206,7 +210,7 @@ def plot_contour(obj,
 
 
 
-def plot_phase(obj,
+def plot_phase(osc,
                X: np.ndarray,
                plot_title:str = None,
                y_axis:str = 'y',
@@ -218,15 +222,15 @@ def plot_phase(obj,
     fldr = plot_title.replace('at t = ','')
     fldr = re.sub('[*\d\.\d*]','',fldr).strip()
     # print(fldr)
-    fmt = setup(fldr,obj.level)
-    obj.plot_directory = fmt.directory
+    fmt = setup(fldr,osc.level)
+    osc.plot_directory = fmt.directory
 
     fig = plt.figure(figsize=(10,8))
     ax = fig.add_subplot(111)
 
 
-    colorscale = np.linspace(np.min(obj.domain),
-                             np.max(obj.domain),
+    colorscale = np.linspace(np.min(osc.domain),
+                             np.max(osc.domain),
                              resolution,
                              endpoint=True)
 
@@ -249,8 +253,8 @@ def plot_phase(obj,
 
     ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-    ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=obj.ic.shape[0]/4))
-    ax.yaxis.set_major_locator(mpl.ticker.MultipleLocator(base=obj.ic.shape[1]/4))
+    ax.xaxis.set_major_locator(mpl.ticker.MultipleLocator(base=osc.ic.shape[0]/4))
+    ax.yaxis.set_major_locator(mpl.ticker.MultipleLocator(base=osc.ic.shape[1]/4))
 
 
     plt.title(plot_title)

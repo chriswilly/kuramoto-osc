@@ -8,22 +8,22 @@
             "save_numpy":"False",
 
 
-            "sqrt_nodes": 24,
-            "time": 4,
+            "sqrt_nodes": 32,
+            "time": 10,
 
             "ODE_method": "LSODA",
             "continuous_soln":"True",
             "max_delta_t":0.1,
             "zero_ics": "True",
 
-            "frames": 500,
-            "frame_rate": 0.77,
+            "frames": 1000,
+            "frame_rate": 0.340,
             "interpolate_plot":"False",
-            "inspect_t_seconds":1.0,
-            "inspect_t_samples":2,
+            "inspect_t_seconds":0.2,
+            "inspect_t_samples":4,
 
 
-            "interaction_complexity":"Hansel",
+            "interaction_complexity":"Kuramoto",
             "gain_ratio": 9,
             "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
                                     "Hansel":{"beta":0.25, "r":0.8}
@@ -33,7 +33,7 @@
             "normalize_kernel": "False",
             "kernel_params" : {"a":666,
                                "b":0,
-                               "c":2,
+                               "c":30,
                                "order":4
                              },
 
