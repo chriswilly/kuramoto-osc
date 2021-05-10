@@ -52,9 +52,11 @@ class kuramoto_system(object):
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
+        self.osc.interaction_params = interaction_params  # pass thru maybe to label plots
+        self.osc.kernel_params = kernel_params
+        self.osc.gain = gain
         self.osc.natural_frequency = self.osc.natural_frequency
 
-        #TODO change to inheret self.osc.kernel bc osc initializes one now too for the normal ics
         self.wavelet = self.osc.kernel.wavelet(self.osc.kernel.spatial_wavelet,
                                                self.osc.distance.ravel(),
                                                *self.kernel_params.values(),

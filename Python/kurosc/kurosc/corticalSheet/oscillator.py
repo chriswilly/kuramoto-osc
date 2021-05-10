@@ -30,6 +30,10 @@ class oscillatorArray(object):
         self.level = output_level
         self.plot_phase = plot_phase
         self.plot_directory = None  # initialized in a plot module i think
+        # for labeling plots:
+        self.interaction_params = None
+        self.kernel_params = None
+        self.gain = None
 
 
     def initial_conditions(self,
