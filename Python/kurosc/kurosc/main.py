@@ -131,7 +131,7 @@ def run(set:str = 'global_sync',
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True,True)
-
+    print(vid.img_name)
 
     #TODO post process numpy array to have time series or just hadle it in this chain
 
