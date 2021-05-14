@@ -8,7 +8,7 @@
             "save_numpy":"False",
 
 
-            "sqrt_nodes": 32,
+            "sqrt_nodes": 64,
             "time": 10,
 
             "ODE_method": "LSODA",
