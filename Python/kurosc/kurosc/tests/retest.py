@@ -39,6 +39,60 @@ def plot_fix():
     txt = re.sub(',','_',txt)
 
 
+
+
+def filename2():
+    import numpy as np
+    import re
+
+
+    kernel_params:dict = {'a': 10000/3*2,
+                       'b': 0,
+                       'c': 10, # breadth of wavelet
+                       'order': 4},
+
+    interaction_params:dict = {'beta': 0.75,'r': 0.25},
+    title=None
+    domain = [0,np.pi]
+    kn=11.1
+
+    if abs(domain[0]) % np.pi == 0 and not domain[0] == 0:
+        ti = r'\pi'
+        ti = '-'+ti
+    else:
+        ti = str(domain[0])
+
+    if abs(domain[1]) % np.pi == 0 and not domain[1] == 0:
+        tf = r'\pi'
+    else:
+        tf = str(domain[1])
+
+    if not title:
+        print(interaction_params,
+                kernel_params,
+                            )
+
+        title = 'R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.0f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(
+                                                                                       **interaction_params[0],
+                                                                                       **kernel_params[0],
+                                                                                       kn=np.round(9),
+                                                                                       ti=ti, tf=tf)
+    t=9.9
+    if t or not (t==None):
+        if t>10:
+            title+=f' at t = {t:.0f}'
+        else:
+            title+=f' at t = {t:2.1f}'
+
+
+
+    title = re.sub(r'at t = *\d\.\d*', '', title)
+    # fldr = title.replace('at t = [*\d\.\d*]','')
+    # fldr = re.sub('[*\d\.\d*]','',fldr).strip()
+
+    print(title)
+
+
 def filename():
 
     """
@@ -46,6 +100,8 @@ def filename():
     truncate = lambda x: re.sub('\.\d_*','',str(x))
     filelist = [truncate(index(file)) for file in filelist]
     """
+
+
     filelist = [
             'Oscillator Phase in 0pi at t = 11_210503_211652626384.png' ,
             'Oscillator Phase in 0pi at t = 4.5_210503_211549726809.png' ,
@@ -70,4 +126,4 @@ def filename():
     #     return False
 
 if __name__=='__main__':
-    filename()
+    filename2()

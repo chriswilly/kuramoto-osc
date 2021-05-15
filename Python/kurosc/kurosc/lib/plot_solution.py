@@ -190,7 +190,7 @@ def plot_contour(osc,
         tf = str(osc.domain[1])
 
     if not title:
-        title = 'R={r:.1f} $\\beta$={beta:.1f} K/N={kn:.0f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(**osc.interaction_params,
+        title = 'R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.0f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(**osc.interaction_params,
                                                                                        **osc.kernel_params,
                                                                                        kn=np.round(osc.gain/np.prod(osc.ic.shape)),
                                                                                        ti=ti, tf=tf)
@@ -220,10 +220,12 @@ def plot_phase(osc,
                ):
     """
     """
-    fldr = plot_title.replace('at t = ','')
-    fldr = re.sub('[*\d\.\d*]','',fldr).strip()
-    # print(fldr)
-    fmt = setup(fldr,osc.level)
+    folder = re.sub(r'at t = *\d\.\d*', '', plot_title)
+
+    # folder = plot_title.replace('at t = ','')
+    # folder = re.sub('[*\d\.\d*]','',folder).strip()
+    # print(folder)
+    fmt = setup(folder,osc.level)
     osc.plot_directory = fmt.directory
 
     fig = plt.figure(figsize=(10,8))
