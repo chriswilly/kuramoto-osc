@@ -1,14 +1,14 @@
 {
 
 
-  "local_async": {
+  "local_sync": {
             "output_dir_level": 3,
             "output_dir_name": "placeholder",
 
             "save_numpy":"False",
 
 
-            "sqrt_nodes":128, 
+            "sqrt_nodes":72,
             "time": 10,
 
             "ODE_method": "LSODA",
@@ -55,7 +55,7 @@
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
 
-          "save_numpy":"False",
+          "save_numpy":"true",
 
 
           "sqrt_nodes": 72,
@@ -66,11 +66,11 @@
           "max_delta_t":0.1,
           "zero_ics": "False",
 
-          "frames": 1000,
+          "frames": 5000,
           "frame_rate": 0.340,
           "interpolate_plot":"False",
-          "inspect_t_samples":0,
-          "inspect_t_seconds":0,
+          "inspect_t_seconds":0.35,
+          "inspect_t_samples":3,
 
 
           "interaction_complexity":"Hansel",
@@ -105,15 +105,15 @@
 
 
           "sqrt_nodes": 96,
-          "time": 7,
+          "time": 10,
 
           "ODE_method": "LSODA",
           "max_delta_t":0.1,
           "continuous_soln":"True",
           "zero_ics": "True",
 
-          "frames": 500,
-          "frame_rate": 0.435,
+          "frames": 5000,
+          "frame_rate": 0.34,
           "interpolate_plot":"False",
           "inspect_t_seconds":0,
           "inspect_t_samples":0,
@@ -135,7 +135,7 @@
 
           "natural_freq_params" : {"a": 1,
                                    "b":0,
-                                   "c":0.4,
+                                   "c":30,
                                    "order":0
                                  },
 
