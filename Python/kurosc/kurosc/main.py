@@ -44,28 +44,25 @@ def run(set:str = 'global_sync',
     inspect_t_seconds = var[set]['inspect_t_seconds']
     inspect_t_samples = var[set]['inspect_t_samples']
 
-
-
     frames = var[set]['frames']
-    frame_rate = var[set]['frame_rate'] # 120 bpm -> 0.5 s/f
-    interpolate = (False if var[set]['interpolate_plot']=='False' else True)
-    save_numpy = (False if var[set]['save_numpy']=='False' else True)
+    frame_rate = var[set]['frame_rate']  # 120 bpm -> 0.5 s/f
+    interpolate = var[set]['interpolate_plot']
+    save_numpy = var[set]['save_numpy']
 
     gain_ratio = var[set]['gain_ratio']
-
 
     output_dir_level = var[set]['output_dir_level']
     interaction_complexity = var[set]['interaction_complexity']
 
-    normalize_kernel = (False if var[set]['normalize_kernel']=='False' else True)
-    continuous_soln =  (False if var[set]['continuous_soln']=='False' else True)
-    zero_ics = (False if var[set]['zero_ics']=='False' else True)
+    normalize_kernel = var[set]['normalize_kernel']
+    continuous_soln =  var[set]['continuous_soln']
+    zero_ics = var[set]['zero_ics']
 
     kernel_params = var[set]['kernel_params']
     interaction_params = var[set]['interaction_params']
     natural_freq_params = var[set]['natural_freq_params']
 
-    external_input = (False if var[set]['external_input']=='False' else True)
+    external_input = var[set]['external_input']
     external_input_weight = var[set]['external_input_weight']
 
 
@@ -130,7 +127,7 @@ def run(set:str = 'global_sync',
                 interpolate)
 
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
-    vid.to_gif(None,frame_rate,True,True)
+    vid.to_gif(None, frame_rate, True, True)
     print(vid.img_name)
 
     #TODO post process numpy array to have time series or just hadle it in this chain

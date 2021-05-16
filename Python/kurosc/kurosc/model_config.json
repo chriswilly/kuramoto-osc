@@ -5,20 +5,20 @@
             "output_dir_level": 3,
             "output_dir_name": "placeholder",
 
-            "save_numpy":"False",
+            "save_numpy": false,
 
 
             "sqrt_nodes":16,
             "time": 10,
 
             "ODE_method": "LSODA",
-            "continuous_soln":"True",
+            "continuous_soln": true,
             "max_delta_t":0.1,
-            "zero_ics": "True",
+            "zero_ics": true,
 
             "frames": 100,
             "frame_rate": 0.340,
-            "interpolate_plot":"False",
+            "interpolate_plot": false,
             "inspect_t_seconds":0.2,
             "inspect_t_samples":4,
 
@@ -30,7 +30,7 @@
                                     },
 
 
-            "normalize_kernel": "False",
+            "normalize_kernel": false,
             "kernel_params" : {"a":666,
                                "b":0,
                                "c":30,
@@ -43,7 +43,7 @@
                                      "order":0
                                    },
 
-            "external_input":"False",
+            "external_input": false,
             "external_input_weight":0
 
           },
@@ -55,7 +55,7 @@
           "output_dir_level": 3,
           "output_dir_name": "placeholder",
 
-          "save_numpy":"true",
+          "save_numpy": true,
 
 
           "sqrt_nodes": 72,
