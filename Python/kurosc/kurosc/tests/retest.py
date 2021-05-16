@@ -108,7 +108,7 @@ def filename():
             'Oscillator Phase in 0pi at t = 0.0_210503_211049550263.png' ,
             ]
     # print('\n',filelist[0])
-    term = r'\d*\.*\d*_'  # | ^[\d*_]
+    term = r' at t = \d*\.*\d*_'  # | ^[\d*_]
     date = lambda x: re.split(term,str(x),1)   # t = 1.4_20200505...
     truncate = lambda x: re.sub(term,'',x,1)
 
@@ -126,4 +126,4 @@ def filename():
     #     return False
 
 if __name__=='__main__':
-    filename2()
+    filename()

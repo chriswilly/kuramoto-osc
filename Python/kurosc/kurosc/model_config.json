@@ -8,15 +8,17 @@
             "save_numpy":"False",
 
 
-            "sqrt_nodes":16,
+            "sqrt_nodes":72,
             "time": 10,
+            "frames": 5000,
+            "max_delta_t":0.05,
+
+
 
             "ODE_method": "LSODA",
             "continuous_soln":"True",
-            "max_delta_t":0.1,
             "zero_ics": "True",
 
-            "frames": 100,
             "frame_rate": 0.340,
             "interpolate_plot":"False",
             "inspect_t_seconds":0.2,
@@ -49,6 +51,54 @@
           },
 
 
+  "local_async": {
+            "output_dir_level": 3,
+            "output_dir_name": "placeholder",
+
+            "save_numpy":"False",
+
+
+            "sqrt_nodes": 72,
+            "time": 10,
+            "max_delta_t":0.05,
+            "frames": 5000,
+            "frame_rate": 0.34,
+
+            "ODE_method": "LSODA",
+            "continuous_soln":"True",
+            "zero_ics": "True",
+
+            "interpolate_plot":"False",
+            "inspect_t_seconds":0,
+            "inspect_t_samples":0,
+
+
+            "interaction_complexity":"Hansel",
+            "gain_ratio": 12,
+            "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
+                                    "Hansel":{"beta":0.25, "r":0.95}
+                                    },
+
+
+            "normalize_kernel": "False",
+            "kernel_params" : {"a":666,
+                               "b":0,
+                               "c":20,
+                               "order":4
+                             },
+
+            "natural_freq_params" : {"a": 1,
+                                     "b":0,
+                                     "c":30,
+                                     "order":0
+                                   },
+
+            "external_input":"False",
+            "external_input_weight":0
+
+
+          },
+
 
 
 "test_set0": {
@@ -59,15 +109,17 @@
 
 
           "sqrt_nodes": 72,
-          "time": 7,
+          "time": 10,
+          "max_delta_t":0.05,
+          "frames": 5000,
+          "frame_rate": 0.340,
+
+
 
           "ODE_method": "LSODA",
           "continuous_soln": "True",
-          "max_delta_t":0.1,
           "zero_ics": "False",
 
-          "frames": 5000,
-          "frame_rate": 0.340,
           "interpolate_plot":"False",
           "inspect_t_seconds":0.35,
           "inspect_t_samples":3,
@@ -96,55 +148,6 @@
           "external_input":"False",
           "external_input_weight":0
         },
-
-"global_sync": {
-          "output_dir_level": 3,
-          "output_dir_name": "placeholder",
-
-          "save_numpy":"False",
-
-
-          "sqrt_nodes": 96,
-          "time": 10,
-
-          "ODE_method": "LSODA",
-          "max_delta_t":0.1,
-          "continuous_soln":"True",
-          "zero_ics": "True",
-
-          "frames": 5000,
-          "frame_rate": 0.34,
-          "interpolate_plot":"False",
-          "inspect_t_seconds":0,
-          "inspect_t_samples":0,
-
-
-          "interaction_complexity":"Kuramoto",
-          "gain_ratio": 12,
-          "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
-                                  "Hansel":{"beta":0.25, "r":0.95}
-                                  },
-
-
-          "normalize_kernel": "False",
-          "kernel_params" : {"a":666,
-                             "b":0,
-                             "c":2,
-                             "order":4
-                           },
-
-          "natural_freq_params" : {"a": 1,
-                                   "b":0,
-                                   "c":30,
-                                   "order":0
-                                 },
-
-          "external_input":"False",
-          "external_input_weight":0
-
-
-        },
-
 
 
 
