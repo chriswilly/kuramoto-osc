@@ -220,11 +220,8 @@ def plot_phase(osc,
                ):
     """
     """
-    folder = re.sub(r'at t = *\d\.\d*', '', plot_title)
+    folder = re.sub(r'((at t = \d*\.\d*)|(at t = \d+))', '', plot_title)
 
-    # folder = plot_title.replace('at t = ','')
-    # folder = re.sub('[*\d\.\d*]','',folder).strip()
-    # print(folder)
     fmt = setup(folder,osc.level)
     osc.plot_directory = fmt.directory
 
