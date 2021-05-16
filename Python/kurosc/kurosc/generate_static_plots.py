@@ -99,10 +99,10 @@ def spatial_kernel():
     # b is center mass
     # scale c linearly for width
     # d is order of derivative for arbitrary spatial_wavelet
-    params = {'a': 1/7,
+    params = {'a': 1,
               'b': 0,
-              'c': 1/2,
-              'order':4,
+              'c': 1/2000,
+              'order':0,
               }
     w = s.wavelet(s.gaussian,x,*params.values(),False)
     # w = s.wavelet(s.spatial_wavelet,

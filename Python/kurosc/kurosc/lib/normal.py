@@ -1,6 +1,14 @@
 import numpy as np
 
 
+def custom_dist(kernel, size=None, limits=(0.0, 120.0), oversample=10):
+    """Regular normal distribution, but with hard cut-offs at the specified limits"""
+    options = np.linspace(limits[0], limits[1], num=oversample * size)
+    weights = kernel(options)
+    probs = weights / sum(weights)
+    return np.random.choice(options, size=size, replace=True, p=probs)
+
+
 def normal_dist(obj, kernel,
                 distance:float = 3/2,
                 resolution:int = 1e6, #1mln samples
@@ -23,7 +31,7 @@ def normal_dist(obj, kernel,
 
     p = rng.choice(g,
                    size=np.prod(obj.ic.shape),
-                   replace=False
+                   replace=True
                    )
     # print('***********',p.shape,g.shape)
 

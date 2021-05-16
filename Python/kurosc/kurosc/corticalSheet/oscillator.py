@@ -38,9 +38,9 @@ class oscillatorArray(object):
         self.plot_directory = None
 
     def initial_conditions(self,
-                           m:int = 16,
-                           n:int = 16,
-                           )->np.ndarray:
+                           m: int = 16,
+                           n: int = 16,
+                           ) -> np.ndarray:
         """return random 2D phase array"""
         scale = np.max(np.absolute(self.domain))
         offset = np.min(self.domain)

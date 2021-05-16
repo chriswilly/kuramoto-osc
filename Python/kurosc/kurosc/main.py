@@ -52,20 +52,20 @@ def run():
     #
     """
 
-
-    nodes = 96
-    time =  5
-    frames = 100
-    gain = 12*nodes**2
+    # TODO : move to config file
+    nodes = 30       # len of sides of cortical sheet
+    time = 3
+    frames = 50
+    gain = 0*nodes**2
     output_dir_level = 2
-    indx = 1 # inspection param dict
+    indx = 1  # inspection param dict
 
     normalize_kernel = False
 
     kernel_params = {'a': int(np.round(10000/3*2)), # arbitrary iff normalize in model self.wavelet = true
                      'b': 0,
-                     'c': 3,
-                     'order': 4,
+                     'c': 10000,
+                     'order': 0,
                      }
     interaction_params = ({'beta': 0, 'r':0},
                           {'beta': 0.25, 'r':0.95}
@@ -109,15 +109,12 @@ def run():
 
     """Plotting & animation """
     ### kuramoto.plot_solution(osc_state[-1],solution.t[-1])
-    plot_output(osc_state,solution.t)
+    plot_output(osc_state, solution.t)
     print(kuramoto.osc.plot_directory)
 
     frame_rate = 60/140 # 120 bpm -> 0.5 s/f
     vid = animate(kuramoto.osc.plot_directory,output_dir_level)
     vid.to_gif(None,frame_rate,True)
-
-
-
 
 
 if __name__ == '__main__':

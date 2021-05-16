@@ -18,7 +18,7 @@ from spatialKernel.wavelet import kernel
 # from kurosc.lib.plotformat import setup
 
 from lib.plot_solution import plot_contour
-from lib.normal import normal_dist
+from lib.normal import normal_dist, custom_dist
 
 
 class kuramoto_system(object):
@@ -40,19 +40,28 @@ class kuramoto_system(object):
 
         """
         """
+
+
+
         self.osc = oscillatorArray(array_size,(0,np.pi),out_dir)
         self.kernel = kernel()
         self.gain = gain
         self.kernel_params = kernel_params
         self.interaction_params = interaction_params
-        self.osc.natural_frequency = normal_dist(self.osc,self.kernel,
-                                                 3/2,
-                                                 1e6, #1mln samples
-                                                 {'a': 1/7,
-                                                  'b': 0,
-                                                  'c': 1/2,
-                                                  })     # by eye fig 2?
-                                                 # lookup x to gaussian
+
+        def k(x):
+            a = 1
+            b = 0
+            c = 1 / 200000
+            return a * np.exp(-(x - b) ** 2 / 2 / c ** 2)
+
+        self.osc.natural_frequency = custom_dist(
+            k,
+            size=np.prod(self.osc.ic.shape),
+            limits=(0.0, 120.0),
+            oversample=10
+        )
+
 
         print('\nmean natural frequency:',
                 np.round(np.mean(self.osc.natural_frequency),3),
@@ -68,7 +77,6 @@ class kuramoto_system(object):
         # this bool determines if the wavelet is normalized
         self.interaction = interaction(self.osc.ic.shape)
 
-
     def plot_contour(self,
                      z:np.ndarray,
                      t:float = None,
@@ -76,9 +84,6 @@ class kuramoto_system(object):
         """takes instance of oscillatorArray and plots like the plot_solution below"""
         scale = None
         plot_contour(self.osc,z,t,title,scale)
-
-
-
 
     def differential_equation(self,
                               t:float,
@@ -90,11 +95,17 @@ class kuramoto_system(object):
         K = self.gain
         W = self.wavelet
         ## unknown: is it ok to flatten, yes
-        G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
-                                    **self.interaction_params)).ravel()
-        print(G.shape)
+        G = (
+            self.interaction.gamma(
+                self.interaction.delta(
+                    x.ravel()
+                ),
+                **self.interaction_params)
+        ).ravel()
+        print(t)
         N = np.prod(self.osc.ic.shape)
-        return K/N*np.sum(W*G)+ self.osc.natural_frequency.ravel()
+        delta =  K/N*np.sum(W*G)+ self.osc.natural_frequency.ravel()
+        return delta
 
 
         # print('osc shape:',np.prod(self.osc.shape),
@@ -182,8 +193,8 @@ class kuramoto_system(object):
 
 def test_case():
     #initialize an osc array
-    dimension = (2,2)
-    domain = (0,np.pi)
+    dimension = (4,4)
+    domain = (0, np.pi)
     osc = oscillatorArray(dimension,domain)
 
     # fixed time wavelet kernel
