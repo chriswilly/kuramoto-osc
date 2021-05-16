@@ -77,7 +77,7 @@ def filename2():
                                                                                        **kernel_params[0],
                                                                                        kn=np.round(9),
                                                                                        ti=ti, tf=tf)
-    t=19.9999
+    t=2.0
     if t or not (t==None):
         if t>10:
             title+=f' at t = {t:.0f}'
@@ -86,11 +86,11 @@ def filename2():
 
     print('\n\n',title)
 
-    title = re.sub(r'((at t = \d*\.\d*)|(at t = \d+))', '', title)
+    title = re.sub(r'(( at t = \d*\.\d*)|( at t = \d+))', '', title)
     # fldr = title.replace('at t = [*\d\.\d*]','')
     # fldr = re.sub('[*\d\.\d*]','',fldr).strip()
 
-    print('\n\n',title)
+    print('\n\n',title, title[-1])
 
 
 def filename():

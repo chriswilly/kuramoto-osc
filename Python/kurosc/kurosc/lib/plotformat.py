@@ -58,7 +58,6 @@ class setup(object):
         ## TODO
         # txt = re.sub('[()[\]{}] | [\\$]','',txt)
         # txt = re.sub('/','-',txt)
-        # txt = re.sub(',','_',txt)
 
         txt = self.clean(txt)
         file = ''.join((txt,'_',self.timestamp,p,f'{extension}'))

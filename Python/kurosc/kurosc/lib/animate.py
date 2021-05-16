@@ -74,7 +74,9 @@ class animate(object):
         img = lambda f: imageio.imread(targetpath / f)
         images = list(map(img, filelist))
 
-        self.img_name = self.fmt.plot_name(str(targetpath.stem),'gif')
+        # print('***',targetpath.name)
+        self.img_name = self.fmt.plot_name(str(targetpath.name),'gif')
+        # print(self.img_name)
         imageio.mimsave(self.img_name, images, duration = delay)
 
         if clean:

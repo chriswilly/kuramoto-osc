@@ -16,7 +16,7 @@
             "max_delta_t":0.1,
             "zero_ics": "True",
 
-            "frames": 1000,
+            "frames": 100,
             "frame_rate": 0.340,
             "interpolate_plot":"False",
             "inspect_t_seconds":0.2,

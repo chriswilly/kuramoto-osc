@@ -220,10 +220,13 @@ def plot_phase(osc,
                ):
     """
     """
-    folder = re.sub(r'((at t = \d*\.\d*)|(at t = \d+))', '', plot_title)
+    folder = re.sub(r'(( at t = \d*\.\d*)|( at t = \d+))', '', plot_title)
+
+    # print('\n***plt dir befor setup',folder)
 
     fmt = setup(folder,osc.level)
     osc.plot_directory = fmt.directory
+
 
     fig = plt.figure(figsize=(10,8))
     ax = fig.add_subplot(111)
