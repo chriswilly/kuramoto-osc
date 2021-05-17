@@ -60,7 +60,7 @@ class animate(object):
 
         if sort:
             # index = lambda x: re.search('\.\d_',str(x)).group()
-            s = lambda x: re.split(r'\d*\.*\d*_',str(x),1)   # t = 1.4_20200505... & 15_2020..
+            s = lambda x: re.split(r' at t = \d*\.*\d*_',str(x),1)   # t = 1.4_20200505... & 15_2020..
             index = np.array([s(file) for file in filelist],dtype=str)
             if len(index.shape)==1:
                 print('err 1D arry')

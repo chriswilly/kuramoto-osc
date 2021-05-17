@@ -60,7 +60,12 @@ def plot_timeseries(osc,
     """plot the solution timeseries for a random cluster of neighbor nodes
     """
     if not title:
-        title = f'Solution Timeseries for {samples} Random Neighbors'
+        title = 'Timeseries for {s} Random Neighbors R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.1f} & c={c:.0f})'.format(s=samples,
+                                                                                                                     **osc.interaction_params,
+                                                                                                                     **osc.kernel_params,
+                                                                                                                     kn=np.round(osc.gain/np.prod(osc.ic.shape))
+                                                                                                                     )
+
 
         if t[0]:
             if t[0]>10:
@@ -200,7 +205,7 @@ def plot_contour(osc,
         # title_trans = ''
 
         if t or not (t==None):
-            if t>10:
+            if t>=10:
                 title+=f' at t = {t:.0f}'
             else:
                 title+=f' at t = {t:2.1f}'

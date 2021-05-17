@@ -100,13 +100,14 @@ class oscillatorArray(object):
                         int(1e6)
                         )
 
+        #this just uses nominal 0th dertivative to return gaussian and normalize
         prob = self.kernel.wavelet(self.kernel.gaussian,
                                    x,
                                    *params.values(),
                                    True
                                    )
 
-        prob = prob/np.sum(prob)  # pdf for weights
+        prob = prob/np.sum(prob)  # pdf for weights from max-normalized wavelet
 
         rng = np.random.default_rng()
 
@@ -120,10 +121,10 @@ class oscillatorArray(object):
               np.round(np.mean(frequency),3),
               '\nstdev:',
               np.round(np.std(frequency),3),
-              '\nconverted to phase angle on output'
+              '\nconverted to phase angle [-pi,pi] on output'
               )
-        # t -->  pi
-        return frequency*np.pi*2
+        # t -->  [-pi pi)
+        return frequency*np.pi
 
 
 

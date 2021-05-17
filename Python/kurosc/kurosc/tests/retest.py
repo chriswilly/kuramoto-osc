@@ -77,9 +77,9 @@ def filename2():
                                                                                        **kernel_params[0],
                                                                                        kn=np.round(9),
                                                                                        ti=ti, tf=tf)
-    t=2.0
+    t=10.0
     if t or not (t==None):
-        if t>10:
+        if t>=10:
             title+=f' at t = {t:.0f}'
         else:
             title+=f' at t = {t:2.1f}'
@@ -103,7 +103,7 @@ def filename():
 
 
     filelist = [
-            'Oscillator Phase in 0pi at t = 11_210503_211652626384.png' ,
+            'Oscillator Phase in 0pi at t = 10.0_210503_211652626384.png' ,
             'Oscillator Phase in 0pi at t = 4.5_210503_211549726809.png' ,
             'Oscillator Phase in 0pi at t = 0.0_210503_211049550263.png' ,
             ]

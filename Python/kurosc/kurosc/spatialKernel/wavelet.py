@@ -45,7 +45,8 @@ class kernel(object):
         y = fn(x,a,b,c,d)
 
         if normalize:
-            return y/np.sum(np.absolute(y))
+            return y/np.max(np.absolute(y))
+            # return y/np.sum(np.absolute(y))   #pdf but 1.0 macx is needed for kernel
         else:
             return y
 
