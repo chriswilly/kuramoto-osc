@@ -8,7 +8,7 @@
               "save_numpy":"true",
 
 
-              "sqrt_nodes": 22,
+              "sqrt_nodes": 72,
               "time": 10,
               "max_delta_t":0.05,
               "frames": 1000,
