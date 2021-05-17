@@ -33,7 +33,7 @@ class interaction(object):
     def delta(self,
               phase_array: np.array = np.array([0,1,1,0])
               ) -> np.ndarray:
-        """pase difference of element from global array"""
+        """pase difference of element from global 1D array"""
 
         d = np.zeros([self.dimension[0]*self.dimension[1],
                       self.dimension[1]*self.dimension[0]])
@@ -42,7 +42,7 @@ class interaction(object):
 
         # TODO validat this index assignment with ravel()
         for (k,p) in enumerate(phase_array):
-            d[k,:] = np.array(((phase_array - p) % np.pi), dtype = float)
+            d[k,:] = np.array(((phase_array - p)), dtype = float)  # TODO remove % np.pi  ?
 
         """
         # k=0

@@ -25,11 +25,11 @@ class oscillatorArray(object):
         self.domain = domain
         self.kernel = kernel()
         self.ic = self.initial_conditions(*dimension)
-        self.natural_frequency = self.natural_frequency()
+        self.natural_frequency = None  #  init & evalin model  ... self.natural_frequency_dist()   #TODO fix this
         self.distance = self.distance()
         self.level = output_level
         self.plot_phase = plot_phase
-        self.plot_directory = None  # initialized in a plot module i think
+        self.plot_directory = None  # initialized in a plot module
         # for labeling plots:
         self.interaction_params = None
         self.kernel_params = None
@@ -53,7 +53,7 @@ class oscillatorArray(object):
         ### 1hz spread --> 2pi  t*2pi at 1 s gives 1 rev
         ### omega = 2pi/s so sin(omega*t) makes sense
         ### chose np.max(abs(domain)) to scale by pi even if -
-
+        ###  np.max(np.abs(self.domain)) == pi
         x = np.linspace(params['b']-3.5*params['c'],
                         params['b']+3.5*params['c'],
                         int(1e6)
@@ -84,13 +84,13 @@ class oscillatorArray(object):
         return phase
 
 
-    def natural_frequency(self,
-                          params:dict = {'a': 1/6,
-                                         'b': 0,
-                                         'c': 2/5,
-                                         'order':0,
-                                         }
-                          )->np.ndarray:
+    def natural_frequency_dist(self,
+                               params:dict = {'a': 1/6,
+                                              'b': 0,
+                                              'c': 2/5,
+                                              'order':0,
+                                              }
+                               )->np.ndarray:
         """rtrn x vals for normal weighted abt 0hz
             #  distinct vals for replace = false
         """
@@ -123,7 +123,7 @@ class oscillatorArray(object):
               np.round(np.std(frequency),3),
               '\nconverted to phase angle on output'
               )
-        # t -->
+        # t -->  pi
         return frequency*np.pi*2
 
 

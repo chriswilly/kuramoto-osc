@@ -49,17 +49,16 @@ class kuramoto_system(object):
         """
         """
         self.osc = oscillatorArray(array_size,(0,np.pi),out_dir)
-        self.gain = gain
-        self.kernel_params = kernel_params
-        self.interaction_params = interaction_params
+
         self.osc.interaction_params = interaction_params  # pass thru maybe to label plots
         self.osc.kernel_params = kernel_params
         self.osc.gain = gain
-        self.osc.natural_frequency = self.osc.natural_frequency
+
+        self.osc.natural_frequency = self.osc.natural_frequency_dist(natural_freq_params)
 
         self.wavelet = self.osc.kernel.wavelet(self.osc.kernel.spatial_wavelet,
                                                self.osc.distance.ravel(),
-                                               *self.kernel_params.values(),
+                                               *self.osc.kernel_params.values(),
                                                normalize_kernel
                                                )
 
@@ -78,11 +77,11 @@ class kuramoto_system(object):
         """ of the form: xi - 'k/n * sum_all(x0:x_N)*fn_of_dist(xi - x_j) * sin(xj - xi))'
         """
 
-        K = self.gain
+        K = self.osc.gain
         W = self.wavelet
 
         G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
-                                    **self.interaction_params)).ravel()
+                                    **self.osc.interaction_params)).ravel()
         N = np.prod(self.osc.ic.shape)
 
         dx = K/N*np.sum(W*G) + self.osc.natural_frequency.ravel()
@@ -128,9 +127,9 @@ class kuramoto_system(object):
 
 
 
-        def external_input_fn(self,t:float,w:float):
-            cos(w*t)
-            return 0
+    def external_input_fn(self,t:float,w:float):
+        cos(w*t)
+        return 0
 
 
 ###############################################################################
