@@ -25,12 +25,11 @@ class oscillatorArray(object):
         self.domain = domain
         self.kernel = kernel()
         self.ic = self.initial_conditions(*dimension)
-        self.natural_frequency = None  #  init & evalin model  ... self.natural_frequency_dist()   #TODO fix this
         self.distance = self.distance()
         self.level = output_level
         self.plot_phase = plot_phase
         self.plot_directory = None  # initialized in a plot module
-        # for labeling plots:
+        self.natural_frequency = None  #  init & evalin model  ... self.natural_frequency_dist()   #TODO fix this
         self.interaction_params = None
         self.kernel_params = None
         self.gain = None

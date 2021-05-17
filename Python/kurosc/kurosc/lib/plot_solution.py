@@ -176,9 +176,9 @@ def plot_contour(osc,
     #### see figures in paper for demo
     #### may do %2pi but would look more chaotic
 
-    # transform = lambda z: np.abs(z%(2*np.pi)-np.pi)
-    transform = lambda z: z%np.pi
-    phase_array = np.asarray([x.ravel(),y.ravel(),transform(z.ravel())]).T
+    theta_transform = lambda z: np.abs(z%(2*np.pi)-np.pi)
+    # transform = lambda z: z%np.pi
+    phase_array = np.asarray([x.ravel(),y.ravel(),theta_transform(z.ravel())]).T
     # print(phase_array.shape)
 
     if abs(osc.domain[0]) % np.pi == 0 and not osc.domain[0] == 0:
@@ -193,7 +193,7 @@ def plot_contour(osc,
         tf = str(osc.domain[1])
 
     if not title:
-        title = 'R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.0f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(**osc.interaction_params,
+        title = 'R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.1f} & c={c:.0f} for $\\theta_t$$\in$[${ti}$,${tf}$)'.format(**osc.interaction_params,
                                                                                        **osc.kernel_params,
                                                                                        kn=np.round(osc.gain/np.prod(osc.ic.shape)),
                                                                                        ti=ti, tf=tf)
@@ -242,7 +242,7 @@ def plot_phase(osc,
 
 
 
-    plt.tricontourf(X[...,0],X[...,1],X[...,2],
+    plt.contourf(X[...,0],X[...,1],X[...,2],
                     colorscale,
                     cmap=plt.cm.nipy_spectral,
                     )
