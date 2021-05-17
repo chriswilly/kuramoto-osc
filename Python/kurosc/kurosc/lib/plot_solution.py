@@ -242,7 +242,7 @@ def plot_phase(osc,
 
 
 
-    plt.contourf(X[...,0],X[...,1],X[...,2],
+    plt.tricontourf(X[...,0],X[...,1],X[...,2],
                     colorscale,
                     cmap=plt.cm.nipy_spectral,
                     )
