@@ -69,8 +69,8 @@
             "zero_ics": "True",
 
             "interpolate_plot":"False",
-            "inspect_t_seconds":0,
-            "inspect_t_samples":0,
+            "inspect_t_seconds":0.2,
+            "inspect_t_samples":4,
 
 
             "interaction_complexity":"Hansel",
@@ -121,8 +121,8 @@
           "zero_ics": "False",
 
           "interpolate_plot":"False",
-          "inspect_t_seconds":0.35,
-          "inspect_t_samples":3,
+          "inspect_t_seconds":0.2,
+          "inspect_t_samples":4,
 
 
           "interaction_complexity":"Hansel",
@@ -158,22 +158,22 @@
 
 
           "sqrt_nodes": 32,
-          "time": 7,
+          "time": 5,
 
           "ODE_method":"LSODA",
           "continuous_soln":"True",
-          "max_delta_t":0.1,
-          "zero_ics": "False",
+          "max_delta_t":0.05,
+          "zero_ics": "True",
 
-          "frames": 160,
-          "frame_rate": 0.457,
+          "frames": 1000,
+          "frame_rate": 0.34,
           "interpolate_plot":"False",
-          "inspect_t_seconds":0,
-          "inspect_t_samples":0,
+          "inspect_t_seconds":2,
+          "inspect_t_samples":4,
 
 
           "interaction_complexity":"Kuramoto",
-          "gain_ratio": 16,
+          "gain_ratio": 0.1,
           "interaction_params" : {"Kuramoto":{"beta":0, "r":0},
                                   "Hansel":{"beta":0.25, "r":0.95}
                                   },
@@ -188,7 +188,7 @@
 
           "natural_freq_params" : {"a": 0.16667,
                                    "b":0,
-                                   "c":0.0000001,
+                                   "c":0.4,
                                    "order":0
                                  },
 

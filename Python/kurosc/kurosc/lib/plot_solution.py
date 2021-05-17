@@ -175,7 +175,10 @@ def plot_contour(osc,
     #### this z%pi is to show phase locking and not precisely the phase state in time
     #### see figures in paper for demo
     #### may do %2pi but would look more chaotic
-    phase_array = np.asarray([x.ravel(),y.ravel(),z.ravel()%np.pi]).T
+
+    # transform = lambda z: np.abs(z%(2*np.pi)-np.pi)
+    transform = lambda z: z%np.pi
+    phase_array = np.asarray([x.ravel(),y.ravel(),transform(z.ravel())]).T
     # print(phase_array.shape)
 
     if abs(osc.domain[0]) % np.pi == 0 and not osc.domain[0] == 0:
