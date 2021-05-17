@@ -16,7 +16,7 @@ from main import run
 
 
 if __name__=='__main__':
-    sets = ('test_set0','test_set1','test_set2')
+    sets = ('test_set1','test_set2')
 
     processes = []
 
