@@ -30,7 +30,7 @@ from lib.plot_solution import ( plot_output,
 def run_process(set:str = 'global_sync',
                 config_file:str = 'model_config.json'):
                 print('\n',set,'\n')
-                run(set,config_file)
+    run(set,config_file)
 
 
 def run(set:str = 'global_sync',

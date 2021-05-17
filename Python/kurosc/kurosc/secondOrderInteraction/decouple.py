@@ -42,7 +42,7 @@ class interaction(object):
 
         # TODO validat this index assignment with ravel()
         for (k,p) in enumerate(phase_array):
-            d[k,:] = np.array(((phase_array - p)), dtype = float)  # TODO remove % np.pi  ?
+            d[k,:] = np.array((phase_array - p), dtype = float)  # TODO remove % np.pi  ?
 
         """
         # k=0
