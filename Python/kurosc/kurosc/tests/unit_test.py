@@ -2,11 +2,12 @@
 """
 import sys
 from pathlib import Path
+print(Path(__file__).resolve().parents[1])
 sys.path.append(Path(__file__).resolve().parents[1])
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'kurosc'
-
-from lib.plotformat import setup
+#
+# from lib.plotformat import setup
 
 
 import numpy as np
@@ -232,6 +233,43 @@ def index_ts():
     print( idu, idv, idw, idx[idw,:])
 
 
+
+
+def plt_title():
+
+
+    interaction_params:dict = {'beta': 0.75,'r': 0.25}
+    kernel_params:dict = {'a': 10000/3*2,
+                          'b': 0,
+                          'c': 10, # breadth of wavelet
+                          'order': 4}
+    title=None
+    domain = [0,np.pi]
+    kn=11.1
+    samples = 5
+    if abs(domain[0]) % np.pi == 0 and not domain[0] == 0:
+        ti = r'\pi'
+        ti = '-'+ti
+    else:
+        ti = str(domain[0])
+
+    if abs(domain[1]) % np.pi == 0 and not domain[1] == 0:
+        tf = r'\pi'
+    else:
+        tf = str(domain[1])
+
+    if not title:
+        print(interaction_params,
+                kernel_params,
+                            )
+
+        title = 'Timeseries for {s} Random Neighbors R={r:.2f} $\\beta$={beta:.2f} K/N={kn:.1f} & c={c:.0f})'.format(s=samples,
+                                                                                                                     **interaction_params,
+                                                                                                                     **kernel_params,
+                                                                                                                     kn=kn)
+
+    print(title)
+
 def main():
     # distance_test(3,3)
     # wavelet_test()
@@ -240,8 +278,8 @@ def main():
     # normal_test()
     # move_dirs()
     # load_j()
-
-    index_ts()
+    # index_ts()
+    plt_title()
 
 
 if __name__ == '__main__':
