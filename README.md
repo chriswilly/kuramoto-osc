@@ -38,11 +38,12 @@ contains modification to distance Kuramoto model for next steps in project<br>
 
       corticalSheet.oscillator.oscillatorArray.plot_phase
 
-72x72 nodes with 0 ics & bifurfaction conditions LSODA solve<br>
-<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D%20beta%3D%20K-N%3D%20%26%20c%3D%20for%20theta_tinpi_210514_063828153355.gif">
-
-
-
 
 32x32 nodes with 0 ics LSODA solve<br>
-<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D%20beta%3D%20K-N%3D%20%26%20c%3D%20for%20theta_tinpi_210509_224745277371.gif">
+<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/R%3D0.00%20beta%3D0.00%20K-N%3D1.0%20%26%20c%3D4%20for%20theta_tin0pi_210517_014918455647.gif">
+
+
+
+
+72x72 nodes with 0 ics & bifurfaction conditions LSODA solve<br>
+<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D%20beta%3D%20K-N%3D%20%26%20c%3D%20for%20theta_tinpi_210514_063828153355.gif">
