@@ -87,12 +87,12 @@ class kuramoto_system(object):
         dx = K/N*np.sum(W*G) + self.osc.natural_frequency.ravel()
 
 
-
         if self.external_input:
             dx+=self.input_weight*self.external_input_fn(t)
 
+        # if t==0:
+        #     print(N)
         print('t_step:',np.round(t,4))
-
         return dx
 
 
