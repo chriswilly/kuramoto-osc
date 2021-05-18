@@ -32,3 +32,4 @@ Oscillator[[:space:]]Phase[[:space:]]in[[:space:]]pi_210506_235856524519.gif fil
 Oscillator[[:space:]]Phase[[:space:]]in[[:space:]]pi_210507_011145878891.gif filter=lfs diff=lfs merge=lfs -text
 Oscillator[[:space:]]Phase[[:space:]]in[[:space:]]pi_210507_014911659017.gif filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
+**.npy filter=lfs diff=lfs merge=lfs -text
