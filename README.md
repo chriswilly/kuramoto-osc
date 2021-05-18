@@ -40,7 +40,7 @@ contains modification to distance Kuramoto model for next steps in project<br>
 
 
 72x72 nodes with 0 ics & normal natl freq & k = 0.1   LSODA solve<br>
-<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D0.00%20beta%3D0.00%20K-N%3D0.0%20%26%20c%3D4%20for%20theta_tin0pi_210517_013615481857.gif
+<img width="1039" alt="ode test" src="https://github.com/chriswilly/kuramoto-osc/blob/main/Python/animation/_keep/R%3D0.00%20beta%3D0.00%20K-N%3D0.0%20%26%20c%3D4%20for%20theta_tin0pi_210517_013615481857.gif">
 
 
 
