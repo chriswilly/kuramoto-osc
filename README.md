@@ -1,3 +1,5 @@
+branched to https://github.com/TomekFraczek/DrivenCorticalSheet
+
 # kuramoto-osc
 AMATH 575 group project on
 
