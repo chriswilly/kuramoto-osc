@@ -61,7 +61,7 @@ def decouple_test():
 
     x,_ = distance_test(3,3)
     a = interaction(x.shape)
-    y = a.delta(x)
+    y = a.delta(x.ravel())
     p = {'beta': 0.25, 'r':0.95}
     g = a.gamma(y,**p)
     print(dt.now(),'\ngamma\n',g,
@@ -273,13 +273,13 @@ def plt_title():
 def main():
     # distance_test(3,3)
     # wavelet_test()
-    # decouple_test()
+    decouple_test()
     # gif_test()
     # normal_test()
     # move_dirs()
     # load_j()
     # index_ts()
-    plt_title()
+    # plt_title()
 
 
 if __name__ == '__main__':
