@@ -1,6 +1,6 @@
 clc;clear all;
 N = 32;
-w0 = max(min(normrnd(zeros(N,N),ones(N,N)),1),-1);  % consider spread 3 sigma look at fig 1 of +3sigma = +1
+w0 = max(min(normrnd(zeros(N,N),0.33*ones(N,N)),1),-1);  % consider spread 3 sigma look at fig 1 of +3sigma = +1
 theta_0 = zeros(1,N^2);
 tspan = [0:0.01:20];
 KN = 10;
@@ -12,7 +12,7 @@ for i = 1:length(tspan)/10
     P = reshape(sin(theta(i*10,:)),N,N)';
     imagesc(P)
     colorbar
-    title(['H = sin(theta), K/N = ',num2str(1),', ','t = ',num2str(tspan(i)*10),' seconds']);
+    title(['H = sin(theta), K/N = ',num2str(KN),', ','t = ',num2str(tspan(i)*10),' seconds']);
     xlabel('X coordinate')
     ylabel('Y coordinate')
     drawnow
