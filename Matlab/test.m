@@ -1,9 +1,9 @@
 clc;clear all;
-N = 50;
-w0 = max(min(normrnd(zeros(N,N),ones(N,N)),1),-1);
+N = 32;
+w0 = max(min(normrnd(zeros(N,N),ones(N,N)),1),-1);  % consider spread 3 sigma look at fig 1 of +3sigma = +1
 theta_0 = zeros(1,N^2);
 tspan = [0:0.01:20];
-KN = 1;
+KN = 10;
 
 [t,theta] = ode45(@(t,theta) oscillator(t,theta,w0,N,KN),tspan,theta_0);
 
