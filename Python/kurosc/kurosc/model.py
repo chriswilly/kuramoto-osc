@@ -128,7 +128,7 @@ class kuramoto_system(object):
 
 
     def external_input_fn(self,t:float,w:float):
-        cos(w*t)
+        # cos(w*t)
         return 0
 
 

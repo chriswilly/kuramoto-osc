@@ -120,9 +120,9 @@ def decouple():
     """
     """
     a = interaction()
-    params = ({'beta': 0.25, 'r':0.95},
+    params = ({'beta': 0, 'r':0},
               {'beta': 0.25, 'r':0.8},
-              {'beta': 0.25, 'r':0.7},
+              
               )
     x = np.linspace(-np.pi,np.pi,1000)
 
@@ -153,8 +153,8 @@ def test():
 if __name__ == '__main__':
     # test()
     # build_ics(256,256)
-    spatial_kernel()
-    # decouple()
+    # spatial_kernel()
+    decouple()
 
 
     # print(Path(__file__).resolve())
