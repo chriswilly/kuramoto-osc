@@ -61,7 +61,7 @@ class interaction(object):
               beta: float = 1/4,
               r: float = 8/10
               ) -> np.ndarray:
-        # print(x.shape)
+        sign = -1 if r else 1  #togles between eqn 13 & 11 w/ presence of 2nd order term
         return -np.sin(x+beta) + r*np.sin(2*x)
 
 

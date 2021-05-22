@@ -172,52 +172,6 @@ def index_ts():
      [ 6 , 0],
      [ 4,  0]]
     )
-    # print(idx.shape,'\n',idx[:,0])
-    ##validate in range, since these are 2d but coupled pairs and where returns 1d just use unique
-
-    ##validate in range, since these are 2d but coupled pairs and where returns 1d just use unique
-    # idy = np.unique(np.where(idx<=zshape[0:2])[0])
-
-    # idz0 = np.where(idx[:,0]>=0)[0]
-    # idz1 = np.where(idx[:,1]>=0)[0]
-    # idz = (idx[np.in1d(idz0.view(dtype='i,i').reshape(idz0.shape[0]),
-    #        idz1.view(dtype='i,i').reshape(idz1.shape[0]))])
-    # idz = np.unique(np.concatenate([idz0,idz1]))
-
-######
-
-    # idy = np.arange(idx.shape[0])[np.in1d(
-    #         np.where(idx[:,0]<=zshape[0])[0],
-    #         np.where(idx[:,1]<=zshape[1])[0])]
-    # print(idy)
-    #
-    #
-    # idz = np.arange(idx.shape[0])[np.in1d(
-    #     np.where(idx[:,0]>=0)[0],
-    #     np.where(idx[:,1]>=0)[0])]
-    # print(idz)
-####
-    # print( np.squeeze(idx[np.in1d(idy,idz),:]) )
-# k[np.in1d(k.view(dtype='i,i').reshape(k.shape[0]),k2.view(dtype='i,i').reshape(k2.shape[0]))]
-
-
-
-    # idu = np.where(idx<=zshape[0:2])[0]
-    # idv = np.where(idx>=0)[0]
-    # # idw = idx[np.in1d(idx,idu.reshape()]
-    # # idy = idx[np.in1d(idx,idv.reshape()]
-    # # idz = idx[np.in1d(idw,idy),:]
-    # # test= np.in1d(idu.view(dtype='i,i').reshape(idu.shape[0]),
-    # #               idv.view(dtype='i,i').reshape(idv.shape[0]))
-    #
-    # p1 = np.where(idx[:,0]<=zshape[0])[0]
-    # p3 = np.where(idx[:,0]>=0)[0]
-    # p2 = np.where(idx[:,1]<=zshape[1])[0]
-    # p4 = np.where(idx[:,1]>=0)[0]
-    # # test1 = np.in1d(t1,t3)
-    # # test2 = np.in1d(t2,t4)
-    # ll = (set(t1),set(t2),set(t3),set(t4))
-    # u = set.intersection(*pl)
 
     idl0 = np.where(idx[:,0]<=zshape[0])[0]
     idl1 = np.where(idx[:,1]<=zshape[1])[0]
@@ -270,10 +224,45 @@ def plt_title():
 
     print(title)
 
+
+
+
+def spatial_wavelet(self,
+                    x: np.ndarray,
+                    a: float,
+                    b: float,
+                    c: float,
+                    d: int = 4,  # 4th derivative
+                    ) -> np.ndarray:
+    """arbitrary derivation of the gaussian to nth order and substitute params """
+    wavelet = derivative(d)
+    fn = lambdify(['x','a','b','c'], wavelet, 'numpy')
+    return fn(x,a,b,c)
+
+
+def LSA():
+    from spatialKernel.symdiff import derivative
+
+    from sympy import (symbols,
+                        sin)
+    x,t,b,r = symbols('x,theta,beta,r')
+
+    fn = lambda x,t,b,r: -sin(t-x+b) + r*sin(2*(t-x))
+    fnc = lambda x,t,b,r: (-1 if r else 1)*sin(t-x+b) + r*sin(2*(t-x))
+
+    df = derivative(fn(x,t,b,r),1,x)
+    vals = {'r':0.8,'beta':0,'theta':0,'x':0}
+    print(df)
+    print(df.subs(vals))
+
+
+
+
 def main():
     # distance_test(3,3)
     # wavelet_test()
-    decouple_test()
+    # decouple_test()
+    LSA()
     # gif_test()
     # normal_test()
     # move_dirs()
