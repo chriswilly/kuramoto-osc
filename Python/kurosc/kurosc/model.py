@@ -57,7 +57,7 @@ class kuramoto_system(object):
         self.osc.natural_frequency = self.osc.natural_frequency_dist(natural_freq_params)
 
         self.wavelet = self.osc.kernel.wavelet(self.osc.kernel.spatial_wavelet,
-                                               self.osc.distance.ravel(),
+                                               self.osc.distance,
                                                *self.osc.kernel_params.values(),
                                                normalize_kernel
                                                )
@@ -80,11 +80,13 @@ class kuramoto_system(object):
         K = self.osc.gain
         W = self.wavelet
 
-        G = (self.interaction.gamma(self.interaction.delta(x.ravel()),
-                                    **self.osc.interaction_params)).ravel()
+        G = self.interaction.gamma(self.interaction.delta(x.ravel()),
+                                    **self.osc.interaction_params)
+
+
         N = np.prod(self.osc.ic.shape)
 
-        dx = K/N*np.sum(W*G) + self.osc.natural_frequency.ravel()
+        dx = K/N*np.sum(W*G, axis=1).ravel() + self.osc.natural_frequency.ravel()
 
 
         if self.external_input:
@@ -133,46 +135,6 @@ class kuramoto_system(object):
 
 
 ###############################################################################
-## unit tests may need update below but not called into model
-###############################################################################
-def test_case():
-    from spatialKernel.wavelet import kernel
-    #initialize an osc array
-    dimension = (2,2)
-    domain = (0,np.pi)
-    osc = oscillatorArray(dimension,domain)
-
-    # fixed time wavelet kernel
-    s = kernel()
-    kernel_params = {'a': 10000/3*2,
-                     'b': 0,
-                     'c': 10,
-                     'order': 4,
-                     }
-    interaction_params = ({'beta': 0, 'r':0},
-                          {'beta': 0.25, 'r':0.95})
-    w = s.wavelet(s.spatial_wavelet,
-                  osc.distance.ravel(),
-                  *kernel_params.values(),
-                  True)
-    # print(dt.now(),'\nwavelet\n',w)
-
-    # test case using initial conditions
-    a = interaction(osc.ic.shape)
-    phase_difference = a.delta(osc.ic)
-    g = a.gamma(phase_difference,**interaction_params[0])
-
-    print(dt.now(),
-          '\nwavelet\n',
-          w,'\n',type(w),
-          '\n\nphase difference vector\n',
-          g.ravel(),'\n',
-          type(g.ravel()),
-          '\nwavelet*difference\n',
-          (w*g.ravel()).shape
-          )
-
-
 
 
 def run():
