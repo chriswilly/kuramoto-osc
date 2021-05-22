@@ -250,7 +250,7 @@ def LSA():
     fn = lambda x,t,b,r: -sin(t-x+b) + r*sin(2*(t-x))
     fnc = lambda x,t,b,r: (-1 if r else 1)*sin(t-x+b) + r*sin(2*(t-x))
 
-    df = derivative(fn(x,t,b,r),1,x)
+    df = derivative(fnc(x,t,b,r),1,x)
     vals = {'r':0.8,'beta':0,'theta':0,'x':0}
     print(df)
     print(df.subs(vals))
