@@ -1,3 +1,4 @@
 *.gif
 *.png
 *.npy
+.DS_Store
