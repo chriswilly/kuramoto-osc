@@ -99,7 +99,7 @@ def spatial_kernel():
     # b is center mass
     # scale c linearly for width
     # d is order of derivative for arbitrary spatial_wavelet
-    params = {'a': 1/6,
+    params = {'a': 1/6.7,
               'b': 0,
               'c': 2/5,
               'order':0,
@@ -112,9 +112,10 @@ def spatial_kernel():
                   )
     if isinstance(w,np.ndarray):
         s.plot_wavelet(np.asarray([x,w]).T,
-                      '{}th Derivative Gaussian'.format(str(params['order'])),
+                      # '{}th Derivative Gaussian'.format(str(params['order'])),
+                      'Natural Frequency',
                       'Likelihood',
-                      'Node Distance')
+                      '$\omega$ Hz')
 
 def decouple():
     """
@@ -122,7 +123,7 @@ def decouple():
     a = interaction()
     params = ({'beta': 0, 'r':0},
               {'beta': 0.25, 'r':0.8},
-              
+
               )
     x = np.linspace(-np.pi,np.pi,1000)
 
@@ -153,8 +154,8 @@ def test():
 if __name__ == '__main__':
     # test()
     # build_ics(256,256)
-    # spatial_kernel()
-    decouple()
+    spatial_kernel()
+    # decouple()
 
 
     # print(Path(__file__).resolve())

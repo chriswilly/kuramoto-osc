@@ -8,10 +8,10 @@
               "save_numpy":"true",
 
 
-              "sqrt_nodes": 72,
-              "time": 10,
+              "sqrt_nodes": 12,
+              "time": 3,
               "max_delta_t":0.05,
-              "frames": 1000,
+              "frames": 300,
               "frame_rate": 0.32,
 
 

@@ -95,6 +95,8 @@ class kuramoto_system(object):
         # if t==0:
         #     print(N)
         print('t_step:',np.round(t,4))
+        # dx should be ~0
+        # dy = np.mod(dx,2*np.pi)
         return dx
 
 

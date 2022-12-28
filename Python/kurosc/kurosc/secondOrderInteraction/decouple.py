@@ -74,7 +74,7 @@ class interaction(object):
         """
         """
         fmt = setup(plot_title)  # plotting format obj
-        fig = plt.figure(figsize=(9,9))
+        fig = plt.figure(figsize=(10.5,9))
         ax = fig.add_subplot(111)
         ax.plot(X[...,0]/np.pi,X[...,1],'-b')
         ax.plot(np.asarray([X[0,0],X[-1,0]])/np.pi,[0,0],'-k',linewidth=1)  #
@@ -105,8 +105,7 @@ def main():
         g = a.gamma(x,**p)
         a.plot_phase(np.asarray([x,g]).T,
                     'R = {0}'.format(p['r']),
-                    '',
-                    # r'$\frac{d\theta}{dt}$',
+                    r'$\frac{d\theta}{dt}$',
                     r'$\phi$')
 
 
